@@ -1,10 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class Player_Controller : MonoBehaviour
 {
+    [Header("Movimiento del jugador")]
+    [SerializeField] 
     public float speed =15.0f;
     Vector2 moveLimits = new Vector2(8f, 4.5f);
+
+    [Header("Incrinacion")]
+    public float InclinacionX = 15f;
+    public float InclinacionZ = 15f;
+
+    public float InclinacionSpeed = 15f;
 
     public Vector2 PlayerInput;
 
@@ -17,6 +26,7 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
         mover();
+        InclinacionJugador();
 
     }
 
@@ -30,5 +40,14 @@ public class Player_Controller : MonoBehaviour
 
         transform.localPosition = newPosition;
 
+    }
+
+    void InclinacionJugador() { 
+        
+        float targerPitch = PlayerInput.y * InclinacionX;
+        float targerRoll = PlayerInput.x * InclinacionZ;
+
+        Quaternion targetRotation = Quaternion.Euler(targerPitch, 0f, -targerRoll);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, InclinacionSpeed * Time.deltaTime);
     }
 }
