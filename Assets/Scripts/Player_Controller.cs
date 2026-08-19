@@ -47,8 +47,8 @@ public class Player_Controller : MonoBehaviour
         float targerPitch = -PlayerInput.y * InclinacionX;
         float targerRoll = -PlayerInput.x * InclinacionZ;
 
-        // Supongamos que tu modelo viene girado -90 grados en Y de origen:
-        float offsetMod3D = 90f; // Ajusta este número (90f, -90f o 180f) según como mire tu modelo
+      
+        float offsetMod3D = 90f;
 
         Quaternion targetRotation = Quaternion.Euler(targerPitch - 90f, offsetMod3D, targerRoll );
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, InclinacionSpeed * Time.deltaTime);
