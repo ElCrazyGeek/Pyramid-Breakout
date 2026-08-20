@@ -51,9 +51,11 @@ public class Player_FreeFlight_Controller : MonoBehaviour
 
         // 2. Avance continuo en la dirección que apunta el rumbo horizontal
         float velocidadActual = Frenado ? (VelocidadAvance * 0.2f) : VelocidadAvance;
+       
         Vector3 forwardHorizontal = Quaternion.Euler(0f, currentYaw, 0f) * Vector3.forward;
 
         transform.position += forwardHorizontal * velocidadActual * Time.deltaTime;
+
     }
 
     void MoverVertical()
