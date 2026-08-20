@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 public class Player_Controller : MonoBehaviour
 {
     [Header("Movimiento del jugador")]
 
-    [SerializeField] 
-    public float speed =15.0f;
+    [SerializeField]
+    public float speed = 15.0f;
     [SerializeField]
     Vector2 LimitesMovimiento = new Vector2(20f, 10f);
 
@@ -41,8 +40,9 @@ public class Player_Controller : MonoBehaviour
     }
 
 
-    void mover() { 
-        Vector3 newPosition = transform.localPosition + 
+    void mover()
+    {
+        Vector3 newPosition = transform.localPosition +
         (Vector3)PlayerInput * speed * Time.deltaTime;
 
         newPosition.x = Mathf.Clamp(newPosition.x, -LimitesMovimiento.x, LimitesMovimiento.x);
@@ -55,11 +55,13 @@ public class Player_Controller : MonoBehaviour
     void OnFreno(InputValue value)
     {
         Frenado = value.isPressed;
+
     }
-    void avance() {
+    void avance()
+    {
         float velocidadActual = VelocidadAvance;
 
-           if (Frenado)
+        if (Frenado)
         {
             velocidadActual = velocidadActual * 0.2f;
         }
@@ -77,17 +79,17 @@ public class Player_Controller : MonoBehaviour
         transform.position = newPosition;
     }
 
-    
+
 
     void InclinacionJugador()
     {
         float targerPitch = -PlayerInput.y * InclinacionX;
         float targerRoll = -PlayerInput.x * InclinacionZ;
 
-      
+
         float offsetMod3D = 90f;
 
-        Quaternion targetRotation = Quaternion.Euler(targerPitch - 90f, offsetMod3D, targerRoll );
+        Quaternion targetRotation = Quaternion.Euler(targerPitch - 90f, offsetMod3D, targerRoll);
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, VelocidadInclinacion * Time.deltaTime);
     }
 }
