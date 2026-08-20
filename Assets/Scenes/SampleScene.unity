@@ -277,7 +277,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -29.9}
+  m_LocalPosition: {x: 0, y: 0, z: -29.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -632,10 +632,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6bce79bb0b46498c7ad3252c3439f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Controller
-  speed: 15
+  speed: 30
+  LimitesMovimiento: {x: 20, y: 10}
+  VelocidadAvance: 15
+  VelocidadActual: 0
+  Frenado: 0
   InclinacionX: 15
   InclinacionZ: 15
-  InclinacionSpeed: 15
+  VelocidadInclinacion: 15
   PlayerInput: {x: 0, y: 0}
 --- !u!114 &1221321525
 MonoBehaviour:

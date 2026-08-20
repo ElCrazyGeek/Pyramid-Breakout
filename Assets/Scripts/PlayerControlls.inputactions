@@ -15,6 +15,16 @@
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
+                },
+                {
+                    "name": "Freno",
+                    "type": "Button",
+                    "id": "03ad105f-d267-4802-8ef8-46924aab900b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": true,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -81,6 +91,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Movimiento",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63c3e603-a258-4651-9d84-cf07c82f0c3b",
+                    "path": "<Keyboard>/leftAlt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Freno",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

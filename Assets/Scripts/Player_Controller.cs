@@ -1,19 +1,28 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class Player_Controller : MonoBehaviour
 {
     [Header("Movimiento del jugador")]
+
     [SerializeField] 
     public float speed =15.0f;
-    Vector2 moveLimits = new Vector2(8f, 4.5f);
+    [SerializeField]
+    Vector2 LimitesMovimiento = new Vector2(20f, 10f);
+
+    [SerializeField]
+    public float VelocidadAvance = 15f;
+
+    [SerializeField]
+    public float VelocidadActual;
+
+    [SerializeField] public bool Frenado = false;
 
     [Header("Incrinacion")]
     public float InclinacionX = 15f;
     public float InclinacionZ = 15f;
 
-    public float InclinacionSpeed = 15f;
+    public float VelocidadInclinacion = 15f;
 
     public Vector2 PlayerInput;
 
@@ -26,6 +35,7 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
         mover();
+        avance();
         InclinacionJugador();
 
     }
@@ -35,12 +45,39 @@ public class Player_Controller : MonoBehaviour
         Vector3 newPosition = transform.localPosition + 
         (Vector3)PlayerInput * speed * Time.deltaTime;
 
-        newPosition.x = Mathf.Clamp(newPosition.x, -moveLimits.x, moveLimits.x);
-        newPosition.y = Mathf.Clamp(newPosition.y, -moveLimits.y, moveLimits.y);
+        newPosition.x = Mathf.Clamp(newPosition.x, -LimitesMovimiento.x, LimitesMovimiento.x);
+        newPosition.y = Mathf.Clamp(newPosition.y, -LimitesMovimiento.y, LimitesMovimiento.y);
 
         transform.localPosition = newPosition;
 
     }
+
+    void OnFreno(InputValue value)
+    {
+        Frenado = value.isPressed;
+    }
+    void avance() {
+        float velocidadActual = VelocidadAvance;
+
+           if (Frenado)
+        {
+            velocidadActual = velocidadActual * 0.2f;
+        }
+        else
+        {
+            velocidadActual = VelocidadAvance;
+        }
+
+
+        float avanceZ = velocidadActual * Time.deltaTime;
+
+        Vector3 newPosition = transform.position + new Vector3(0, 0, avanceZ);
+        transform.position = newPosition;
+
+        transform.position = newPosition;
+    }
+
+    
 
     void InclinacionJugador()
     {
@@ -51,6 +88,6 @@ public class Player_Controller : MonoBehaviour
         float offsetMod3D = 90f;
 
         Quaternion targetRotation = Quaternion.Euler(targerPitch - 90f, offsetMod3D, targerRoll );
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, InclinacionSpeed * Time.deltaTime);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, VelocidadInclinacion * Time.deltaTime);
     }
 }
