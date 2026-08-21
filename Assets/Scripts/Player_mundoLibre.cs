@@ -9,9 +9,9 @@ public class Player_FreeFlight_Controller : MonoBehaviour
 
     [Header("Movimiento Vertical (Subir / Bajar)")]
     [SerializeField] public float verticalSpeed = 12f;
-    [SerializeField] public float limiteInferiorY = 12f;
-    [SerializeField] public float limiteSuperiorY = 15f;
-    [SerializeField] public float bankPitch = 15f; 
+    [SerializeField] public float limiteInferiorY = 25f;
+    [SerializeField] public float limiteSuperiorY = 25f;
+    [SerializeField] public float bankPitch = 25f; 
 
     [Header("Avance")]
     [SerializeField] public float VelocidadAvance = 20f;
@@ -61,22 +61,27 @@ public class Player_FreeFlight_Controller : MonoBehaviour
     void MoverVertical()
     {
         // 3. Subir y bajar en Y con límites fijos
-        float nuevoX = transform.position.x + (PlayerInput.y * verticalSpeed * Time.deltaTime);
-        nuevoX = Mathf.Clamp(nuevoX, limiteInferiorY, limiteSuperiorY);
+        float nuevoY = transform.position.y + (PlayerInput.y * verticalSpeed * Time.deltaTime);
+        nuevoY = Mathf.Clamp(nuevoY, limiteInferiorY, limiteSuperiorY);
 
         Vector3 posActual = transform.position;
-        posActual.x = nuevoX;
+        posActual.y = nuevoY;
         transform.position = posActual;
     }
 
     void AplicarInclinacionVisual()
     {
-        // 4. Inclinaciones estéticas sin desviar la trayectoria
-        float pitch = (-PlayerInput.y * bankPitch) -90;
-        float roll = -PlayerInput.x * bankRoll;
+         // Rotación de rumbo (hacia dónde vuela realmente)
+    Quaternion headingRotation = Quaternion.Euler(0f, currentYaw, 0f);
 
-        // Combina el rumbo actual con las inclinaciones y el offset de tu modelo
-        Quaternion targetRotation = Quaternion.Euler(pitch, 90, roll);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothTiltSpeed * Time.deltaTime);
+    // Inclinaciones estéticas + offset de import del modelo (Y=90, pitch base -90)
+    float pitch = (-PlayerInput.y * bankPitch) - 90f;
+    float roll = -PlayerInput.x * bankRoll;
+    Quaternion localCorrection = Quaternion.Euler(pitch, 90f, roll);
+
+    // Aplica primero el rumbo mundial, luego la corrección local del modelo
+    Quaternion targetRotation = headingRotation * localCorrection;
+
+    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothTiltSpeed * Time.deltaTime);
     }
 }
