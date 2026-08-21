@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class Player_Controller : MonoBehaviour
+public class Player_rieles : MonoBehaviour
 {
     [Header("Movimiento del jugador")]
 
