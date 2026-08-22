@@ -79,18 +79,13 @@ public class Player_mundolibre : MonoBehaviour
     }
 
     void AplicarInclinacionVisual()
-    {
-         // Rotación de rumbo (hacia dónde vuela realmente)
-    Quaternion headingRotation = Quaternion.Euler(0f, currentYaw, 0f);
+    { 
 
-    // Inclinaciones estéticas + offset de import del modelo (Y=90, pitch base -90)
-    float pitch = (-PlayerInput.y * bankPitch) - 90f;
-    float roll = -PlayerInput.x * bankRoll;
-    Quaternion localCorrection = Quaternion.Euler(pitch, 90f, roll);
-
-    // Aplica primero el rumbo mundial, luego la corrección local del modelo
-    Quaternion targetRotation = headingRotation * localCorrection;
-
-    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothTiltSpeed * Time.deltaTime);
+            // Rotación de rumbo (hacia dónde vuela realmente)
+            Quaternion headingRotation = Quaternion.Euler(0f, currentYaw, 0f);
+            Quaternion localTilt = Quaternion.Euler(-PlayerInput.y * bankPitch, 0f, -PlayerInput.x * bankRoll);
+            // Aplica primero el rumbo mundial, luego la corrección local del modelo
+            Quaternion targetRotation = headingRotation * localTilt;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothTiltSpeed * Time.deltaTime);
     }
 }
