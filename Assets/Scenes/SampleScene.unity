@@ -446,8 +446,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000007441331, y: -1.0361774e-16, z: 7.710539e-25, w: 1}
-  m_LocalPosition: {x: -0.09783374, y: 12.182029, z: -33.296364}
+  m_LocalRotation: {x: 0.058038183, y: 5.051024e-10, z: -2.9364726e-11, w: 0.9983144}
+  m_LocalPosition: {x: 0, y: 11.5, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1730,10 +1730,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1430400628}
   - component: {fileID: 1430400626}
-  - component: {fileID: 1430400630}
   - component: {fileID: 1430400629}
+  - component: {fileID: 1430400630}
   - component: {fileID: 1430400627}
-  - component: {fileID: 1430400631}
   m_Layer: 0
   m_Name: CamaraMundoLibre
   m_TagString: Untagged
@@ -1811,8 +1810,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430400625}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000007441331, y: -1.0361774e-16, z: 2.970157e-18, w: 1}
-  m_LocalPosition: {x: -0.09783374, y: 12.182029, z: -33.296364}
+  m_LocalRotation: {x: 0.05803818, y: 5.0510235e-10, z: -2.936472e-11, w: 0.9983144}
+  m_LocalPosition: {x: 0, y: 11.5, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1827,10 +1826,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1430400625}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
+  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotateWithFollowTarget
-  Damping: 2
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
+  TrackerSettings:
+    BindingMode: 1
+    PositionDamping: {x: 0.2, y: 0.1, z: 0.3}
+    AngularDampingMode: 0
+    RotationDamping: {x: 1, y: 1, z: 1}
+    QuaternionDamping: 1
+  FollowOffset: {x: 0, y: 3.5, z: -30}
 --- !u!114 &1430400630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1840,112 +1845,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1430400625}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineOrbitalFollow
-  TargetOffset: {x: 0, y: 3.5, z: -30}
-  TrackerSettings:
-    BindingMode: 1
-    PositionDamping: {x: 0, y: 3.5, z: 0}
-    AngularDampingMode: 0
-    RotationDamping: {x: 1, y: 1, z: 1}
-    QuaternionDamping: 1
-  OrbitStyle: 1
-  Radius: 5
-  Orbits:
-    Top:
-      Radius: 2
-      Height: 5
-    Center:
-      Radius: 4
-      Height: 2.25
-    Bottom:
-      Radius: 2.5
-      Height: 0.1
-    SplineCurvature: 0.428
-  RecenteringTarget: 3
-  HorizontalAxis:
-    Value: 1.7
-    Center: 0
-    Range: {x: -90, y: 90}
-    Wrap: 1
-    Recentering:
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotationComposer
+  Composition:
+    ScreenPosition: {x: 0, y: 0}
+    DeadZone:
       Enabled: 0
-      Wait: 1
-      Time: 2
-    Restrictions: 0
-  VerticalAxis:
-    Value: 0.3
-    Center: 17.5
-    Range: {x: -10, y: 45}
-    Wrap: 0
-    Recentering:
+      Size: {x: 0.2, y: 0.2}
+    HardLimits:
       Enabled: 0
-      Wait: 1
-      Time: 2
-    Restrictions: 0
-  RadialAxis:
-    Value: 1
-    Center: 1
-    Range: {x: 1, y: 1}
-    Wrap: 0
-    Recentering:
-      Enabled: 0
-      Wait: 1
-      Time: 2
-    Restrictions: 0
---- !u!114 &1430400631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430400625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineInputAxisController
-  ScanRecursively: 1
-  SuppressInputWhileBlending: 1
-  IgnoreTimeScale: 0
-  m_ControllerManager:
-    Controllers:
-    - Name: Look Orbit X
-      Owner: {fileID: 1430400630}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: 6833677132742226484, guid: 6abb475c5b6f468409c4d2315b8a9e6c, type: 3}
-        Gain: 1
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0
-        DecelTime: 0
-    - Name: Look Orbit Y
-      Owner: {fileID: 1430400630}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: 6833677132742226484, guid: 6abb475c5b6f468409c4d2315b8a9e6c, type: 3}
-        Gain: 1
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0
-        DecelTime: 0
-    - Name: Orbit Scale
-      Owner: {fileID: 1430400630}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: 0}
-        Gain: 1
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0
-        DecelTime: 0
-  PlayerIndex: -1
-  AutoEnableInputs: 1
+      Size: {x: 0.8, y: 0.8}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Damping: {x: 0.2, y: 0.2}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
 --- !u!1 &1497408181
 GameObject:
   m_ObjectHideFlags: 0
