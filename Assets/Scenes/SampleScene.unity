@@ -446,7 +446,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.058038183, y: 5.051024e-10, z: -2.9364726e-11, w: 0.9983144}
+  m_LocalRotation: {x: 0.05803459, y: 0.0049913866, z: -0.00029016574, w: 0.9983021}
   m_LocalPosition: {x: 0, y: 11.5, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1790,18 +1790,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430400625}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7281a9b6b0a67b74d915c0505e7b602b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Camaralibre
-  playerTarget: {fileID: 2062103090}
-  playerController: {fileID: 2062103087}
-  distanciaDetras: 30
-  altura: 2
-  influenciaLateral: 0.187
-  smoothPosicion: 4
-  smoothOrientacion: 3
+  follow: {fileID: 1430400629}
+  rotationComposer: {fileID: 1430400630}
+  player: {fileID: 2062103087}
+  peekMaxOffset: 2
+  peekSmoothSpeed: 5
+  screenPeekMaxOffset: 0.28
+  screenPeekSmoothSpeed: 5
 --- !u!4 &1430400628
 Transform:
   m_ObjectHideFlags: 0
@@ -1810,7 +1810,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430400625}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.05803818, y: 5.0510235e-10, z: -2.936472e-11, w: 0.9983144}
+  m_LocalRotation: {x: 0.058034584, y: 0.0049913856, z: -0.00029016566, w: 0.9983021}
   m_LocalPosition: {x: 0, y: 11.5, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1830,10 +1830,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
-    BindingMode: 1
+    BindingMode: 5
     PositionDamping: {x: 0.2, y: 0.1, z: 0.3}
     AngularDampingMode: 0
-    RotationDamping: {x: 1, y: 1, z: 1}
+    RotationDamping: {x: 1.5, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 3.5, z: -30}
 --- !u!114 &1430400630
@@ -1858,7 +1858,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: 0.3, y: 0, z: 0}
   Damping: {x: 0.2, y: 0.2}
   Lookahead:
     Enabled: 0
@@ -2568,8 +2568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b34036ea60794ce42b363c3e2a5d82e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_mundolibre
-  turnSpeed: 10
-  bankRoll: 60
+  turnSpeed: 40
+  bankRoll: 55
   maxYawOffset: 30
   baseYawFollowSpeed: 0.9
   baseYaw: 0
@@ -2578,7 +2578,7 @@ MonoBehaviour:
   limiteInferiorY: 0.2
   limiteSuperiorY: 25
   bankPitch: 25
-  VelocidadAvance: 30
+  VelocidadAvance: 40
   Frenado: 0
   smoothTiltSpeed: 10
   PlayerInput: {x: 0, y: 0}
