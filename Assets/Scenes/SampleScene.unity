@@ -291,6 +291,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nave jugador con aceleador cerrado
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0cd72c7929bddbe4fab74e25fe53ede3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1798,7 +1802,7 @@ MonoBehaviour:
   follow: {fileID: 1430400629}
   rotationComposer: {fileID: 1430400630}
   player: {fileID: 2062103087}
-  peekMaxOffset: 2
+  peekMaxOffset: 3
   peekSmoothSpeed: 5
   screenPeekMaxOffset: 0.28
   screenPeekSmoothSpeed: 5
@@ -2549,6 +2553,11 @@ GameObject:
   - component: {fileID: 2062103089}
   - component: {fileID: 2062103088}
   - component: {fileID: 2062103087}
+  - component: {fileID: 2062103095}
+  - component: {fileID: 2062103094}
+  - component: {fileID: 2062103093}
+  - component: {fileID: 2062103092}
+  - component: {fileID: 2062103091}
   m_Layer: 0
   m_Name: Jugador
   m_TagString: Untagged
@@ -2649,6 +2658,121 @@ Transform:
   - {fileID: 1221321526}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2062103091
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062103086}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.9712584
+  m_Height: 10.350687
+  m_Direction: 2
+  m_Center: {x: -0.120000005, y: 0.49125838, z: 0.5066023}
+--- !u!136 &2062103092
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062103086}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.68999994
+  m_Height: 8.672136
+  m_Direction: 2
+  m_Center: {x: 1.53, y: 0.35000002, z: -0.39606845}
+--- !u!136 &2062103093
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062103086}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.69000006
+  m_Height: 8.463785
+  m_Direction: 2
+  m_Center: {x: -1.5, y: 0.3499999, z: -0.29189217}
+--- !u!136 &2062103094
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062103086}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.81417036
+  m_Height: 4.509234
+  m_Direction: 1
+  m_Center: {x: 3.1510723, y: 0.25538278, z: -4.1}
+--- !u!136 &2062103095
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062103086}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.804152
+  m_Height: 4.471041
+  m_Direction: 1
+  m_Center: {x: -3.141054, y: 0.27447963, z: -4.1}
 --- !u!1 &2090458008
 GameObject:
   m_ObjectHideFlags: 0

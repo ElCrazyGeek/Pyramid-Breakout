@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_mundolibre : MonoBehaviour
+
+[RequireComponent(typeof(CharacterController))]
+public class Player_mundolibre : MonoBehaviour 
 {
     [Header("Giro Horizontal (Izquierda o derecha)")]
     [SerializeField] public float turnSpeed = 15f;
@@ -21,11 +23,18 @@ public class Player_mundolibre : MonoBehaviour
     [SerializeField] public float VelocidadAvance = 20f;
     [SerializeField] public bool Frenado = false;
     [SerializeField] public float smoothTiltSpeed = 10f;
+    public CharacterController controller;
 
-   
+
     public Vector2 PlayerInput;
     private float currentYaw = 0f;
     public Vector3 CurrentForward { get; private set; } = Vector3.forward;
+
+
+    void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+    }
 
     void Start()
     {
@@ -64,21 +73,20 @@ public class Player_mundolibre : MonoBehaviour
     Vector3 forwardHorizontal = Quaternion.Euler(0f, currentYaw, 0f) * Vector3.forward;
     CurrentForward = forwardHorizontal;
 
-    transform.position += forwardHorizontal * velocidadActual * Time.deltaTime;
+        controller.Move(forwardHorizontal * velocidadActual * Time.deltaTime);
     }
 
     void MoverVertical()
     {
+        float deltaY = PlayerInput.y * verticalSpeed * Time.deltaTime;
         // 3. Subir y bajar en Y con límites fijos
-        float nuevoY = transform.position.y + (PlayerInput.y * verticalSpeed * Time.deltaTime);
-        nuevoY = Mathf.Clamp(nuevoY, limiteInferiorY, limiteSuperiorY);
+        float nuevoY = Mathf.Clamp(transform.position.y + deltaY, limiteInferiorY, limiteSuperiorY);
+        float movimientoReal = nuevoY - transform.position.y;
 
-        Vector3 posActual = transform.position;
-        posActual.y = nuevoY;
-        transform.position = posActual;
+        controller.Move(Vector3.up * movimientoReal);
     }
 
-    void AplicarInclinacionVisual()
+        void AplicarInclinacionVisual()
     { 
 
             // Rotación de rumbo (hacia dónde vuela realmente)
