@@ -2002,7 +2002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7281a9b6b0a67b74d915c0505e7b602b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Camaralibre
-  cineCam: {fileID: 0}
   follow: {fileID: 1430400629}
   rotationComposer: {fileID: 1430400630}
   player: {fileID: 2062103087}
@@ -2010,9 +2009,6 @@ MonoBehaviour:
   peekSmoothSpeed: 5
   screenPeekMaxOffset: 0.28
   screenPeekSmoothSpeed: 5
-  alturaOffset: 6
-  margenY: 3
-  seguimientoSuavidadY: 2
 --- !u!4 &1430400628
 Transform:
   m_ObjectHideFlags: 0
@@ -2041,7 +2037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
-    BindingMode: 3
+    BindingMode: 5
     PositionDamping: {x: 0.2, y: 0, z: 0.3}
     AngularDampingMode: 0
     RotationDamping: {x: 1.5, y: 1, z: 1}

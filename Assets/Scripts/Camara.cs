@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraStaticRail : MonoBehaviour
+public class Camera_Rieles: MonoBehaviour
 {
     [SerializeField] private Transform playerTarget;
     [SerializeField] private Vector3 offset = new Vector3(0f, 0.2f, -30f);
