@@ -96,4 +96,18 @@ public class Player_mundolibre : MonoBehaviour
             Quaternion targetRotation = headingRotation * localTilt;
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothTiltSpeed * Time.deltaTime);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Filtra por tag para no reaccionar a cualquier trigger del nivel (ej. checkpoints, zonas de cambio de modo)
+        if (other.CompareTag("Obstaculo"))
+        {
+            // Aquí después conectas: shake de cámara, flash rojo, sonido de impacto
+            Debug.Log("Golpeó: " + other.gameObject.name);
+        }
+
+        if (other.CompareTag("Suelo")) {
+            Debug.Log("Golpeo: " + other.gameObject.name);
+        }
+    }
 }

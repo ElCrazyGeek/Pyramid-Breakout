@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(CharacterController))]
 public class Player_rieles : MonoBehaviour
 {
     [Header("Movimiento del jugador")]
@@ -23,12 +25,25 @@ public class Player_rieles : MonoBehaviour
 
     public float VelocidadInclinacion = 15f;
 
+
     public Vector2 PlayerInput;
+    public CharacterController controller;
+    private Vector3 origenRiel;
 
     public void OnMovimiento(InputValue value)
     {
         PlayerInput = value.Get<Vector2>();
     }
+    void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+    }
+
+    void Start()
+    {
+        origenRiel = transform.position; // el riel "central" queda anclado a donde arranca la nave
+    }
+
 
 
     void Update()
@@ -42,14 +57,18 @@ public class Player_rieles : MonoBehaviour
 
     void mover()
     {
-        Vector3 newPosition = transform.localPosition +
-        (Vector3)PlayerInput * speed * Time.deltaTime;
+        // Calcula hacia dónde "querrías" moverte según el input
+        Vector3 desplazamiento = (Vector3)PlayerInput * speed * Time.deltaTime;
 
-        newPosition.x = Mathf.Clamp(newPosition.x, -LimitesMovimiento.x, LimitesMovimiento.x);
-        newPosition.y = Mathf.Clamp(newPosition.y, -LimitesMovimiento.y, LimitesMovimiento.y);
+        // Predice la posición resultante para poder clampearla contra los límites del riel
+        Vector3 posFutura = transform.position + desplazamiento;
 
-        transform.localPosition = newPosition;
+        float xClamped = Mathf.Clamp(posFutura.x, origenRiel.x - LimitesMovimiento.x, origenRiel.x + LimitesMovimiento.x);
+        float yClamped = Mathf.Clamp(posFutura.y, origenRiel.y - LimitesMovimiento.y, origenRiel.y + LimitesMovimiento.y);
 
+        // Solo mueve la diferencia real (ya clampeada), no el desplazamiento crudo
+        Vector3 movimientoReal = new Vector3(xClamped - transform.position.x, yClamped - transform.position.y, 0f);
+        controller.Move(movimientoReal);
     }
 
     void OnFreno(InputValue value)
@@ -59,37 +78,20 @@ public class Player_rieles : MonoBehaviour
     }
     void avance()
     {
-        float velocidadActual = VelocidadAvance;
-
-        if (Frenado)
-        {
-            velocidadActual = velocidadActual * 0.2f;
-        }
-        else
-        {
-            velocidadActual = VelocidadAvance;
-        }
-
+        float velocidadActual = Frenado ? VelocidadAvance * 0.2f : VelocidadAvance;
+        VelocidadActual = velocidadActual;
 
         float avanceZ = velocidadActual * Time.deltaTime;
-
-        Vector3 newPosition = transform.position + new Vector3(0, 0, avanceZ);
-        transform.position = newPosition;
-
-        transform.position = newPosition;
+        controller.Move(new Vector3(0f, 0f, avanceZ));
     }
-
 
 
     void InclinacionJugador()
     {
-        float targerPitch = -PlayerInput.y * InclinacionX;
-        float targerRoll = -PlayerInput.x * InclinacionZ;
+        float targetPitch = -PlayerInput.y * InclinacionX;
+        float targetRoll = -PlayerInput.x * InclinacionZ;
 
-
-        float offsetMod3D = 90f;
-
-        Quaternion targetRotation = Quaternion.Euler(targerPitch - 90f, offsetMod3D, targerRoll);
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, VelocidadInclinacion * Time.deltaTime);
+        Quaternion targetRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, VelocidadInclinacion * Time.deltaTime);
     }
 }

@@ -2,35 +2,46 @@ using UnityEngine;
 
 public class CameraStaticRail : MonoBehaviour
 {
-    [Header("Objetivo")]
     [SerializeField] private Transform playerTarget;
+    [SerializeField] private Vector3 offset = new Vector3(0f, 0.2f, -30f);
 
-    [Header("Offset y Posición Central")]
-    [SerializeField] private Vector3 offset = new Vector3(0f, 2f, -12f); // Altura y distancia detrás del centro del riel
+    [Header("Margen Camara")]
+    [SerializeField] private float margenX = 28f;    
+    [SerializeField] private float margenY = 23f;
+    [SerializeField] private float seguimientoSuavidad = 5f; // qué tan rápido corrige cuando SÍ se pasa del margen
 
-    [Header("Influencia de la Nave en la Cámara")]
-    [Range(0f, 0.3f)]
-    [SerializeField] private float influenciaX = 0.08f; // Qué tanto se asoma la cámara cuando la nave va a los lados
-    [Range(0f, 0.3f)]
-    [SerializeField] private float influenciaY = 0.05f; // Qué tanto acompaña cuando sube/baja
+    private float fixedX;
+    private float fixedY;
 
-    [Header("Suavizado")]
-    [SerializeField] private float smoothSpeed = 5f;
+    void Start()
+    {
+        fixedX = transform.position.x + offset.x;
+        fixedY = transform.position.y;
+    }
 
     void LateUpdate()
     {
         if (playerTarget == null) return;
 
-        // 1. La cámara se ancla al centro (offset.x, offset.y) y solo toma una fracción minúscula de la posición de la nave
-        float posX = offset.x + (playerTarget.position.x * influenciaX);
-        float posY = offset.y + (playerTarget.position.y * influenciaY);
+        // 1. Qué tan lejos está la nave del centro fijo de la cámara, en X e Y
+        float deltaX = playerTarget.position.x - fixedX;
+        float deltaY = playerTarget.position.y - fixedY;
 
-        // 2. Sigue el avance continuo en Z de forma exacta
-        float posZ = playerTarget.position.z + offset.z;
+        // 2. Si excede el margen, calcula cuánto se pasó (el "exceso")
+        float excesoX = Mathf.Max(0f, Mathf.Abs(deltaX) - margenX) * Mathf.Sign(deltaX);
+        float excesoY = Mathf.Max(0f, Mathf.Abs(deltaY) - margenY) * Mathf.Sign(deltaY);
 
-        Vector3 targetCameraPos = new Vector3(posX, posY, posZ);
+        float targetX = fixedX + excesoX;
+        float targetY = fixedY + excesoY;
 
-        // 3. Aplica el seguimiento suave sin rotar jamás la cámara
-        transform.position = Vector3.Lerp(transform.position, targetCameraPos, smoothSpeed * Time.deltaTime);
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Lerp(pos.x, targetX, seguimientoSuavidad * Time.deltaTime);
+        pos.y = Mathf.Lerp(pos.y, targetY, seguimientoSuavidad * Time.deltaTime);
+        pos.z = playerTarget.position.z + offset.z;
+        transform.position = pos;
+
+        // 4. Actualiza el "fijo" para que el margen se mida siempre desde la posición actual de la cámara
+        fixedX = pos.x;
+        fixedY = pos.y;
     }
 }
