@@ -450,8 +450,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.04981052, y: 0.004993513, z: 0.00024904174, w: 0.9987462}
-  m_LocalPosition: {x: 0, y: 20, z: -948}
+  m_LocalRotation: {x: -0.05382721, y: 0.004992471, z: 0.0002691243, w: 0.9985378}
+  m_LocalPosition: {x: 0, y: 7, z: -948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1939,6 +1939,7 @@ GameObject:
   - component: {fileID: 1430400626}
   - component: {fileID: 1430400629}
   - component: {fileID: 1430400630}
+  - component: {fileID: 1430400631}
   - component: {fileID: 1430400627}
   m_Layer: 0
   m_Name: CamaraMundoLibre
@@ -2017,8 +2018,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430400625}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.049810514, y: 0.0049935123, z: 0.00024904148, w: 0.9987462}
-  m_LocalPosition: {x: 0, y: 20, z: -948}
+  m_LocalRotation: {x: -0.05382721, y: 0.004992471, z: 0.0002691243, w: 0.9985378}
+  m_LocalPosition: {x: 0, y: 7, z: -948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2072,6 +2073,22 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!114 &1430400631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430400625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 024816e7a1bbfe846ab8a878eb812420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockCameraY
+  baseCameraY: 5
+  maxVerticalDeviation: 2
+  minPitchAngle: -10
+  maxPitchAngle: 10
 --- !u!1 &1481851153
 GameObject:
   m_ObjectHideFlags: 0
