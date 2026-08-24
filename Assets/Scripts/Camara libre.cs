@@ -41,14 +41,31 @@ public class Camaralibre : MonoBehaviour
         currentCamY = transform.position.y;
     }
 
-    void OnEnable()
+    void AjustarAlturaCamara(CinemachineBrain brain)
     {
-        CinemachineCore.CameraUpdatedEvent.AddListener(AjustarAlturaCamara);
-    }
+        if (player == null || cineCam == null) return;
+        if (brain.ActiveVirtualCamera as UnityEngine.Object != (UnityEngine.Object)cineCam) return;
 
-    void OnDisable()
-    {
-        CinemachineCore.CameraUpdatedEvent.RemoveListener(AjustarAlturaCamara);
+        // 1. Distancia vertical actual respecto a la altura de referencia
+        float deltaY = player.transform.position.y - fixedPlayerY;
+
+        // 2. Si la nave supera el margen (hacia arriba o abajo), calculamos cuánto se desbordó
+        float excesoY = 0f;
+        if (Mathf.Abs(deltaY) > margenY)
+        {
+            excesoY = deltaY - (Mathf.Sign(deltaY) * margenY);
+            // Desplaza suavemente la altura base del riel hacia el jugador
+            fixedPlayerY = Mathf.Lerp(fixedPlayerY, fixedPlayerY + excesoY, seguimientoSuavidadY * Time.deltaTime);
+        }
+
+        // 3. La altura de la cámara sigue la base fija + el offset de altura deseado
+        float targetCamY = fixedPlayerY + alturaOffset;
+        currentCamY = Mathf.Lerp(currentCamY, targetCamY, seguimientoSuavidadY * Time.deltaTime);
+
+        // 4. Aplicar la posición vertical
+        Vector3 pos = transform.position;
+        pos.y = currentCamY;
+        transform.position = pos;
     }
 
     void LateUpdate()
