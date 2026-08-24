@@ -450,8 +450,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.05233596, y: -6.7080563e-19, z: 9.0727105e-18, w: 0.9986295}
-  m_LocalPosition: {x: 0, y: 15, z: -948}
+  m_LocalRotation: {x: 0.06975647, y: -3.6131455e-22, z: 5.4724884e-23, w: 0.9975641}
+  m_LocalPosition: {x: 0, y: 16, z: -948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2050,8 +2050,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430400625}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.05233596, y: -0.0000000074403705, z: 3.8993334e-10, w: 0.9986295}
-  m_LocalPosition: {x: 0, y: 15, z: -948}
+  m_LocalRotation: {x: 0.06975647, y: 3.6648303e-15, z: -5.184837e-17, w: 0.9975641}
+  m_LocalPosition: {x: 0, y: 16, z: -948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2117,8 +2117,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024816e7a1bbfe846ab8a878eb812420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockCameraY
-  fixedCameraY: 15
-  fixedPitchAngle: 6
+  player: {fileID: 2062103090}
+  offsetAltura: 6
+  margenLibreY: 16
+  suavidadSeguimientoY: 1.5
+  fixedPitchAngle: 8
 --- !u!54 &1430400632
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2632,11 +2635,11 @@ MonoBehaviour:
   baseYawFollowSpeed: 0.9
   baseYaw: 0
   yawOffset: 0
-  verticalSpeed: 25
-  limiteInferiorY: -0.2
-  limiteSuperiorY: 30
+  verticalSpeed: 42
+  limiteInferiorY: -3
+  limiteSuperiorY: 35
   bankPitch: 25
-  VelocidadAvance: 40
+  VelocidadAvance: 60
   Frenado: 0
   smoothTiltSpeed: 10
   controller: {fileID: 2062103091}
