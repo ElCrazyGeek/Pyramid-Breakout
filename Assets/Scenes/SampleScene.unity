@@ -450,8 +450,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000006190835, y: 0.0049998127, z: -3.09534e-11, w: 0.99998754}
-  m_LocalPosition: {x: 0, y: 10, z: -948}
+  m_LocalRotation: {x: 0.05233596, y: -6.7080563e-19, z: 9.0727105e-18, w: 0.9986295}
+  m_LocalPosition: {x: 0, y: 15, z: -948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2037,8 +2037,11 @@ MonoBehaviour:
   player: {fileID: 2062103087}
   peekMaxOffset: 3
   peekSmoothSpeed: 5
-  screenPeekMaxOffset: 0.28
-  screenPeekSmoothSpeed: 5
+  screenPeekMaxOffset: 0.4
+  screenPeekSmoothSpeed: 4
+  limitarSeguimientoY: 0
+  margenVerticalY: 3.5
+  velocidadSuavizadoY: 2
 --- !u!4 &1430400628
 Transform:
   m_ObjectHideFlags: 0
@@ -2047,8 +2050,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430400625}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000000061908114, y: 0.004999812, z: -3.5377045e-11, w: 0.99998754}
-  m_LocalPosition: {x: 0, y: 10, z: -948}
+  m_LocalRotation: {x: 0.05233596, y: -0.0000000074403705, z: 3.8993334e-10, w: 0.9986295}
+  m_LocalPosition: {x: 0, y: 15, z: -948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2067,10 +2070,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
-    BindingMode: 5
-    PositionDamping: {x: 0, y: 0, z: 0}
+    BindingMode: 1
+    PositionDamping: {x: 0.2, y: 0, z: 0.2}
     AngularDampingMode: 0
-    RotationDamping: {x: 1, y: 1, z: 1}
+    RotationDamping: {x: 0, y: 0, z: 0}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -30}
 --- !u!114 &1430400630
@@ -2088,15 +2091,15 @@ MonoBehaviour:
   Composition:
     ScreenPosition: {x: 0, y: 0}
     DeadZone:
-      Enabled: 1
-      Size: {x: 0.1, y: 0.9}
+      Enabled: 0
+      Size: {x: 0.015, y: 0.95}
     HardLimits:
       Enabled: 0
-      Size: {x: 0.8, y: 0.9}
+      Size: {x: 0.8, y: 0.95}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 0
-  TargetOffset: {x: 0.3, y: 0, z: 0}
-  Damping: {x: 1.5, y: 1.5}
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Damping: {x: 0.1, y: 0.1}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -2114,10 +2117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024816e7a1bbfe846ab8a878eb812420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockCameraY
-  baseCameraY: 10
-  maxVerticalDeviation: 2
-  minPitchAngle: -90
-  maxPitchAngle: 90
+  fixedCameraY: 15
+  fixedPitchAngle: 6
 --- !u!54 &1430400632
 Rigidbody:
   m_ObjectHideFlags: 0

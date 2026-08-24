@@ -19,7 +19,7 @@ public class Camera_Rieles: MonoBehaviour
         fixedY = transform.position.y;
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (playerTarget == null) return;
 
