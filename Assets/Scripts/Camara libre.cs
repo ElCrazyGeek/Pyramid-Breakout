@@ -28,7 +28,7 @@ public class Camaralibre : MonoBehaviour
             baseScreenPosition = rotationComposer.Composition.ScreenPosition;
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (player == null) return;
 
