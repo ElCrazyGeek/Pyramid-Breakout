@@ -2433,11 +2433,11 @@ Transform:
   m_GameObject: {fileID: 1735506949}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 40}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: 10, z: -918}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2062103090}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1735506951
 MeshCollider:
@@ -2460,7 +2460,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1735506952
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2531,12 +2531,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mirilla
   player: {fileID: 2062103087}
-  naveVisual: {fileID: 2062103090}
-  distanciaFrontalZ: 45
-  rangoEncuadreX: 0.5
-  rangoEncuadreY: 0.25
-  suavizado: 50
-  suavizadoRotacion: 30
+  camaraPrincipal: {fileID: 330585545}
+  rangoEncuadreX: 0.4
+  rangoEncuadreY: 0.6
+  distanciaFrontalZ: 70
+  suavizado: 12
 --- !u!1 &1788221228
 GameObject:
   m_ObjectHideFlags: 0
@@ -2826,8 +2825,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_mundolibre
   turnSpeed: 40
-  bankRoll: 55
-  maxYawOffset: 30
+  bankRoll: 60
+  maxYawOffset: 75
   baseYawFollowSpeed: 0.9
   baseYaw: 0
   yawOffset: 0
@@ -2905,7 +2904,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1735506950}
   - {fileID: 1221321526}
   - {fileID: 2055377409}
   - {fileID: 758970731}
@@ -2976,6 +2974,7 @@ SceneRoots:
   - {fileID: 559162292}
   - {fileID: 1494462788}
   - {fileID: 396840278}
+  - {fileID: 1735506950}
   - {fileID: 2062103090}
   - {fileID: 627844730}
   - {fileID: 1430400628}

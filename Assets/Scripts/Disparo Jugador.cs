@@ -16,26 +16,27 @@ public class DisparoJugador : MonoBehaviour
     {
         if (value.isPressed && Time.time >= tiempoSiguienteDisparo)
         {
-            DispararHaciaMirilla();
+            Disparar();
             tiempoSiguienteDisparo = Time.time + delayEntreDisparos;
         }
     }
 
-    private void DispararHaciaMirilla()
+    private void Disparar()
     {
-        if (prefabProyectil == null || puntosDisparo.Length == 0 || mirillaTarget == null) return;
+        if (prefabProyectil == null || puntosDisparo.Length == 0) return;
 
+        Camera cam = Camera.main;
 
-        Vector3 destino = mirillaTarget.position;
+        Vector3 direccionDisparo = (mirillaTarget != null)
+            ? (mirillaTarget.position - transform.position).normalized
+            : (cam != null ? cam.transform.forward : transform.forward);
+
+        Quaternion rotacionFinal = Quaternion.LookRotation(direccionDisparo);
 
         foreach (Transform punto in puntosDisparo)
         {
 
-            Vector3 direccionHaciaMirilla = (destino - punto.position).normalized;
-
-            Quaternion rotacionDisparo = Quaternion.LookRotation(direccionHaciaMirilla);
-
-            Instantiate(prefabProyectil, punto.position, rotacionDisparo);
+            Instantiate(prefabProyectil, punto.position, rotacionFinal);
         }
     }
 }

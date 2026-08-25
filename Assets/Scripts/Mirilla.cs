@@ -4,50 +4,42 @@ public class Mirilla : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private Player_mundolibre player;
-    [SerializeField] private Transform naveVisual;
+    [SerializeField] private Camera camaraPrincipal;
 
-    [Header("Configuración en Pantalla")]
-    [SerializeField] private float distanciaFrontalZ = 45f; // Distancia 3D en Z frente a la cámara
-    [SerializeField] private float rangoEncuadreX = 0.35f;  // Cuánto viaja del centro (0.5) hacia el borde (0 a 1)
-    [SerializeField] private float rangoEncuadreY = 0.25f;
-    [SerializeField] private float suavizado = 15f;
-
-    [Header("Rotación")]
-    [SerializeField] private float suavizadoRotacion = 10f;
-
-    private Camera cam;
+    [Header("Alcance en Pantalla ")]
+    [SerializeField] private float rangoEncuadreX = 0.45f;
+    [SerializeField] private float rangoEncuadreY = 0.45f;
+    [SerializeField] private float distanciaFrontalZ = 40f;
+    [SerializeField] private float suavizado = 20f;
 
     void Start()
     {
-        cam = Camera.main;
+        if (camaraPrincipal == null)
+        {
+            camaraPrincipal = Camera.main;
+        }
     }
 
     void LateUpdate()
     {
-        if (player == null || cam == null) return;
+        if (player == null || camaraPrincipal == null) return;
 
- 
+     
         float inputX = player.PlayerInput.x;
         float inputY = player.PlayerInput.y;
 
 
-        float targetViewportX = 0.5f + (inputX * rangoEncuadreX);
-        float targetViewportY = 0.5f + (inputY * rangoEncuadreY);
+        float targetViewportX = Mathf.Clamp(0.5f + (inputX * rangoEncuadreX), 0.03f, 0.97f);
+        float targetViewportY = Mathf.Clamp(0.5f + (inputY * rangoEncuadreY), 0.03f, 0.97f);
 
 
-        Vector3 targetMundial = cam.ViewportToWorldPoint(new Vector3(targetViewportX, targetViewportY, distanciaFrontalZ));
-
+        Vector3 targetMundial = camaraPrincipal.ViewportToWorldPoint(
+            new Vector3(targetViewportX, targetViewportY, distanciaFrontalZ)
+        );
 
         transform.position = Vector3.Lerp(transform.position, targetMundial, suavizado * Time.deltaTime);
 
 
-        Quaternion rotacionCamara = cam.transform.rotation;
-        if (naveVisual != null)
-        {
-            float rollNave = naveVisual.localEulerAngles.z;
-            rotacionCamara *= Quaternion.Euler(0f, 0f, rollNave);
-        }
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotacionCamara, suavizadoRotacion * Time.deltaTime);
+        transform.rotation = Quaternion.LookRotation(transform.position - camaraPrincipal.transform.position);
     }
 }
