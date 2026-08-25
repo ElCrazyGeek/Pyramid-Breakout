@@ -4,35 +4,38 @@ using UnityEngine.InputSystem;
 public class DisparoJugador : MonoBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private GameObject JugadorProyectil;
-    [SerializeField] private Transform[] puntosDisparo;
+    [SerializeField] private GameObject prefabProyectil;
+    [SerializeField] private Transform[] puntosDisparo; // Cañón izquierdo / derecho
+    [SerializeField] private Transform mirillaTarget;   // Objeto de la mirilla
 
-    [Header("Control de Delay / Cooldown")]
-    [SerializeField] private float delayEntreDisparos = 0.3f; 
+    [Header("Control de Delay")]
+    [SerializeField] private float delayEntreDisparos = 0.25f;
     private float tiempoSiguienteDisparo = 0f;
 
-   
-    public void OnDisparo(InputValue value)
+    public void OnDisparo(UnityEngine.InputSystem.InputValue value)
     {
-     
-        if (value.isPressed)
+        if (value.isPressed && Time.time >= tiempoSiguienteDisparo)
         {
-
-            if (Time.time >= tiempoSiguienteDisparo)
-            {
-                Disparar();
-                tiempoSiguienteDisparo = Time.time + delayEntreDisparos; 
-            }
+            DispararHaciaMirilla();
+            tiempoSiguienteDisparo = Time.time + delayEntreDisparos;
         }
     }
 
-    private void Disparar()
+    private void DispararHaciaMirilla()
     {
-        if (JugadorProyectil == null || puntosDisparo.Length == 0) return;
+        if (prefabProyectil == null || puntosDisparo.Length == 0 || mirillaTarget == null) return;
+
+
+        Vector3 destino = mirillaTarget.position;
 
         foreach (Transform punto in puntosDisparo)
         {
-            Instantiate(JugadorProyectil, punto.position, punto.rotation);
+
+            Vector3 direccionHaciaMirilla = (destino - punto.position).normalized;
+
+            Quaternion rotacionDisparo = Quaternion.LookRotation(direccionHaciaMirilla);
+
+            Instantiate(prefabProyectil, punto.position, rotacionDisparo);
         }
     }
 }
