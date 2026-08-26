@@ -332,6 +332,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cambiarcamara
   camaraRiel: {fileID: 396840277}
   camaraLibre: {fileID: 1430400626}
+  MirillaRiel: {fileID: 1735506949}
+  MirillaLibre: {fileID: 1735506949}
+  modoLibre: 0
 --- !u!114 &116282522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2460,7 +2463,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1735506952
 MeshRenderer:
   m_ObjectHideFlags: 0
