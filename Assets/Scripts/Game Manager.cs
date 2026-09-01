@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Cambiarcamara cambiarCamara;
     [SerializeField] private Player_rieles Player_rieles;
     [SerializeField] private Player_mundolibre Player_Libre;
-    [SerializeField] private Player_Carreras Player_Carrera; 
+    [SerializeField] private Player_Carreras Player_Carrera;
+    [SerializeField] private DisparoJugador disparoJugador;
+
 
     [SerializeField] private ModoVuelo modoActual = ModoVuelo.Riel;
     public ModoVuelo ModoActual => modoActual;
@@ -38,6 +40,10 @@ public class GameManager : MonoBehaviour
         if (Player_Libre != null) Player_Libre.enabled = (modo == ModoVuelo.Libre);
         if (Player_Carrera != null) Player_Carrera.enabled = (modo == ModoVuelo.Carrera);
 
+        if (disparoJugador != null)
+        {
+            disparoJugador.enabled = (modo != ModoVuelo.Carrera);
+        }
         // 2. Notificar al gestor de cámaras
         if (cambiarCamara != null)
         {

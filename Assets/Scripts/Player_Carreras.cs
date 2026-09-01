@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,6 +25,12 @@ public class Player_Carreras : MonoBehaviour
 
     [Header("Visual")]
     [SerializeField] private Transform modeloVisual;
+
+    [Header("Efecto de Velocidad (Cámara)")]
+    [SerializeField] private CinemachineCamera camaraCarreraCine;
+    [SerializeField] private float fovNormal = 65f;
+    [SerializeField] private float fovBoost = 85f;
+    [SerializeField] private float suavizadoFov = 5f;
 
     private Vector2 inputMovimiento;
     private float velocidadActual = 0f;
@@ -58,6 +65,12 @@ public class Player_Carreras : MonoBehaviour
         GestionarVelocidad();
         MoverYAlinearPista();
         AplicarInclinacionVisual();
+        
+        if (camaraCarreraCine != null)
+        {
+            float targetFOV = estaEnBoost ? fovBoost : fovNormal;
+            camaraCarreraCine.Lens.FieldOfView = Mathf.Lerp(camaraCarreraCine.Lens.FieldOfView, targetFOV, suavizadoFov * Time.deltaTime);
+        }
     }
 
     private void GestionarVelocidad()
