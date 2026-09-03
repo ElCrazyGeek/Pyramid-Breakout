@@ -3,7 +3,52 @@ guid: 2aec9f1e5a1aa6144940ba714c5f6578
 ModelImporter:
   serializedVersion: 24501
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Goma
+    second: {fileID: 2100000, guid: e6800f396a382e44eb26a1f7a431cd29, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Goma.001
+    second: {fileID: 2100000, guid: 0beeb202a6568804aafa96c72bb368e2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 1afbd1127870cd443a56cc10ed2e5cd7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 4a78c1e2048d8944c8b911571a58b90a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: fba67ba9d8165c64c84fd89a85c07255, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.004
+    second: {fileID: 2100000, guid: 98ce92c63ec5192429b76cd3d0e1900c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.005
+    second: {fileID: 2100000, guid: 399d18d0b662eb0459cf0102679cf551, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vidrio
+    second: {fileID: 2100000, guid: 6f9c3763418436b448ef7ceb67726d3e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vidrio.001
+    second: {fileID: 2100000, guid: b4c4cf2fa43fd574e9d1e0415a006d03, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
