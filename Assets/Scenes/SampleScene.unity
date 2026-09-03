@@ -353,7 +353,7 @@ MonoBehaviour:
   Player_Libre: {fileID: 2062103087}
   Player_Carrera: {fileID: 2062103093}
   disparoJugador: {fileID: 2062103092}
-  modoActual: 2
+  modoActual: 0
 --- !u!4 &116282523
 Transform:
   m_ObjectHideFlags: 0
