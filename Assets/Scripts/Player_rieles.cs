@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(CharacterController))]
 public class Player_rieles : MonoBehaviour
@@ -25,11 +26,25 @@ public class Player_rieles : MonoBehaviour
 
     public float VelocidadInclinacion = 15f;
 
+    [Header ("Controles de jugador")]
+    public float VelocidadMaxima = 50;
+    public float VelocidadMinima = 5;
+    public float Aceleracion = 10;
+    public float Desaceleracion = 20;
 
+    [Header("Control del freno (milisegundos)")]
+    [FormerlySerializedAs("TiempoFrenadoMaximo")]
+    [Min(0f)] public float TiempoFrenadoMaximoMs = 4000f;
+    [FormerlySerializedAs("TiempoCastigoFrenadp")]
+    [Min(0f)] public float TiempoCastigoFrenoMs = 8000f;
     public Vector2 PlayerInput;
     public CharacterController controller;
     private Vector3 origenRiel;
 
+    private bool Frenando = false;
+    private bool FrenoBloqueado = false;
+    private float InicioFrenado;
+    private float FinCastigoFreno;
     public void OnMovimiento(InputValue value)
     {
         PlayerInput = value.Get<Vector2>();
@@ -42,9 +57,8 @@ public class Player_rieles : MonoBehaviour
     void Start()
     {
         origenRiel = transform.position; // el riel "central" queda anclado a donde arranca la nave
+        VelocidadActual = Mathf.Clamp(VelocidadAvance, VelocidadMinima, VelocidadMaxima);
     }
-
-
 
     void Update()
     {
@@ -53,7 +67,6 @@ public class Player_rieles : MonoBehaviour
         InclinacionJugador();
 
     }
-
 
     void mover()
     {
@@ -78,13 +91,55 @@ public class Player_rieles : MonoBehaviour
     }
     void avance()
     {
-        float velocidadActual = Frenado ? VelocidadAvance * 0.2f : VelocidadAvance;
-        VelocidadActual = velocidadActual;
+        bool frenoActivo = ActualizarEstadoFreno();
+        float velocidadObjetivo = frenoActivo ? VelocidadMinima : VelocidadMaxima;
 
-        float avanceZ = velocidadActual * Time.deltaTime;
+        VelocidadActual = RampaDeAceleracionYDesaceleracion(velocidadObjetivo);
+
+        float avanceZ = VelocidadActual * Time.deltaTime;
         controller.Move(new Vector3(0f, 0f, avanceZ));
     }
 
+    bool ActualizarEstadoFreno()
+    {
+        float ahora = Time.realtimeSinceStartup;
+        float duracionMaxima = TiempoFrenadoMaximoMs / 1000f;
+        float duracionCastigo = TiempoCastigoFrenoMs / 1000f;
+
+        if (FrenoBloqueado)
+        {
+            // Aunque termine el castigo, el jugador debe soltar el botón
+            // antes de poder iniciar otro frenado.
+            if (ahora >= FinCastigoFreno && !Frenado)
+            {
+                FrenoBloqueado = false;
+            }
+
+            return false;
+        }
+
+        if (!Frenado)
+        {
+            Frenando = false;
+            return false;
+        }
+
+        if (!Frenando)
+        {
+            Frenando = true;
+            InicioFrenado = ahora;
+        }
+
+        if (ahora - InicioFrenado < duracionMaxima)
+        {
+            return true;
+        }
+
+        Frenando = false;
+        FrenoBloqueado = true;
+        FinCastigoFreno = ahora + duracionCastigo;
+        return false;
+    }
 
     void InclinacionJugador()
     {
@@ -93,5 +148,21 @@ public class Player_rieles : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, VelocidadInclinacion * Time.deltaTime);
+    }
+
+    float RampaDeAceleracionYDesaceleracion(float velocidadObjetivo)
+    {
+        velocidadObjetivo = Mathf.Clamp(velocidadObjetivo, VelocidadMinima, VelocidadMaxima);
+
+        // Al aumentar la velocidad usa Aceleracion; al reducirla usa Desaceleracion.
+        float velocidadDeCambio = velocidadObjetivo > VelocidadActual
+            ? Mathf.Max(0f, Aceleracion)
+            : Mathf.Max(0f, Desaceleracion);
+
+        return Mathf.MoveTowards(
+            VelocidadActual,
+            velocidadObjetivo,
+            velocidadDeCambio * Time.deltaTime
+        );
     }
 }
