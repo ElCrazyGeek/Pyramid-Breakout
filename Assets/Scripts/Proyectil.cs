@@ -10,6 +10,7 @@ public class Proyectil : MonoBehaviour
     public string tagOrigen = "Player"; // por defecto viene del jugador
 
     Rigidbody rb;
+    private bool impactoProcesado;
 
     void Start()
     {
@@ -31,39 +32,35 @@ public class Proyectil : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ProcesarImpacto(other.gameObject, other);
+        ProcesarImpacto(other);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        ProcesarImpacto(collision.gameObject, collision.collider);
+        ProcesarImpacto(collision.collider);
     }
 
-    private void ProcesarImpacto(GameObject objetivo, Collider col)
+    private void ProcesarImpacto(Collider col)
     {
-        // Ignorar colisiones con quien disparó
-        if (col.CompareTag(tagOrigen)) return;
+        if (impactoProcesado) return;
 
-        // Impacto en enemigo
-        if (col.CompareTag("Enemy") && tagOrigen != "Enemy")
+        // Incluye los colliders hijos de la nave y evita sus propias balas.
+        SaludNave salud = col.GetComponentInParent<SaludNave>();
+        if (salud != null)
         {
-            // Llamar al componente de vida si existe
-            // var vida = col.GetComponent<EnemyHealth>(); if (vida!=null) vida.RecibirDanio(danio);
+            if (tagOrigen != "Enemy") return;
+
+            impactoProcesado = true;
+            salud.RecibirDanio(danio);
             Destroy(gameObject);
             return;
         }
 
-        // Impacto en jugador
-        if (col.CompareTag("Player") && tagOrigen != "Player")
-        {
-            Debug.Log("Proyectil: golpeó al jugador");
-            // Aplicar daño al jugador si existe componente de salud
-            // var salud = col.GetComponent<PlayerHealth>(); if (salud!=null) salud.RecibirDanio(danio);
-            Destroy(gameObject);
-            return;
-        }
+        // Comparar cadenas también funciona si aún no se registró el tag Enemy.
+        if (col.tag == tagOrigen) return;
 
         // Otros impactos (paredes, suelo...): destruir la bala
+        impactoProcesado = true;
         Destroy(gameObject);
     }
 }
