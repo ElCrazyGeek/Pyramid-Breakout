@@ -41,13 +41,14 @@ public class Player_rieles : MonoBehaviour
     public CharacterController controller;
     private Vector3 origenRiel;
 
+    private bool inicializado;
     private bool Frenando = false;
     private bool FrenoBloqueado = false;
     private float InicioFrenado;
     private float FinCastigoFreno;
     public void OnMovimiento(InputValue value)
     {
-        PlayerInput = value.Get<Vector2>();
+        PlayerInput = enabled ? value.Get<Vector2>() : Vector2.zero;
     }
     void Awake()
     {
@@ -56,8 +57,25 @@ public class Player_rieles : MonoBehaviour
 
     void Start()
     {
-        origenRiel = transform.position; // el riel "central" queda anclado a donde arranca la nave
+        if (!inicializado) ResetForLevel(transform.position);
+    }
+
+    public void ResetForLevel(Vector3 origen)
+    {
+        origenRiel = origen;
         VelocidadActual = Mathf.Clamp(VelocidadAvance, VelocidadMinima, VelocidadMaxima);
+        PlayerInput = Vector2.zero;
+        Frenado = Frenando = FrenoBloqueado = false;
+        InicioFrenado = FinCastigoFreno = 0;
+        inicializado = true;
+    }
+
+    void OnDisable() { PlayerInput = Vector2.zero; Frenado = false; }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        var obstacle = hit.collider.GetComponentInParent<Pyramid.Levels.ContactDamage>();
+        if (obstacle) obstacle.Hit(gameObject);
     }
 
     void Update()
@@ -86,7 +104,7 @@ public class Player_rieles : MonoBehaviour
 
     void OnFreno(InputValue value)
     {
-        Frenado = value.isPressed;
+        Frenado = enabled && value.isPressed;
 
     }
     void avance()
@@ -102,7 +120,7 @@ public class Player_rieles : MonoBehaviour
 
     bool ActualizarEstadoFreno()
     {
-        float ahora = Time.realtimeSinceStartup;
+        float ahora = Time.time;
         float duracionMaxima = TiempoFrenadoMaximoMs / 1000f;
         float duracionCastigo = TiempoCastigoFrenoMs / 1000f;
 

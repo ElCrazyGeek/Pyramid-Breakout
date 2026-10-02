@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Pyramid.Levels;
 
 public class Torreta : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class Torreta : MonoBehaviour
     public float cadenciaDisparo = 1f; // disparos por segundo
     public float alcance = 30f;
     public LayerMask mascaraObjetivo = ~0; // capas a considerar en el raycast
+    [Min(0)] public float danio = 1;
+    [HideInInspector] public Camera camaraReferencia;
+    private bool inicializada;
     public GameObject prefabProyectil; // opcional: prefab de proyectil físico
 
     public enum TipoTorreta { Estacionaria, Seguidora }
@@ -55,6 +59,16 @@ public class Torreta : MonoBehaviour
 
     void Start()
     {
+        if (!inicializada) ResetForLevel();
+    }
+
+    public void ResetForLevel()
+    {
+        StopAllCoroutines();
+        tieneAggro = false;
+        aggroTimer = temporizadorDisparo = 0;
+        retirando = false;
+        inicializada = true;
         if (objetivo == null)
         {
             var t = GameObject.FindGameObjectWithTag("Player");
@@ -65,7 +79,7 @@ public class Torreta : MonoBehaviour
     }
     void Update()
     {
-        if (objetivo == null) return;
+        if (objetivo == null || Time.timeScale <= 0) return;
 
         // --- Comportamiento para torreta estacionaria ---
         if (tipo == TipoTorreta.Estacionaria)
@@ -75,7 +89,7 @@ public class Torreta : MonoBehaviour
 
             // Detección simple por alcance: si el jugador está dentro de alcance, rotar y disparar
             float distancia = Vector3.Distance(transform.position, objetivo.position);
-            if (distancia <= alcance)
+            if (distancia <= alcance && cadenciaDisparo > 0)
             {
                 RotarHaciaObjetivo();
 
@@ -111,7 +125,7 @@ public class Torreta : MonoBehaviour
         // Movimiento seguidora: si tiene aggro, moverse suavemente hacia la posición delante de la cámara (o jugador)
         if (tieneAggro)
         {
-            Transform fuente = Camera.main != null ? Camera.main.transform : objetivo;
+            Transform fuente = camaraReferencia ? camaraReferencia.transform : (Camera.main ? Camera.main.transform : objetivo);
             if (fuente != null)
                 desiredPosition = fuente.position + fuente.forward * followDistance;
             else
@@ -122,7 +136,7 @@ public class Torreta : MonoBehaviour
             // Rotar y disparar
             RotarHaciaObjetivo();
             float distanciaSeg = Vector3.Distance(transform.position, objetivo.position);
-            if (distanciaSeg <= alcance)
+            if (distanciaSeg <= alcance && cadenciaDisparo > 0)
             {
                 temporizadorDisparo -= Time.deltaTime;
                 if (temporizadorDisparo <= 0f)
@@ -139,7 +153,7 @@ public class Torreta : MonoBehaviour
         }
 
         // Vida y retirada sólo aplican a torretas seguidoras
-        if (!retirando)
+        if (!retirando && tiempoVida > 0)
         {
             vidaTimer -= Time.deltaTime;
             if (vidaTimer <= 0f)
@@ -171,7 +185,8 @@ public class Torreta : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject);
+        if (TryGetComponent<LevelEntity>(out var entidad)) entidad.Release();
+        else Destroy(gameObject);
     }
 
     void RotarHaciaObjetivo()
@@ -202,17 +217,21 @@ public class Torreta : MonoBehaviour
         if (impacto)
         {
             Debug.Log($"Torreta: impacto en {golpe.collider.name} (tag={golpe.collider.tag})");
-            // Aquí puedes aplicar daño: golpe.collider.GetComponent<...>()?.RecibirDanio(...);
+            // Un disparo físico aplica daño al colisionar, evitando daño doble.
+            if (prefabProyectil == null && !golpe.collider.CompareTag("Enemy"))
+                golpe.collider.GetComponentInParent<IDamageable>()?.TakeDamage(danio);
         }
 
         if (prefabProyectil != null)
         {
             Quaternion rot = Quaternion.LookRotation(direccion);
             var instancia = Instantiate(prefabProyectil, origen, rot);
+            if (LevelSession.Active) LevelSession.Active.Objects.Track(instancia);
             // Si el proyectil tiene el script Proyectil, informarle de su origen para evitar "friendly fire"
             var proj = instancia.GetComponent<Proyectil>();
             if (proj != null)
             {
+                proj.danio = danio;
                 proj.tagOrigen = "Enemy"; // marcar como proyectil enemigo
             }
         }

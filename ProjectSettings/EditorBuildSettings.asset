@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Levels/Examples/Generated/GameRoot.unity
+    guid: fd79db11e654b4bc2b8ee9d2db9d9b55
+  - enabled: 1
+    path: Assets/Levels/Examples/Generated/Exterior.unity
+    guid: 408782d737ab841fbbe7fba0dc2f4391
+  - enabled: 1
+    path: Assets/Levels/Examples/Generated/Interior.unity
+    guid: d836fade045674d73819f21fc553d85b
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 6abb475c5b6f468409c4d2315b8a9e6c, type: 3}

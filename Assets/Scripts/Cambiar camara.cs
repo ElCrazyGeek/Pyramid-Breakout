@@ -54,6 +54,13 @@ public class Cambiarcamara : MonoBehaviour
         if (MirillaLibre != null) MirillaLibre.SetActive(false);
     }
 
+    public void ReiniciarSeguimiento()
+    {
+        if (camaraRiel) camaraRiel.PreviousStateIsValid = false;
+        if (camaraLibre) camaraLibre.PreviousStateIsValid = false;
+        if (camaraCarrera) camaraCarrera.PreviousStateIsValid = false;
+    }
+
     private void SetPrioridades(int camLibre, int camRiel, int camCarrera)
     {
         if (camaraLibre != null) camaraLibre.Priority = camLibre;

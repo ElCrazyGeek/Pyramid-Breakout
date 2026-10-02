@@ -1,0 +1,85 @@
+version: 1
+id: entrada_piramide
+catalogo: Assets/Levels/Examples/Generated/Catalog.asset
+longitud_m: 1200
+
+inicial:
+  fondo: fondo.exterior
+  ambientacion: ambiente.exterior
+  musica: musica.exterior
+  sonido_ambiental: sonido.ambiente
+
+tramos:
+  - id: exterior
+    recurso: escenario.exterior
+    inicio_s: 0
+    fin_s: 300
+    precargar_en: 0
+    descargar_en: 400
+  - id: interior
+    recurso: escenario.interior
+    inicio_s: 300
+    fin_s: 600
+    precargar_en: 120
+    descargar_en: 650
+
+eventos:
+  - id: torreta_izquierda
+    en: 100
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: exterior
+    posicion: { s: 100, x: -12, y: 0 }
+    parametros: { vida: 20, cadencia: 1, dano: 5 }
+
+  - id: muro_derecho
+    en: 180
+    accion: crear
+    recurso: obstaculo.muro
+    tramo: exterior
+    posicion: { s: 170, x: 10, y: 0 }
+    parametros: { vida: 10, dano: 10, duracion_s: 20 }
+
+  - id: perseguidora
+    en: 170
+    accion: crear
+    recurso: enemigo.torreta
+    posicion: { s: 240, x: 8, y: 4 }
+    parametros: { comportamiento: seguidora, duracion_s: 10 }
+
+  - id: ambiente_interior
+    en: 300
+    accion: ambientacion
+    recurso: ambiente.interior
+    transicion_s: 3
+
+  - id: fondo_interior
+    en: 300
+    accion: fondo
+    recurso: fondo.interior
+    transicion_s: 2
+
+  - id: musica_interior
+    en: 300
+    accion: musica
+    recurso: musica.interior
+    transicion_s: 2
+
+  - id: torreta_final
+    en: 340
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 450, x: 0, y: 8 }
+    parametros: { cadencia: 2, vida: 30 }
+
+  - id: enemigo_futuro
+    habilitado: false
+    en: 500
+    accion: crear
+    recurso: enemigo.guardian
+    posicion: { s: 550, x: 0, y: 0 }
+
+  - id: salida
+    en: 600
+    accion: finalizar

@@ -17,18 +17,26 @@ public class CamaraRiel : MonoBehaviour
     [Header("Suavizado")]
     [SerializeField] private float smoothSpeed = 5f;
 
+    private Vector3 origenRiel;
+
+    public void ResetForLevel(Vector3 origen)
+    {
+        origenRiel = origen;
+        if (playerTarget) transform.position = PosicionObjetivo();
+    }
+
+    private Vector3 PosicionObjetivo()
+    {
+        Vector3 local = playerTarget.position - origenRiel;
+        return new Vector3(origenRiel.x + offset.x + local.x * influenciaX,
+            origenRiel.y + offset.y + local.y * influenciaY, playerTarget.position.z + offset.z);
+    }
+
     void LateUpdate()
     {
         if (playerTarget == null) return;
 
-        // 1. La cámara se ancla al centro (offset.x, offset.y) y solo toma una fracción minúscula de la posición de la nave
-        float posX = offset.x + (playerTarget.position.x * influenciaX);
-        float posY = offset.y + (playerTarget.position.y * influenciaY);
-
-        // 2. Sigue el avance continuo en Z de forma exacta
-        float posZ = playerTarget.position.z + offset.z;
-
-        Vector3 targetCameraPos = new Vector3(posX, posY, posZ);
+        Vector3 targetCameraPos = PosicionObjetivo();
 
         // 3. Aplica el seguimiento suave sin rotar jamás la cámara
         transform.position = Vector3.Lerp(transform.position, targetCameraPos, smoothSpeed * Time.deltaTime);

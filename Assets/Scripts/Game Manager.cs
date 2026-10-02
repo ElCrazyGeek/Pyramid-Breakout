@@ -15,11 +15,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private ModoVuelo modoActual = ModoVuelo.Riel;
     public ModoVuelo ModoActual => modoActual;
+    private bool controlesHabilitados = true;
 
     void Awake()
     {
         Instance = this;
     }
+
+    void OnDestroy() { if (Instance == this) Instance = null; }
 
     void Start()
     {
@@ -33,16 +36,25 @@ public class GameManager : MonoBehaviour
         AplicarModo(nuevoModo);
     }
 
+    public void SetLevelControlsEnabled(bool habilitados)
+    {
+        controlesHabilitados = habilitados;
+        AplicarModo(modoActual);
+    }
+
+    public void ResetCameras() { if (cambiarCamara) cambiarCamara.ReiniciarSeguimiento(); }
+
     private void AplicarModo(ModoVuelo modo)
     {
         // 1. Desactivar todos los controladores de vuelo
-        if (Player_rieles != null) Player_rieles.enabled = (modo == ModoVuelo.Riel);
-        if (Player_Libre != null) Player_Libre.enabled = (modo == ModoVuelo.Libre);
-        if (Player_Carrera != null) Player_Carrera.enabled = (modo == ModoVuelo.Carrera);
+        if (Player_rieles != null) Player_rieles.enabled = controlesHabilitados && (modo == ModoVuelo.Riel);
+        if (Player_Libre != null) Player_Libre.enabled = controlesHabilitados && (modo == ModoVuelo.Libre);
+        if (Player_Carrera != null) Player_Carrera.enabled = controlesHabilitados && (modo == ModoVuelo.Carrera);
 
         if (disparoJugador != null)
         {
-            disparoJugador.enabled = (modo != ModoVuelo.Carrera);
+            disparoJugador.enabled = controlesHabilitados && (modo != ModoVuelo.Carrera);
+            disparoJugador.puedeDisparar = controlesHabilitados && modo != ModoVuelo.Carrera;
         }
         // 2. Notificar al gestor de cámaras
         if (cambiarCamara != null)

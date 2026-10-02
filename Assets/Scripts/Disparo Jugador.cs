@@ -1,4 +1,5 @@
 using UnityEngine;
+using Pyramid.Levels;
 using UnityEngine.InputSystem;
 
 public class DisparoJugador : MonoBehaviour
@@ -18,7 +19,7 @@ public class DisparoJugador : MonoBehaviour
     public void OnDisparo(InputValue value)
     {
         // Bloquea el disparo si está deshabilitado o si el GameManager está en modo Carrera
-        if (!puedeDisparar) return;
+        if (!enabled || !puedeDisparar || Time.timeScale <= 0) return;
         if (GameManager.Instance != null && GameManager.Instance.ModoActual == ModoVuelo.Carrera) return;
 
         if (value.isPressed && Time.time >= tiempoSiguienteDisparo)
@@ -27,6 +28,8 @@ public class DisparoJugador : MonoBehaviour
             tiempoSiguienteDisparo = Time.time + delayEntreDisparos;
         }
     }
+
+    public void ResetForLevel() { tiempoSiguienteDisparo = 0; }
 
     private void Disparar()
     {
@@ -43,7 +46,8 @@ public class DisparoJugador : MonoBehaviour
         foreach (Transform punto in puntosDisparo)
         {
 
-            Instantiate(prefabProyectil, punto.position, rotacionFinal);
+            var proyectil = Instantiate(prefabProyectil, punto.position, rotacionFinal);
+            if (LevelSession.Active) LevelSession.Active.Objects.Track(proyectil);
         }
     }
 }
