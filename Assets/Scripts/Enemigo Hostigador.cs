@@ -3,8 +3,8 @@ using UnityEngine;
 
 /// <summary>
 /// Enemigo Seguidor:
-/// IA móvil que patrulla/espera en una posición base. Al detectar al jugador (Aggro),
-/// se desplaza dinámicamente frente a él o frente a la cámara, le dispara mientras esté a rango,
+/// 
+/// se desplaza dinámicamente frente al jugador o frente a la cámara, le dispara mientras esté en modo de ataque,
 /// y tras agotarse su tiempo de vida realiza una maniobra de retirada lateral antes de destruirse.
 /// </summary>
 public class EnemigoSeguidor : MonoBehaviour
@@ -20,36 +20,9 @@ public class EnemigoSeguidor : MonoBehaviour
     [Tooltip("Distancia que busca mantener delante del jugador o de la cámara")]
     public float distanciaSeguimiento = 6f;
 
-    /*
-    [Tooltip("Qué tan rápido responde y se traslada hacia la posición deseada (mayor = más ágil)")]
-    public float velocidadRespuesta = 5f;
-    ¨*/
-    /*
-    [Header("Sistema de Aggro / Detección")]
-    [Tooltip("Radio para detectar al jugador y comenzar la persecución")]
-    public float radioDeteccion = 25f;
-    */
-    /*
-    [Tooltip("Tiempo de gracia con aggro activo si el jugador sale del radio de detección")]
-    public float tiempoPerderAggro = 3f;
-    */
 
     [Header("Rotación y Apuntado")]
     public float velocidadRotacion = 6f;
-
-    //public bool rotarSoloY = false;
-    /*
-    [Tooltip("Ajuste de rotación (Euler) para corregir alineación del modelo")]
-    public Vector3 rotacionOffsetEuler = Vector3.zero;
-
-    [Tooltip("Invertir dirección de apuntado si el modelo viene volteado 180°")]
-    public bool invertirDireccion = false;
-    */
-    /*
-    [Header("Combate")]
-    [Tooltip("Distancia máxima para abrir fuego mientras persigue")]
-    public float alcanceDisparo = 20f;
-    */
 
     [Tooltip("Disparos por segundo")]
     public float cadenciaDisparo = 1.5f;
@@ -94,41 +67,17 @@ public class EnemigoSeguidor : MonoBehaviour
     {
         if (estaRetirandose || objetivo == null) return;
 
-        //ActualizarAggro();
         MovimientoFijo();
         GestionarCombate();
         GestionarTiempoVida();
     }
 
-    /// <summary>
-    /// Evalúa la distancia con el jugador para adquirir o perder el estado de alerta (aggro).
-    /// </summary>
 
-    /*
-     * void ActualizarAggro()
-    {
-        
-        float distanciaJugador = Vector3.Distance(transform.position, objetivo.position);
-
-        if (distanciaJugador <= radioDeteccion)
-        {
-            tieneAggro = true;
-            timerAggro = tiempoPerderAggro;
-        }
-        else if (tieneAggro)
-        {
-            timerAggro -= Time.deltaTime;
-            if (timerAggro <= 0f)
-            {
-                tieneAggro = false;
-            }
-        }
-    }
-    */
 
     /// <summary>
     /// Si tiene aggro, se posiciona delante de la cámara o del jugador; si lo pierde, regresa suavemente a su origen.
     /// </summary>
+    
     void MovimientoFijo()
     {
 
@@ -147,7 +96,6 @@ public class EnemigoSeguidor : MonoBehaviour
     {
         RotarHaciaObjetivo();
 
-        //float distancia = Vector3.Distance(transform.position, objetivo.position);
         if (tieneAggro )
         {
             temporizadorDisparo -= Time.deltaTime;
@@ -174,12 +122,7 @@ public class EnemigoSeguidor : MonoBehaviour
         string mensaje= boca ? "Disparando desde boca" : "Disparando desde posición del enemigo";
         Debug.Log(mensaje);
         Vector3 direccion = ObtenerDireccionDisparo();
-        /*
-        float alcanceDisparo = 250f; // Distancia máxima del disparo
-        RaycastHit golpe;
-        bool impacto = Physics.Raycast(origen, direccion, out golpe, alcanceDisparo, mascaraObjetivo);
-        Debug.DrawRay(origen, direccion * alcanceDisparo, impacto ? Color.green : Color.red, 0.4f);
-        */
+      
         if (prefabProyectil != null)
         {
             Quaternion rot = Quaternion.LookRotation(direccion);
@@ -201,20 +144,9 @@ public class EnemigoSeguidor : MonoBehaviour
     public Vector3 ObtenerDireccionDisparo()
     {
         Quaternion rotacionVisual = transform.rotation;
-        /*
-        if (rotacionOffsetEuler != Vector3.zero)
-        {
-            rotacionVisual *= Quaternion.Inverse(Quaternion.Euler(rotacionOffsetEuler));
-        }
-        */
+      
         Vector3 frente = rotacionVisual * Vector3.forward;
 
-        /*
-        if (invertirDireccion)
-        {
-            frente = -frente;
-        }
-        */
         return frente.normalized;
     }
 
@@ -233,7 +165,7 @@ public class EnemigoSeguidor : MonoBehaviour
     IEnumerator RetirarCoroutine()
     {
         estaRetirandose = true;
-
+        tieneAggro = false;
         // Decidir si retirarse a la izquierda o derecha alejándose del centro del objetivo
         Vector3 dir = transform.right;
         if (objetivo != null)

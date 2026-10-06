@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 5661489860761830812}
   - component: {fileID: 2597809613167679715}
   m_Layer: 0
-  m_Name: Torreta_Base
+  m_Name: Artillero_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
