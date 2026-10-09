@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -7,9 +6,15 @@ using TMPro;
 [System.Serializable]
 public struct LineaVN
 {
+    [Header("Personaje")]
     public string nombreHablante;
-    public Sprite retrato;              // PNG del personaje
-    public bool personajeALaDerecha;     // False = izquierda, True = derecha
+    public Sprite retrato;              
+    public bool personajeALaDerecha;     
+
+    [Header("Escenario / Render")]
+    public Sprite fondoEscena;
+
+    [Header("Texto")]
     [TextArea(3, 5)]
     public string texto;
 }
@@ -18,27 +23,28 @@ public class Cinematicas_nojugables : MonoBehaviour
 {
     public static Cinematicas_nojugables Instance { get; private set; }
 
-    [Header("Panel Principal")]
+    [Header("Paneles Principales")]
     [SerializeField] private GameObject panelVisualNovel;
-    [SerializeField] private Image imagenFondoOscuro; // Un panel negro con transparencia
+    [SerializeField] private Image imagenFondo;           
 
-    [Header("Imágenes de Personajes (PNGs)")]
+    [Header("Retratos (PNGs)")]
     [SerializeField] private Image retratoIzquierda;
     [SerializeField] private Image retratoDerecha;
 
-    [Header("Caja de Diálogo")]
+    [Header("Caja de Texto")]
     [SerializeField] private TextMeshProUGUI textoNombre;
     [SerializeField] private TextMeshProUGUI textoDialogo;
-    [SerializeField] private GameObject indicadorPresioneTecla; // Icono parpadeante de "flecha"
 
     private LineaVN[] lineasActuales;
     private int indiceLinea = 0;
     private bool enCinematica = false;
-    private Action onCinematicaTerminada;
+    private Action alTerminarCallback;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
         if (panelVisualNovel != null) panelVisualNovel.SetActive(false);
     }
 
@@ -48,14 +54,13 @@ public class Cinematicas_nojugables : MonoBehaviour
 
         lineasActuales = lineas;
         indiceLinea = 0;
-        onCinematicaTerminada = alTerminar;
+        alTerminarCallback = alTerminar;
         enCinematica = true;
 
-        // 1. Pausar el juego
+
         Time.timeScale = 0f;
 
-        // 2. Encender la interfaz
-        panelVisualNovel.SetActive(true);
+        if (panelVisualNovel != null) panelVisualNovel.SetActive(true);
 
         MostrarLineaActual();
     }
@@ -64,7 +69,7 @@ public class Cinematicas_nojugables : MonoBehaviour
     {
         if (!enCinematica) return;
 
-        // Avanzar con Clic Izquierdo, Espacio o Enter
+
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
         {
             AvanzarLinea();
@@ -73,25 +78,37 @@ public class Cinematicas_nojugables : MonoBehaviour
 
     private void MostrarLineaActual()
     {
+        if (lineasActuales == null || indiceLinea >= lineasActuales.Length) return;
+
         LineaVN linea = lineasActuales[indiceLinea];
 
-        textoNombre.text = linea.nombreHablante;
-        textoDialogo.text = linea.texto;
+        // 1. Asignar textos
+        if (textoNombre != null) textoNombre.text = linea.nombreHablante;
+        if (textoDialogo != null) textoDialogo.text = linea.texto;
 
-        // Configuración de los PNGs a los lados
+        // 2. Fondo de escenario si la línea trae uno
+        if (imagenFondo != null && linea.fondoEscena != null)
+        {
+            imagenFondo.gameObject.SetActive(true);
+            imagenFondo.sprite = linea.fondoEscena;
+        }
+
+        // 3. Atenuación clásica de Visual Novel:
         if (linea.personajeALaDerecha)
         {
-            ConfigurarRetrato(retratoDerecha, linea.retrato, activo: true);
-            AtenuarRetrato(retratoIzquierda); // Se apaga un poco el que no habla
+            // Habla el de la DERECHA:
+            ConfigurarRetrato(retratoDerecha, linea.retrato, iluminado: true);
+            AtenuarRetrato(retratoIzquierda); // Se oscurece el de la izquierda
         }
         else
         {
-            ConfigurarRetrato(retratoIzquierda, linea.retrato, activo: true);
-            AtenuarRetrato(retratoDerecha);
+            // Habla el de la IZQUIERDA:
+            ConfigurarRetrato(retratoIzquierda, linea.retrato, iluminado: true);
+            AtenuarRetrato(retratoDerecha); // Se oscurece el de la derecha
         }
     }
 
-    private void ConfigurarRetrato(Image img, Sprite sprite, bool activo)
+    private void ConfigurarRetrato(Image img, Sprite sprite, bool iluminado)
     {
         if (img == null) return;
 
@@ -99,19 +116,18 @@ public class Cinematicas_nojugables : MonoBehaviour
         {
             img.gameObject.SetActive(true);
             img.sprite = sprite;
-            img.color = Color.white; // Color normal (iluminado)
+            // Blanco puro = color normal 100% brillante
+            img.color = Color.white;
         }
-        else
-        {
-            img.gameObject.SetActive(false);
-        }
+        // Si no hay sprite asignado en esa línea, conserva el anterior o déjalo activo
     }
 
     private void AtenuarRetrato(Image img)
     {
         if (img == null || !img.gameObject.activeSelf) return;
-        // Efecto clásico VN: el que no habla se oscurece al 50%
-        img.color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
+        // Color gris oscuro (35% de brillo) con Alfa al 100% para no hacerlo invisible
+        img.color = new Color(0.35f, 0.35f, 0.35f, 1f);
     }
 
     private void AvanzarLinea()
@@ -124,19 +140,19 @@ public class Cinematicas_nojugables : MonoBehaviour
         }
         else
         {
-            TerminarCinematica();
+            CerrarCinematica();
         }
     }
 
-    private void TerminarCinematica()
+    private void CerrarCinematica()
     {
         enCinematica = false;
-        panelVisualNovel.SetActive(false);
+        if (panelVisualNovel != null) panelVisualNovel.SetActive(false);
 
-        // Reanudar el tiempo del motor
+
         Time.timeScale = 1f;
 
-        // Ejecutar acción posterior (ej. Cargar siguiente nivel, abrir pantalla de victoria)
-        onCinematicaTerminada?.Invoke();
+
+        alTerminarCallback?.Invoke();
     }
 }
