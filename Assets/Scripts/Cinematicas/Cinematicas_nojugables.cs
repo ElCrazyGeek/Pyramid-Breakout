@@ -1,35 +1,65 @@
 using System;
-using System.Collections;       // <-- Resuelve el error de IEnumerator
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;           // <-- Resuelve el error de Image
+using UnityEngine.UI;
 using TMPro;
 
-// --- CLASES Y ESTRUCTURAS SERIALIZABLES ---
+// --- ESTRUCTURAS SERIALIZABLES DEL SISTEMA DE TOMAS ---
+
 [System.Serializable]
 public class ActorSlot
 {
     public string idActor;                 // "Lyra", "Orion", "Tercero"
-    public Image imagenUI;
-    public RectTransform transformSlot;    // Punto de anclaje inicial
+    public Image imagenUI;                 // Componente Image dentro del Canvas
     [HideInInspector] public RetratoAnimadoUI animacion;
 }
 
-// --- GESTOR PRINCIPAL DE CINEMÁTICAS ---
+[System.Serializable]
+public struct PersonajeEnToma
+{
+    public string idActor;                 // Debe coincidir con el idActor configurado en el pool
+    public Sprite spritePose;              // PNG de la pose/expresión para este plano
+    public RectTransform slotUbicacion;    // Objeto vacío en el Canvas donde debe pararse
+    public bool estaHablando;              // TRUE = 100% luz (blanco). FALSE = 40% atenuado (gris).
+}
+
+[System.Serializable]
+public struct TomaCinematica
+{
+    [Header("Encuadre / Fondo")]
+    public Sprite fondoEscena;             // Ilustración/render de fondo. Deja vacío si quieres ver el 3D detrás.
+
+    [Header("Personajes en esta Toma")]
+    [Tooltip("Solo los personajes listados aquí aparecerán; los demás se borran/apagan automáticamente.")]
+    public PersonajeEnToma[] personajesPresentes;
+
+    [Header("Caja de Diálogo")]
+    public string nombreAMostrar;          // "Lyra", "Orión", etc.
+    [TextArea(2, 4)]
+    public string textoDialogo;
+
+    [Header("Tiempo")]
+    [Tooltip("0 = Espera Espacio/Clic. Mayor a 0 = Pasa de toma automáticamente tras estos segundos.")]
+    public float tiempoEnPantalla;
+}
+
+// --- GESTOR DE CINEMÁTICAS ---
+
 public class Cinematicas_nojugables : MonoBehaviour
 {
     public static Cinematicas_nojugables Instance { get; private set; }
 
-    [Header("Configuración de Slots de Actores")]
-    [SerializeField] private ActorSlot[] actores;
+    [Header("Pool de Actores en UI")]
+    [SerializeField] private ActorSlot[] actoresPool;
 
-    [Header("Paneles UI")]
+    [Header("Paneles de UI")]
     [SerializeField] private GameObject panelVisualNovel;
     [SerializeField] private Image imagenFondo;
     [SerializeField] private TextMeshProUGUI textoNombre;
     [SerializeField] private TextMeshProUGUI textoDialogo;
 
-    private LineaVN[] lineasActuales;
-    private int indiceLinea = 0;
+    private TomaCinematica[] tomasActuales;
+    private int indiceToma = 0;
     private bool enCinematica = false;
     private Action alTerminarCallback;
     private Coroutine rutinaAutoAvance;
@@ -39,141 +69,145 @@ public class Cinematicas_nojugables : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        // Inicializar slots
-        foreach (var actor in actores)
+        // Inicializar pool de actores
+        if (actoresPool != null)
         {
-            if (actor.imagenUI != null)
+            foreach (var actor in actoresPool)
             {
-                actor.animacion = actor.imagenUI.GetComponent<RetratoAnimadoUI>();
-                if (actor.transformSlot != null)
+                if (actor.imagenUI != null)
                 {
-                    actor.imagenUI.rectTransform.position = actor.transformSlot.position;
+                    actor.animacion = actor.imagenUI.GetComponent<RetratoAnimadoUI>();
+                    actor.imagenUI.gameObject.SetActive(false); // Arrancan apagados
                 }
-                // Por defecto arrancan apagados hasta que una línea los llame
-                actor.imagenUI.gameObject.SetActive(false);
             }
         }
 
         if (panelVisualNovel != null) panelVisualNovel.SetActive(false);
     }
 
-    public void IniciarCinematicaVN(LineaVN[] lineas, Action alTerminar = null)
+    public void IniciarCinematicaVN(TomaCinematica[] tomas, Action alTerminar = null)
     {
-        if (lineas == null || lineas.Length == 0) return;
+        if (tomas == null || tomas.Length == 0) return;
 
-        lineasActuales = lineas;
-        indiceLinea = 0;
+        tomasActuales = tomas;
+        indiceToma = 0;
         alTerminarCallback = alTerminar;
         enCinematica = true;
 
         Time.timeScale = 0f;
         if (panelVisualNovel != null) panelVisualNovel.SetActive(true);
 
-        MostrarLineaActual();
+        MostrarTomaActual();
     }
 
     private void Update()
     {
         if (!enCinematica) return;
 
+        // Salto manual de toma
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
         {
             if (rutinaAutoAvance != null) StopCoroutine(rutinaAutoAvance);
-            AvanzarLinea();
+            AvanzarToma();
         }
     }
 
-    private void MostrarLineaActual()
+    private void MostrarTomaActual()
     {
-        if (lineasActuales == null || indiceLinea >= lineasActuales.Length) return;
+        if (tomasActuales == null || indiceToma >= tomasActuales.Length) return;
 
-        LineaVN linea = lineasActuales[indiceLinea];
+        TomaCinematica toma = tomasActuales[indiceToma];
 
         // 1. Textos
-        if (textoNombre != null) textoNombre.text = linea.nombreAMostrar;
-        if (textoDialogo != null) textoDialogo.text = linea.texto;
+        if (textoNombre != null) textoNombre.text = toma.nombreAMostrar;
+        if (textoDialogo != null) textoDialogo.text = toma.textoDialogo;
 
         // 2. Fondo
-        if (imagenFondo != null && linea.fondoEscena != null)
+        if (imagenFondo != null)
         {
-            imagenFondo.gameObject.SetActive(true);
-            imagenFondo.sprite = linea.fondoEscena;
-        }
-
-        // 3. Aplicar cambios a los actores específicos de esta línea
-        if (linea.cambiosActores != null)
-        {
-            foreach (var cambio in linea.cambiosActores)
+            if (toma.fondoEscena != null)
             {
-                ActorSlot slot = BuscarActor(cambio.idActor);
-                if (slot == null || slot.imagenUI == null) continue;
-
-                // A. ¿Desaparece o Aparece?
-                slot.imagenUI.gameObject.SetActive(cambio.visible);
-
-                if (cambio.visible)
-                {
-                    // B. ¿Cambia de expresión/pose?
-                    if (cambio.nuevaExpresion != null)
-                    {
-                        slot.imagenUI.sprite = cambio.nuevaExpresion;
-                    }
-
-                    // C. ¿Cambia de posición física (slot)?
-                    if (cambio.moverASlot != null)
-                    {
-                        slot.imagenUI.rectTransform.position = cambio.moverASlot.position;
-                    }
-                }
-            }
-        }
-
-        // 4. Iluminar a quien le toca hablar y atenuar a los que escuchan
-        foreach (var actor in actores)
-        {
-            if (actor.imagenUI == null || !actor.imagenUI.gameObject.activeSelf) continue;
-
-            bool esElHablante = actor.idActor.Equals(linea.idActorHablante, StringComparison.OrdinalIgnoreCase);
-
-            if (esElHablante)
-            {
-                if (actor.animacion != null) actor.animacion.PonerEnPrimerPlano(null);
-                else actor.imagenUI.color = Color.white;
+                imagenFondo.gameObject.SetActive(true);
+                imagenFondo.sprite = toma.fondoEscena;
             }
             else
             {
-                if (actor.animacion != null) actor.animacion.Atenuar();
-                else actor.imagenUI.color = new Color(0.4f, 0.4f, 0.4f, 1f);
+                imagenFondo.gameObject.SetActive(false);
+            }
+        }
+
+        // 3. LIMPIAR: Apaga a todos los actores para no dejar remanentes del plano anterior
+        LimpiarTodosLosActores();
+
+        // 4. COLOCAR: Encender únicamente a los personajes de esta toma
+        if (toma.personajesPresentes != null)
+        {
+            foreach (var p in toma.personajesPresentes)
+            {
+                ActorSlot slot = BuscarActorPool(p.idActor);
+                if (slot == null || slot.imagenUI == null) continue;
+
+                slot.imagenUI.gameObject.SetActive(true);
+
+                if (p.spritePose != null) slot.imagenUI.sprite = p.spritePose;
+
+                // Ubicar en el slot designado si fue asignado
+                if (p.slotUbicacion != null)
+                {
+                    slot.imagenUI.rectTransform.position = p.slotUbicacion.position;
+                }
+
+                // Opacidad / Brillo según si habla
+                if (p.estaHablando)
+                {
+                    slot.imagenUI.color = Color.white;
+                    if (slot.animacion != null) slot.animacion.PonerEnPrimerPlano(p.spritePose);
+                }
+                else
+                {
+                    slot.imagenUI.color = new Color(0.4f, 0.4f, 0.4f, 1f);
+                    if (slot.animacion != null) slot.animacion.Atenuar();
+                }
             }
         }
 
         // 5. Temporizador automático
         if (rutinaAutoAvance != null) StopCoroutine(rutinaAutoAvance);
-        if (linea.tiempoEnPantalla > 0f)
+        if (toma.tiempoEnPantalla > 0f)
         {
-            rutinaAutoAvance = StartCoroutine(TemporizadorLinea(linea.tiempoEnPantalla));
+            rutinaAutoAvance = StartCoroutine(TemporizadorToma(toma.tiempoEnPantalla));
         }
     }
 
-    private ActorSlot BuscarActor(string id)
+    private void LimpiarTodosLosActores()
     {
-        foreach (var actor in actores)
+        if (actoresPool == null) return;
+        foreach (var actor in actoresPool)
+        {
+            if (actor.imagenUI != null) actor.imagenUI.gameObject.SetActive(false);
+        }
+    }
+
+    private ActorSlot BuscarActorPool(string id)
+    {
+        if (actoresPool == null) return null;
+        foreach (var actor in actoresPool)
         {
             if (actor.idActor.Equals(id, StringComparison.OrdinalIgnoreCase)) return actor;
         }
         return null;
     }
 
-    private IEnumerator TemporizadorLinea(float segundos)
+    private IEnumerator TemporizadorToma(float segundos)
     {
         yield return new WaitForSecondsRealtime(segundos);
-        AvanzarLinea();
+        AvanzarToma();
     }
 
-    private void AvanzarLinea()
+    private void AvanzarToma()
     {
-        indiceLinea++;
-        if (indiceLinea < lineasActuales.Length) MostrarLineaActual();
+        indiceToma++;
+        if (indiceToma < tomasActuales.Length) MostrarTomaActual();
         else CerrarCinematica();
     }
 
@@ -181,9 +215,10 @@ public class Cinematicas_nojugables : MonoBehaviour
     {
         if (rutinaAutoAvance != null) StopCoroutine(rutinaAutoAvance);
         enCinematica = false;
+        LimpiarTodosLosActores();
         if (panelVisualNovel != null) panelVisualNovel.SetActive(false);
-        Time.timeScale = 1f;
 
+        Time.timeScale = 1f;
         alTerminarCallback?.Invoke();
     }
 }
