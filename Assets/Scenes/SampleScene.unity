@@ -3756,8 +3756,8 @@ MonoBehaviour:
   sfxTextoCompletado: {fileID: 8300000, guid: 4088fae0217b62c4ba3ee065ebf7d9f6, type: 3}
   sfxAvanzarDialogo: {fileID: 8300000, guid: 48ccad8d2eb1d8646982fcc9e56aa603, type: 3}
   sfxDialogoFinal: {fileID: 8300000, guid: 4477fa3ddd824904eba5a713cf963af2, type: 3}
-  volumenMusica: 0.581
-  volumenSFX: 0.807
+  volumenMusica: 0.285
+  volumenSFX: 0.829
 --- !u!82 &1250061682
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5044,7 +5044,7 @@ MonoBehaviour:
     transicionEntrada: 1
     fadeSalida: 0
     duracionFade: 1.5
-    musicaFondo: {fileID: 8300000, guid: bb194a72612914d498acd96b39a3699a, type: 3}
+    musicaFondo: {fileID: 8300000, guid: 80b29370057c96747ad6b7cefe4deaf5, type: 3}
     musicaEnBucle: 1
     musicaFadeIn: 1
     mantenerMusicaEnSiguienteEscena: 0
@@ -5100,7 +5100,7 @@ MonoBehaviour:
     transicionEntrada: 2
     fadeSalida: 0
     duracionFade: 0
-    musicaFondo: {fileID: 8300000, guid: 5707ea8bef7d922479036b8c2704be41, type: 3}
+    musicaFondo: {fileID: 8300000, guid: c7f73c2cdd13b6d4ea8b5e84c676e171, type: 3}
     musicaEnBucle: 1
     musicaFadeIn: 1
     mantenerMusicaEnSiguienteEscena: 0
