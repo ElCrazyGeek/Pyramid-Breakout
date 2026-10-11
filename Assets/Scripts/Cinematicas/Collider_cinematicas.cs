@@ -10,7 +10,7 @@ public class Collider_cinematicas : MonoBehaviour
     [SerializeField] private string nombreSiguienteNivel;
 
     [Header("Secuencia de Tomas (Storyboard)")]
-    [SerializeField] private TomaCinematica[] tomasFinales; // <-- Solo debe existir ESTA declaración
+    [SerializeField] private TomaCinematica[] tomasFinales; 
 
     [Header("Control de Nave")]
     [Tooltip("Si NO cambia de escena, ¿deseas que el jugador vuelva a pilotar la nave al terminar?")]
