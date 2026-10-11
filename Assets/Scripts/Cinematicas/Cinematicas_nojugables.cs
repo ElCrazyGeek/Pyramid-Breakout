@@ -27,19 +27,25 @@ public struct PersonajeEnToma
 public struct TomaCinematica
 {
     [Header("Encuadre / Fondo")]
-    public Sprite fondoEscena;             // Ilustración/render de fondo. Deja vacío si quieres ver el 3D detrás.
+    public Sprite fondoEscena;
+
+    [Header("Transiciones y Fade")]
+    [Tooltip("Aparecer gradualmente desde negro al entrar a esta toma (0 a 100% opacidad).")]
+    public bool fadeEntrada;
+    [Tooltip("Fundirse a negro antes de pasar a la siguiente toma.")]
+    public bool fadeSalida;
+    [Tooltip("Duración de la transición en segundos (ej. 0.5 o 1.0).")]
+    public float duracionFade;
 
     [Header("Personajes en esta Toma")]
-    [Tooltip("Solo los personajes listados aquí aparecerán; los demás se borran/apagan automáticamente.")]
     public PersonajeEnToma[] personajesPresentes;
 
     [Header("Caja de Diálogo")]
-    public string nombreAMostrar;          // "Lyra", "Orión", etc.
+    public string nombreAMostrar;
     [TextArea(2, 4)]
     public string textoDialogo;
 
     [Header("Tiempo")]
-    [Tooltip("0 = Espera Espacio/Clic. Mayor a 0 = Pasa de toma automáticamente tras estos segundos.")]
     public float tiempoEnPantalla;
 }
 
@@ -55,12 +61,14 @@ public class Cinematicas_nojugables : MonoBehaviour
     [Header("Paneles de UI")]
     [SerializeField] private GameObject panelVisualNovel;
     [SerializeField] private Image imagenFondo;
+    [SerializeField] private CanvasGroup cortinaNegro;
     [SerializeField] private TextMeshProUGUI textoNombre;
     [SerializeField] private TextMeshProUGUI textoDialogo;
 
     private TomaCinematica[] tomasActuales;
     private int indiceToma = 0;
     private bool enCinematica = false;
+    private bool enTransicion = false;
     private Action alTerminarCallback;
     private Coroutine rutinaAutoAvance;
 
@@ -69,17 +77,12 @@ public class Cinematicas_nojugables : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        // Inicializar pool de actores
-        if (actoresPool != null)
+        LimpiarTodosLosActores();
+
+        if (cortinaNegro != null)
         {
-            foreach (var actor in actoresPool)
-            {
-                if (actor.imagenUI != null)
-                {
-                    actor.animacion = actor.imagenUI.GetComponent<RetratoAnimadoUI>();
-                    actor.imagenUI.gameObject.SetActive(false); // Arrancan apagados
-                }
-            }
+            cortinaNegro.alpha = 0f;
+            cortinaNegro.gameObject.SetActive(true);
         }
 
         if (panelVisualNovel != null) panelVisualNovel.SetActive(false);
@@ -97,27 +100,57 @@ public class Cinematicas_nojugables : MonoBehaviour
         Time.timeScale = 0f;
         if (panelVisualNovel != null) panelVisualNovel.SetActive(true);
 
-        MostrarTomaActual();
+        StartCoroutine(ProcesarEntradaToma());
     }
 
     private void Update()
     {
-        if (!enCinematica) return;
+        if (!enCinematica || enTransicion) return;
 
-        // Salto manual de toma
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
         {
             if (rutinaAutoAvance != null) StopCoroutine(rutinaAutoAvance);
-            AvanzarToma();
+            StartCoroutine(AvanzarTomaConFade());
         }
     }
 
-    private void MostrarTomaActual()
+    private IEnumerator ProcesarEntradaToma()
     {
-        if (tomasActuales == null || indiceToma >= tomasActuales.Length) return;
-
+        enTransicion = true;
         TomaCinematica toma = tomasActuales[indiceToma];
+        float duracion = toma.duracionFade > 0f ? toma.duracionFade : 0.5f;
 
+        // Si la toma pide entrar con Fade In (de negro 100% a visible 0%)
+        if (toma.fadeEntrada && cortinaNegro != null)
+        {
+            cortinaNegro.alpha = 1f; // Pantalla negra primero
+            MontarVisualesToma(toma); // Carga la imagen mientras está en negro
+
+            // Desvanece el negro de 1 a 0
+            while (cortinaNegro.alpha > 0f)
+            {
+                cortinaNegro.alpha = Mathf.MoveTowards(cortinaNegro.alpha, 0f, (1f / duracion) * Time.unscaledDeltaTime);
+                yield return null;
+            }
+        }
+        else
+        {
+            if (cortinaNegro != null) cortinaNegro.alpha = 0f;
+            MontarVisualesToma(toma);
+        }
+
+        enTransicion = false;
+
+        // Iniciar temporizador automático si fue configurado
+        if (rutinaAutoAvance != null) StopCoroutine(rutinaAutoAvance);
+        if (toma.tiempoEnPantalla > 0f)
+        {
+            rutinaAutoAvance = StartCoroutine(TemporizadorToma(toma.tiempoEnPantalla));
+        }
+    }
+
+    private void MontarVisualesToma(TomaCinematica toma)
+    {
         // 1. Textos
         if (textoNombre != null) textoNombre.text = toma.nombreAMostrar;
         if (textoDialogo != null) textoDialogo.text = toma.textoDialogo;
@@ -136,10 +169,10 @@ public class Cinematicas_nojugables : MonoBehaviour
             }
         }
 
-        // 3. LIMPIAR: Apaga a todos los actores para no dejar remanentes del plano anterior
+        // 3. Limpiar actores de la toma previa
         LimpiarTodosLosActores();
 
-        // 4. COLOCAR: Encender únicamente a los personajes de esta toma
+        // 4. Ubicar e iluminar únicamente a los actores presentes
         if (toma.personajesPresentes != null)
         {
             foreach (var p in toma.personajesPresentes)
@@ -148,16 +181,13 @@ public class Cinematicas_nojugables : MonoBehaviour
                 if (slot == null || slot.imagenUI == null) continue;
 
                 slot.imagenUI.gameObject.SetActive(true);
-
                 if (p.spritePose != null) slot.imagenUI.sprite = p.spritePose;
 
-                // Ubicar en el slot designado si fue asignado
                 if (p.slotUbicacion != null)
                 {
                     slot.imagenUI.rectTransform.position = p.slotUbicacion.position;
                 }
 
-                // Opacidad / Brillo según si habla
                 if (p.estaHablando)
                 {
                     slot.imagenUI.color = Color.white;
@@ -170,13 +200,40 @@ public class Cinematicas_nojugables : MonoBehaviour
                 }
             }
         }
+    }
 
-        // 5. Temporizador automático
-        if (rutinaAutoAvance != null) StopCoroutine(rutinaAutoAvance);
-        if (toma.tiempoEnPantalla > 0f)
+    private IEnumerator AvanzarTomaConFade()
+    {
+        enTransicion = true;
+        TomaCinematica tomaActual = tomasActuales[indiceToma];
+        float duracion = tomaActual.duracionFade > 0f ? tomaActual.duracionFade : 0.5f;
+
+        // Si la toma actual pide salir a negro antes del siguiente plano
+        if (tomaActual.fadeSalida && cortinaNegro != null)
         {
-            rutinaAutoAvance = StartCoroutine(TemporizadorToma(toma.tiempoEnPantalla));
+            while (cortinaNegro.alpha < 1f)
+            {
+                cortinaNegro.alpha = Mathf.MoveTowards(cortinaNegro.alpha, 1f, (1f / duracion) * Time.unscaledDeltaTime);
+                yield return null;
+            }
         }
+
+        indiceToma++;
+
+        if (indiceToma < tomasActuales.Length)
+        {
+            StartCoroutine(ProcesarEntradaToma());
+        }
+        else
+        {
+            CerrarCinematica();
+        }
+    }
+
+    private IEnumerator TemporizadorToma(float segundos)
+    {
+        yield return new WaitForSecondsRealtime(segundos);
+        StartCoroutine(AvanzarTomaConFade());
     }
 
     private void LimpiarTodosLosActores()
@@ -198,23 +255,11 @@ public class Cinematicas_nojugables : MonoBehaviour
         return null;
     }
 
-    private IEnumerator TemporizadorToma(float segundos)
-    {
-        yield return new WaitForSecondsRealtime(segundos);
-        AvanzarToma();
-    }
-
-    private void AvanzarToma()
-    {
-        indiceToma++;
-        if (indiceToma < tomasActuales.Length) MostrarTomaActual();
-        else CerrarCinematica();
-    }
-
     private void CerrarCinematica()
     {
         if (rutinaAutoAvance != null) StopCoroutine(rutinaAutoAvance);
         enCinematica = false;
+        enTransicion = false;
         LimpiarTodosLosActores();
         if (panelVisualNovel != null) panelVisualNovel.SetActive(false);
 

@@ -107,6 +107,16 @@
       "source": "builtin",
       "dependencies": {}
     },
+    "com.unity.feature.gameplay-storytelling": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.cinemachine": "3.1.7",
+        "com.unity.timeline": "1.8.13",
+        "com.unity.visualscripting": "1.9.12"
+      }
+    },
     "com.unity.ide.rider": {
       "version": "3.0.38",
       "depth": 0,
@@ -266,7 +276,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.8.12",
+      "version": "1.8.13",
       "depth": 0,
       "source": "registry",
       "dependencies": {

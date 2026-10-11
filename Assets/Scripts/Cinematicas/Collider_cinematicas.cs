@@ -10,7 +10,7 @@ public class Collider_cinematicas : MonoBehaviour
     [SerializeField] private string nombreSiguienteNivel;
 
     [Header("Secuencia de Tomas (Storyboard)")]
-    [SerializeField] private TomaCinematica[] tomasFinales;
+    [SerializeField] private TomaCinematica[] tomasFinales; // <-- Solo debe existir ESTA declaración
 
     [Header("Control de Nave")]
     [Tooltip("Si NO cambia de escena, ¿deseas que el jugador vuelva a pilotar la nave al terminar?")]
@@ -24,7 +24,6 @@ public class Collider_cinematicas : MonoBehaviour
     {
         if (activado) return;
 
-        // Comprobación de la nave usando Tag o buscando tu script Movimiento
         bool esJugador = other.CompareTag("Player") ||
                          other.GetComponentInParent<Movimiento>() != null ||
                          other.GetComponentInChildren<Movimiento>() != null;
@@ -48,7 +47,6 @@ public class Collider_cinematicas : MonoBehaviour
             {
                 Cinematicas_nojugables.Instance.IniciarCinematicaVN(tomasFinales, () =>
                 {
-                    // Callback al finalizar la última toma:
                     if (cambiarDeEscena)
                     {
                         ActivarEscenaCargada();
