@@ -41,13 +41,31 @@ eventos:
     posicion: { s: 170, x: 10, y: 0 }
     parametros: { vida: 10, dano: 10, duracion_s: 20 }
 
-  - id: perseguidora
+    #Oleada de enemigos seguidores
+  - id: perseguidora_1
     en: 170
     accion: crear
-    recurso: enemigo.torreta
-    posicion: { s: 240, x: 8, y: 4 }
-    parametros: { comportamiento: seguidora, duracion_s: 10 }
+    recurso: enemigo.hostigador
+    posicion: { s: 240, x: 30, y: 15 }
+    # parametros: { comportamiento: seguidora, duracion_s: 10 }
 
+  - id: perseguidora_2
+    en: 170
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 240, x: 20, y: -5 }
+    # parametros: { comportamiento: seguidora, duracion_s: 10 }
+
+  - id: perseguidora_3
+    en: 170
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 240, x: -15, y: 10 }
+    # parametros: { comportamiento: seguidora, duracion_s: 10 }
+   
+
+
+    
   - id: ambiente_interior
     en: 300
     accion: ambientacion
