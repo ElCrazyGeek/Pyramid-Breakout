@@ -6326,6 +6326,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 996164c29d1b82743a5058258dfb6579, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 996164c29d1b82743a5058258dfb6579, type: 3}
       propertyPath: m_Name
       value: Nave enemiga
@@ -8597,6 +8601,10 @@ PlayableDirector:
     value: {fileID: 823138433}
   - key: {fileID: 2453258300376339546, guid: cc27637afddcebb4f86c47ef6e8657d8, type: 2}
     value: {fileID: 823138434}
+  - key: {fileID: -5409343637474392723, guid: cc27637afddcebb4f86c47ef6e8657d8, type: 2}
+    value: {fileID: 1015252971}
+  - key: {fileID: -5092922511679275928, guid: cc27637afddcebb4f86c47ef6e8657d8, type: 2}
+    value: {fileID: 1015252971}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1818072636
