@@ -20,7 +20,7 @@ public class Proyectil : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.linearVelocity = transform.forward * velocidad;
+            rb.velocity = transform.forward * velocidad;
         }
 
         Destroy(gameObject, tiempoVida);
@@ -51,7 +51,7 @@ public class Proyectil : MonoBehaviour
 
         consumido = true;
         objetivo.GetComponentInParent<IDamageable>()?.TakeDamage(danio);
-        gameObject.SetActive(false);
-        Destroy(gameObject);
+        
+        
     }
 }

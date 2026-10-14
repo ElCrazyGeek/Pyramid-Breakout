@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Pyramid.Levels;
+using UnityEngine.Rendering;
 
 public class Torreta : MonoBehaviour
 {
@@ -61,6 +62,11 @@ public class Torreta : MonoBehaviour
     {
         if (!inicializada) ResetForLevel();
     }
+    void SetPosicion(float posX, float posY)
+    {
+        transform.position = new Vector3(posX, posY, transform.position.z);
+    }
+
 
     public void ResetForLevel()
     {
