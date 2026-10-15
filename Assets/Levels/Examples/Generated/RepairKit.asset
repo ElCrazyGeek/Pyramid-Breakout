@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e475aedf692fb4e718184570dd9eea57, type: 3}
   m_Name: RepairKit
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.EntityDefinition
-  id: 
-  prefab: {fileID: 0}
+  id: objeto.reparacion
+  prefab: {fileID: 7715541954190749885, guid: a0fb500c94ad6904ba87f4c776d737f2, type: 3}
   defaults:
     health: 40
     damage: 10
