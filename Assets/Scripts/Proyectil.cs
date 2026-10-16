@@ -20,7 +20,7 @@ public class Proyectil : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.velocity = transform.forward * velocidad;
+            rb.linearVelocity = transform.forward * velocidad;
         }
 
         Destroy(gameObject, tiempoVida);
