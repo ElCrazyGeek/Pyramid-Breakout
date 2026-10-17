@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 92e0019285b144f418c907214f1916f3
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Nivel 1 pruebas.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Levels/Examples/Generated/GameRoot.unity
@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Vuelo libre.unity
     guid: 924737e65a0bb7c43842ec9c47b346d9
   - enabled: 1
-    path: Assets/_Recovery/0.unity
+    path: Assets/Scenes/Nivel 2.unity
     guid: 7798f0078e74c7d41a4c3b7cac7d8cf7
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
