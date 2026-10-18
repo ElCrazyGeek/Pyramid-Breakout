@@ -76,10 +76,12 @@ public class Proyectil : MonoBehaviour
         {
             if (debugImpact) Debug.Log($"Proyectil aplicando {danio} de daño a {objetivo.name} (IDamageable en {((Component)dmg).gameObject.name})");
             dmg.TakeDamage(danio);
+            Destroy(gameObject);
         }
         else
         {
             if (debugImpact) Debug.Log($"Proyectil impacto en {objetivo.name} pero no encontró IDamageable. collider.tag={col.tag}");
+            Destroy(gameObject);
         }
         
         
