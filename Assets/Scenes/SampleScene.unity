@@ -2282,8 +2282,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06975647, y: -0.0000000074216864, z: 5.189748e-10, w: 0.9975641}
-  m_LocalPosition: {x: 0, y: 16, z: -948}
+  m_LocalRotation: {x: 0.06975647, y: 0.0000000061169922, z: -4.2774173e-10, w: 0.9975641}
+  m_LocalPosition: {x: -0.00024414062, y: 16.699993, z: -948.00146}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2626,7 +2626,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 13
   m_Type: 1
-  m_Color: {r: 0.6136727, g: 0.56507653, b: 0.735849, a: 1}
+  m_Color: {r: 0.7372549, g: 0.5647059, b: 0.6407664, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -4718,7 +4718,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 251658239
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5931,7 +5931,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -8222,7 +8222,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -8576,8 +8576,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430400625}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06975647, y: 1.0814242e-11, z: -1.6283366e-12, w: 0.9975641}
-  m_LocalPosition: {x: 0, y: 16, z: -948}
+  m_LocalRotation: {x: 0.06975647, y: -0.0000000014615579, z: 1.6875185e-10, w: 0.9975641}
+  m_LocalPosition: {x: -0.00024414062, y: 16.699993, z: -948.00146}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9336,7 +9336,7 @@ GameObject:
   - component: {fileID: 1512065564}
   - component: {fileID: 1512065568}
   m_Layer: 0
-  m_Name: Collider Cinematica final
+  m_Name: Collider nivel 1 Cinematica final
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10131,7 +10131,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -11208,7 +11208,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 2617245695
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -12639,7 +12639,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
