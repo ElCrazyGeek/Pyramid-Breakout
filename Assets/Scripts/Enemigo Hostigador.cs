@@ -116,7 +116,7 @@ public class EnemigoSeguidor : MonoBehaviour
         Vector3 origen = (boca != null) ? boca.position : transform.position;
         Quaternion rot = boca != null ? boca.rotation * Quaternion.Euler(proyectilRotationOffsetEuler) : Quaternion.LookRotation((objetivo!=null?(objetivo.position-origen).normalized:transform.forward)) * Quaternion.Euler(proyectilRotationOffsetEuler);
         var instancia = Instantiate(prefabProyectil, origen, rot);
-        var proj = instancia.GetComponent<Proyectil>(); if (proj != null) proj.tagOrigen = "Enemy";
+        var proj = instancia.GetComponent<Proyectil>(); if (proj != null) { proj.tagOrigen = "Enemy"; proj.origen = this.gameObject; }
         var rb = instancia.GetComponent<Rigidbody>();
         float vel = (proj != null) ? proj.velocidad : 60f;
         if (rb != null) rb.linearVelocity = instancia.transform.forward * vel;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Torreta
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.EntityDefinition
   id: enemigo.torreta
-  prefab: {fileID: 3428005840106391624, guid: 9ba77a4d6094347af924d4515bc02ddc, type: 3}
+  prefab: {fileID: 954011709384844223, guid: 3428498d05fee3643be310faca74a177, type: 3}
   defaults:
     health: 40
     damage: 5

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace Pyramid.Levels
@@ -9,7 +10,12 @@ namespace Pyramid.Levels
         [Min(0.01f)] public float maximum = 40;
         public float Current { get; private set; }
         bool initialized;
-        void Awake() { if (!initialized) ResetHealth(maximum); }
+
+        public TextMeshProUGUI healthText;
+        void Awake() { 
+            if (!initialized) ResetHealth(maximum);
+            healthText?.SetText($"{Current} / {maximum}");
+        }
         public void ResetHealth(float value) { maximum = value; Current = value; initialized = true; }
         public void TakeDamage(float amount)
         {
@@ -17,6 +23,7 @@ namespace Pyramid.Levels
 
             Current = Mathf.Max(0, Current - amount);
             Debug.Log($"[Health] {gameObject.name} recibió {amount} de daño. Salud actual: {Current}/{maximum}");
+            healthText?.SetText($"{Current} / {maximum}");
 
             if (Current > 0) return;
 
@@ -51,6 +58,19 @@ namespace Pyramid.Levels
             {
                 Destroy(gameObject);
             }
+        }
+        
+        // Método para reparar/curar la entidad.
+        // Suma 'amount' a la salud actual hasta el máximo. No ejecuta lógica de muerte.
+        public void RepairDamage(float amount)
+        {
+            if (amount <= 0f) return;
+
+            if (!initialized) ResetHealth(maximum);
+
+            Current = Mathf.Min(maximum, Current + amount);
+            Debug.Log($"[Health] {gameObject.name} reparado {amount}. Salud actual: {Current}/{maximum}");
+            healthText?.SetText($"{Current} / {maximum}");
         }
     }
 }
