@@ -22,6 +22,9 @@ public class LanzadorProyectiles : MonoBehaviour
     [Tooltip("Si es true, solo rota en el plano horizontal (eje Y)")]
     public bool rotarSoloY = true;
 
+    [Tooltip("Dirección de avance del jugador en el mundo; se usa para dejar de disparar cuando ya pasó al lanzador")]
+    public Vector3 direccionAvanceJugador = Vector3.forward;
+
     [Tooltip("Ajuste de rotación por si el modelo 3D del lanzador no mira hacia el Z positivo por defecto")]
     public Vector3 offsetRotacionEuler = Vector3.zero;
 
@@ -52,6 +55,12 @@ public class LanzadorProyectiles : MonoBehaviour
     {
         if (objetivo == null) return;
 
+        if (JugadorYaPaso())
+        {
+            temporizadorDisparo = 0f;
+            return;
+        }
+
         float distanciaAlObjetivo = Vector3.Distance(transform.position, objetivo.position);
 
         if (distanciaAlObjetivo <= alcance)
@@ -65,6 +74,19 @@ public class LanzadorProyectiles : MonoBehaviour
                 temporizadorDisparo = 1f / Mathf.Max(0.0001f, cadenciaDisparo);
             }
         }
+    }
+
+    bool JugadorYaPaso()
+    {
+        Vector3 direccionAvance = Vector3.ProjectOnPlane(direccionAvanceJugador, Vector3.up);
+        if (direccionAvance.sqrMagnitude <= 0.0001f)
+        {
+            direccionAvance = Vector3.forward;
+        }
+
+        direccionAvance.Normalize();
+        Vector3 haciaJugador = objetivo.position - transform.position;
+        return Vector3.Dot(haciaJugador, direccionAvance) > 0f;
     }
 
     void RotarHaciaObjetivo()
@@ -119,7 +141,7 @@ public class LanzadorProyectiles : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, alcance);
 
-        // Línea de guía en la escena para ver hacia dónde apunta realmente
+        // Muestra el frente actual del lanzador en la vista de escena.
         Gizmos.color = Color.cyan;
         Gizmos.DrawRay(transform.position, transform.forward * 3f);
     }

@@ -31,9 +31,7 @@ public class ProyectilRayo : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // FUERZA BRUTA DE DIRECCIÓN: 
-            // En lugar de confiar solo en el forward local, le decimos explícitamente 
-            // que viaje en la dirección en la que fue rotado al nacer en el mundo.
+            // El proyectil avanza por su eje frontal.
             rb.linearVelocity = transform.forward * velocidad;
         }
 
@@ -45,7 +43,6 @@ public class ProyectilRayo : MonoBehaviour
     {
         if (rb == null) return;
 
-        // Crecimiento sincronizado con las físicas (evita tirones)
         float incremento = (porcentajeCrecimientoPorSegundo / 100f) * Time.fixedDeltaTime;
         transform.localScale += escalaInicial * incremento;
 

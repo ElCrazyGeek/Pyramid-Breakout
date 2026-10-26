@@ -25,13 +25,15 @@ tramos:
     descargar_en: 1650  
 
 eventos:
-  #- id: torreta_izquierda
-  #  en: 100
-  #  accion: crear
-  #  recurso: enemigo.torreta
-  #  tramo: exterior
-  #  posicion: { s: 200, x: -12, y: 0 }
-  #  parametros: { vida: 5   }
+  - id: torreta_izquierda
+    en: 100
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: exterior
+    posicion: { s: 200, x: -12, y: 0 }
+    parametros: { vida: 5   }
+
+  
 
   - id: lanzador_rayos
     en: 0
