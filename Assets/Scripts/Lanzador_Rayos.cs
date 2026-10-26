@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LanzadorProyectiles : MonoBehaviour
+public class Lanzador_Rayos : MonoBehaviour
 {
     [Header("Referencias")]
     [Tooltip("Objetivo al que disparar (por defecto busca el tag 'Player')")]
