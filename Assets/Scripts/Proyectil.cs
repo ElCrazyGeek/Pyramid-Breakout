@@ -7,11 +7,8 @@ public class Proyectil : MonoBehaviour
     [SerializeField] public float tiempoVida = 3f;
     [SerializeField] public float danio = 1;
 
-    [Header("Origen del proyectil (para evitar \"friendly fire\")")]
-    public string tagOrigen = "Player"; // por defecto viene del jugador
-    // Referencia opcional al GameObject que disparó este proyectil.
-    // Usar una referencia directa es más fiable que confiar solo en tags,
-    // porque los colliders hijos pueden no tener el mismo tag que el root.
+    [Header("Origen del proyectil")]
+    public string tagOrigen = "Player";
     public GameObject origen;
     public bool debugImpact = false;
 
@@ -33,7 +30,7 @@ public class Proyectil : MonoBehaviour
 
     void Update()
     {
-        // Si no tenemos Rigidbody, movemos manualmente (menos recomendado a altas velocidades)
+        // Sin Rigidbody, el proyectil se mueve directamente por Transform.
         if (rb == null)
             transform.position += transform.forward * velocidad * Time.deltaTime;
     }
@@ -51,15 +48,14 @@ public class Proyectil : MonoBehaviour
     private void ProcesarImpacto(GameObject objetivo, Collider col)
     {
         if (consumido) return;
-        // Ignorar colisiones con quien disparó
-        // 1) Si el collider en el que impactamos tiene la misma etiqueta del origen, ignorar.
+        // Ignora el impacto si pertenece al mismo equipo.
         if (!string.IsNullOrEmpty(tagOrigen) && col.CompareTag(tagOrigen))
         {
             if (debugImpact) Debug.Log($"Proyectil ignoró impacto por tag: tagOrigen={tagOrigen}, colliderTag={col.tag}");
             return;
         }
 
-        // 2) Si tenemos referencia explícita al GameObject que disparó, ignorar impactos contra él o sus hijos.
+        // También ignora al objeto que creó el proyectil y sus hijos.
         if (origen != null)
         {
             var t = col.transform;

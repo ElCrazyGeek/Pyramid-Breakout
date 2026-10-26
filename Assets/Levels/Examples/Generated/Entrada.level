@@ -33,8 +33,18 @@ eventos:
     posicion: { s: 200, x: -12, y: 0 }
     parametros: { vida: 5   }
 
+  
+
+  - id: lanzador_rayos
+    en: 0
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 200, x: 0, y: 0 }
+    parametros: { vida: 8 }
+
   - id: muro_derecho
-    en: 80
+    en: 0
     accion: crear
     recurso: obstaculo.muro
     tramo: exterior
@@ -42,28 +52,42 @@ eventos:
     parametros: { vida: 10, dano: 10, duracion_s: 20 }
 
     #Oleada de enemigos seguidores
-  - id: perseguidora_1
-    en: 170
-    accion: crear
-    recurso: enemigo.hostigador
-    posicion: { s: 240, x: 30, y: 15 }
-    parametros: { vida: 5 }
+  #- id: perseguidora_1
+  #  en: 170
+  #  accion: crear
+  #  recurso: enemigo.hostigador
+  #  posicion: { s: 240, x: 30, y: 15 }
+  #  parametros: { vida: 5 }
 
-  - id: perseguidora_2
-    en: 170
-    accion: crear
-    recurso: enemigo.hostigador
-    posicion: { s: 240, x: 20, y: -5 }
-    parametros: { vida: 5 }
+  #- id: perseguidora_2
+  #  en: 170
+  #  accion: crear
+  #  recurso: enemigo.hostigador
+  #  posicion: { s: 240, x: 20, y: -5 }
+  #  parametros: { vida: 5 }
 
-  - id: perseguidora_3
-    en: 170
-    accion: crear
-    recurso: enemigo.hostigador
-    posicion: { s: 240, x: -15, y: 10 }
-    parametros: { vida: 5 }
+  #- id: perseguidora_3
+  #  en: 170
+  #  accion: crear
+  #  recurso: enemigo.hostigador
+  #  posicion: { s: 240, x: -15, y: 10 }
+  #  parametros: { vida: 5 }
    
+  - id: lanzador_rayos2
+    en: 300
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 800, x: 20, y: 0 }
+    parametros: { vida: 8 }
 
+  - id: lanzador_rayos3
+    en: 300
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 800, x: -20, y: 0 }
+    parametros: { vida: 8 }
 
     
   - id: ambiente_interior
