@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 711344169828120376}
   - component: {fileID: 6939067848689784856}
   m_Layer: 0
-  m_Name: Collider Cinematica final
+  m_Name: Collider Cinematica Nivel 1 final
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MusicaInterior
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.AudioDefinition
   id: musica.interior
-  clip: {fileID: 8300000, guid: 3cda509ae220b40a9931e164142b22df, type: 3}
-  volume: 0.12
+  clip: {fileID: 8300000, guid: c7f73c2cdd13b6d4ea8b5e84c676e171, type: 3}
+  volume: 0.453
   loop: 1
   mixerGroup: {fileID: 0}
