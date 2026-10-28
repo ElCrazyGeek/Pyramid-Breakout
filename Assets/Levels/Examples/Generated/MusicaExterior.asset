@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MusicaExterior
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.AudioDefinition
   id: musica.exterior
-  clip: {fileID: 8300000, guid: f19f566a0b02d4e6ead1d47c9b1a34f7, type: 3}
-  volume: 0.12
+  clip: {fileID: 8300000, guid: c7f73c2cdd13b6d4ea8b5e84c676e171, type: 3}
+  volume: 0.462
   loop: 1
   mixerGroup: {fileID: 0}

@@ -1,0 +1,33 @@
+# Asignar este archivo al campo Level de LevelSession para probar los escenarios.
+# Las posiciones son de ejemplo: ajustar x, y y s al diseño del recorrido.
+version: 1
+id: escenarios_3d
+catalogo: Assets/Levels/Examples/Generated/Catalog.asset
+longitud_m: 4000
+
+inicial:
+  fondo: fondo.exterior
+  ambientacion: ambiente.exterior
+
+eventos:
+  - id: fortaleza
+    en: 0
+    accion: crear
+    recurso: escenario.fortaleza
+    posicion: { s: 300, x: 0, y: -58 }
+
+  - id: nave_destruida
+    en: 800
+    accion: crear
+    recurso: escenario.nave_destruida
+    posicion: { s: 1200, x: 0, y: 4 }
+
+  - id: pasillo_artilleros
+    en: 1800
+    accion: crear
+    recurso: escenario.pasillo_artilleros
+    posicion: { s: 2200, x: 0, y: -12.9 }
+
+  - id: salida
+    en: 4000
+    accion: finalizar

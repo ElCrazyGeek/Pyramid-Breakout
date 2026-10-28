@@ -60,6 +60,7 @@ MonoBehaviour:
   inclinacionMaxima: 60
   rotacionOffsetEuler: {x: 0, y: 0, z: 0}
   invertirDireccion: 0
+  direccionAvanceJugador: {x: 0, y: 0, z: 1}
   alcance: 250
   cadenciaDisparo: 2
   apuntarDisparoAlObjetivo: 1

@@ -1,10 +1,6 @@
 using UnityEngine;
 
-/// <summary>
-/// Artillero (Torreta Fija):
-/// Permanece en su posición original, detecta si el jugador entra en su rango de alcance,
-/// gira hacia él (opcionalmente solo en el eje Y) y dispara con una cadencia configurable.
-/// </summary>
+/// <summary>Artillero fijo que apunta y dispara al jugador dentro de su alcance.</summary>
 public class Artillero : MonoBehaviour
 {
     [Header("Referencias")]
@@ -41,6 +37,9 @@ public class Artillero : MonoBehaviour
 
     [Tooltip("Invertir dirección de apuntado si el modelo está volteado 180°")]
     public bool invertirDireccion = false;
+
+    [Tooltip("Dirección de avance del jugador; el Artillero deja de disparar cuando el jugador lo sobrepasa")]
+    public Vector3 direccionAvanceJugador = Vector3.forward;
 
     [Header("Disparo")]
     [Tooltip("Distancia máxima a la que detecta al jugador y abre fuego")]
@@ -89,6 +88,12 @@ public class Artillero : MonoBehaviour
         // Asegurar que la raíz de la torreta mantenga su posición fija
         transform.position = posicionInicial;
 
+        if (JugadorYaPaso())
+        {
+            temporizadorDisparo = 0f;
+            return;
+        }
+
         float distanciaAlObjetivo = Vector3.Distance(transform.position, objetivo.position);
 
         if (distanciaAlObjetivo <= alcance)
@@ -104,9 +109,22 @@ public class Artillero : MonoBehaviour
         }
     }
 
+    bool JugadorYaPaso()
+    {
+        Vector3 direccionAvance = Vector3.ProjectOnPlane(direccionAvanceJugador, Vector3.up);
+        if (direccionAvance.sqrMagnitude <= 0.0001f)
+        {
+            direccionAvance = Vector3.forward;
+        }
+
+        direccionAvance.Normalize();
+        Vector3 haciaJugador = objetivo.position - transform.position;
+        return Vector3.Dot(haciaJugador, direccionAvance) > 0f;
+    }
+
     void RotarHaciaObjetivo()
     {
-        // 1. ROTACIÓN HORIZONTAL (El cuerpo y la boca giran juntos en Y como un solo bloque)
+        // Gira el cuerpo en horizontal hacia el jugador.
         Vector3 dirHaciaObjetivo = objetivo.position - transform.position;
         Vector3 dirHorizontal = new Vector3(dirHaciaObjetivo.x, 0f, dirHaciaObjetivo.z);
 
@@ -125,7 +143,7 @@ public class Artillero : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, rotacionDeseada, Time.deltaTime * velocidadRotacion);
         }
 
-        // 2. INCLINACIÓN VERTICAL DE LA BOCA (Solo si está habilitado explícitamente y en espacio local)
+        // La inclinación vertical de la boca es opcional.
         if (boca != null && inclinarBocaVertical)
         {
             Vector3 dirLocal = transform.InverseTransformDirection(objetivo.position - boca.position);
@@ -147,7 +165,7 @@ public class Artillero : MonoBehaviour
         Vector3 origen = (puntoDisparo != null) ? puntoDisparo.position : ((boca != null) ? boca.position : transform.position);
         Vector3 direccion = ObtenerDireccionDisparo(origen);
 
-        // Raycast para feedback visual o impacto instantáneo
+        // El raycast muestra si el disparo tiene línea de visión.
         RaycastHit golpe;
         bool impacto = Physics.Raycast(origen, direccion, out golpe, alcance, mascaraObjetivo);
         Debug.DrawRay(origen, direccion * alcance, impacto ? Color.green : Color.red, 0.5f);
@@ -157,7 +175,6 @@ public class Artillero : MonoBehaviour
             Debug.Log($"Artillero: impacto en {golpe.collider.name} (tag={golpe.collider.tag})");
         }
 
-        // Instanciar proyectil físico
         if (prefabProyectil != null)
         {
             Quaternion rot = Quaternion.LookRotation(direccion);
@@ -171,10 +188,7 @@ public class Artillero : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Obtiene la dirección hacia donde saldrá el disparo.
-    /// Si apuntarDisparoAlObjetivo es true, compensa la altura para darle al jugador.
-    /// </summary>
+    /// <summary>Calcula la dirección del disparo desde su punto de salida.</summary>
     public Vector3 ObtenerDireccionDisparo(Vector3 origen)
     {
         if (apuntarDisparoAlObjetivo && objetivo != null)
