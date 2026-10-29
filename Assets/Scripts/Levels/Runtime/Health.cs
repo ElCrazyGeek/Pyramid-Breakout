@@ -1,5 +1,5 @@
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Pyramid.Levels
 {
@@ -11,19 +11,47 @@ namespace Pyramid.Levels
         public float Current { get; private set; }
         bool initialized;
 
-        public TextMeshProUGUI healthText;
-        void Awake() { 
+        [Tooltip("Imagen de la barra. Se rellena de izquierda a derecha y se vacía desde la derecha.")]
+        public Image healthBar;
+
+        void Awake()
+        {
+            ConfigureHealthBar();
             if (!initialized) ResetHealth(maximum);
-            healthText?.SetText($"{Current} / {maximum}");
+            else UpdateHealthBar();
         }
-        public void ResetHealth(float value) { maximum = value; Current = value; initialized = true; }
+
+        public void ResetHealth(float value)
+        {
+            maximum = value;
+            Current = value;
+            initialized = true;
+            UpdateHealthBar();
+        }
+
+        void ConfigureHealthBar()
+        {
+            if (healthBar == null) return;
+
+            healthBar.type = Image.Type.Filled;
+            healthBar.fillMethod = Image.FillMethod.Horizontal;
+            healthBar.fillOrigin = (int)Image.OriginHorizontal.Left;
+        }
+
+        void UpdateHealthBar()
+        {
+            if (healthBar == null) return;
+
+            healthBar.fillAmount = maximum > 0f ? Mathf.Clamp01(Current / maximum) : 0f;
+        }
+
         public void TakeDamage(float amount)
         {
             if (amount <= 0 || Current <= 0) return;
 
             Current = Mathf.Max(0, Current - amount);
             Debug.Log($"[Health] {gameObject.name} recibió {amount} de daño. Salud actual: {Current}/{maximum}");
-            healthText?.SetText($"{Current} / {maximum}");
+            UpdateHealthBar();
 
             if (Current > 0) return;
 
@@ -70,7 +98,7 @@ namespace Pyramid.Levels
 
             Current = Mathf.Min(maximum, Current + amount);
             Debug.Log($"[Health] {gameObject.name} reparado {amount}. Salud actual: {Current}/{maximum}");
-            healthText?.SetText($"{Current} / {maximum}");
+            UpdateHealthBar();
         }
     }
 }
