@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e475aedf692fb4e718184570dd9eea57, type: 3}
+  m_Name: NaveDestruida
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.EntityDefinition
+  id: escenario.nave_destruida
+  prefab: {fileID: 4636400493814187207, guid: 1a82908894ae2864f9fadfa5cdbd7a22, type: 3}
+  preservePrefabRotation: 1
+  defaults:
+    health: 40
+    damage: 0
+    fireRate: 0
+    range: 0
+    lifetime: 0
+    speed: 0
+    behaviour: estacionaria
+    extra: []
