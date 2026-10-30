@@ -95,6 +95,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3880659459023017501}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5689772859630862508}
+    - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6220861856649291808}
+    - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8908159812774063970}
   m_SourcePrefab: {fileID: 100100000, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
 --- !u!1 &4636400493814187207 stripped
 GameObject:
@@ -123,3 +132,56 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &-5689772859630862508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4636400493814187207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b2329c0387d4264b76b5bfc387dcfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.ContactDamage
+  damage: 10
+--- !u!1 &5973530808558413036 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7029948723529949830, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+  m_PrefabInstance: {fileID: 5518779257988364694}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &6220861856649291808
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5973530808558413036}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+--- !u!114 &8908159812774063970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5973530808558413036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b2329c0387d4264b76b5bfc387dcfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.ContactDamage
+  damage: 10

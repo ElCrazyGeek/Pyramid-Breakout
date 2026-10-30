@@ -8,6 +8,11 @@ public class ProyectilRayo : MonoBehaviour
     [SerializeField] public float tiempoVida = 3f;
     [SerializeField] public float danio = 1;
 
+    [Header("Efectos de Audio")]
+    [Tooltip("Clip de sonido que se reproducirá al ser disparado")]
+    [SerializeField] private AudioClip sfxDisparo;
+    [Range(0f, 1f)][SerializeField] private float volumenSfx = 0.9f;
+
     [Header("Origen (Anti Friendly-Fire)")]
     public string tagOrigen = "Player";
     public GameObject origen;
@@ -28,10 +33,15 @@ public class ProyectilRayo : MonoBehaviour
 
     void Start()
     {
+        // Reproducir sonido de disparo independiente
+        if (sfxDisparo != null)
+        {
+            AudioSource.PlayClipAtPoint(sfxDisparo, transform.position, volumenSfx);
+        }
+
         rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // El proyectil avanza por su eje frontal.
             rb.linearVelocity = transform.forward * velocidad;
         }
 

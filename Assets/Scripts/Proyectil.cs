@@ -7,6 +7,11 @@ public class Proyectil : MonoBehaviour
     [SerializeField] public float tiempoVida = 3f;
     [SerializeField] public float danio = 1;
 
+    [Header("Efectos de Audio")]
+    [Tooltip("Clip de sonido que se reproducirá al ser disparado")]
+    [SerializeField] private AudioClip sfxDisparo;
+    [Range(0f, 1f)][SerializeField] private float volumenSfx = 0.8f;
+
     [Header("Origen del proyectil")]
     public string tagOrigen = "Player";
     public GameObject origen;
@@ -15,10 +20,19 @@ public class Proyectil : MonoBehaviour
     Rigidbody rb;
     bool consumido;
 
-    void OnDestroy() { if (LevelSession.Active) LevelSession.Active.Objects.Forget(gameObject); }
+    void OnDestroy()
+    {
+        if (LevelSession.Active) LevelSession.Active.Objects.Forget(gameObject);
+    }
 
     void Start()
     {
+        // Reproducir sonido de disparo al instante
+        if (sfxDisparo != null)
+        {
+            AudioSource.PlayClipAtPoint(sfxDisparo, transform.position, volumenSfx);
+        }
+
         rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -30,7 +44,6 @@ public class Proyectil : MonoBehaviour
 
     void Update()
     {
-        // Sin Rigidbody, el proyectil se mueve directamente por Transform.
         if (rb == null)
             transform.position += transform.forward * velocidad * Time.deltaTime;
     }
@@ -48,14 +61,13 @@ public class Proyectil : MonoBehaviour
     private void ProcesarImpacto(GameObject objetivo, Collider col)
     {
         if (consumido) return;
-        // Ignora el impacto si pertenece al mismo equipo.
+
         if (!string.IsNullOrEmpty(tagOrigen) && col.CompareTag(tagOrigen))
         {
             if (debugImpact) Debug.Log($"Proyectil ignoró impacto por tag: tagOrigen={tagOrigen}, colliderTag={col.tag}");
             return;
         }
 
-        // También ignora al objeto que creó el proyectil y sus hijos.
         if (origen != null)
         {
             var t = col.transform;
@@ -79,7 +91,5 @@ public class Proyectil : MonoBehaviour
             if (debugImpact) Debug.Log($"Proyectil impacto en {objetivo.name} pero no encontró IDamageable. collider.tag={col.tag}");
             Destroy(gameObject);
         }
-        
-        
     }
 }

@@ -2,7 +2,7 @@
 version: 1
 id: entrada_piramide
 catalogo: Assets/Levels/Examples/Generated/Catalog.asset
-longitud_m: 7500
+longitud_m: 8500
 
 inicial:
   fondo: fondo.exterior
@@ -20,21 +20,21 @@ tramos:
   - id: interior
     recurso: escenario.interior
     inicio_s: 2000
-    fin_s: 7500
+    fin_s: 8500
     precargar_en: 1800
-    descargar_en: 7500
+    descargar_en: 8500
 
 eventos:
   - id: torreta_izquierda
-    en: 400
+    en: 2200
     accion: crear
     recurso: enemigo.torreta
-    tramo: exterior
-    posicion: { s: 550, x: -15, y: 0 }
+    tramo: interior
+    posicion: { s: 2580, x: -20, y: -8 }
     parametros: { vida: 4 }
 
   - id: lanzador_rayos
-    en: 400
+    en: 800
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: exterior
@@ -42,25 +42,25 @@ eventos:
     parametros: { vida: 4 }
 
   - id: escenario.nave_destruida
-    en: 900
+    en: 400
     accion: crear
     recurso: escenario.nave_destruida
     tramo: exterior
-    posicion: { s: 1000, x: 0, y: -10 }
+    posicion: { s: 1500, x: 0, y: -10 }
 
   - id: escenario.pasillo_artilleros
     en: 2000
     accion: crear
     recurso: escenario.pasillo_artilleros
     tramo: interior
-    posicion: { s: 3500, x: 0, y: -10 }
+    posicion: { s: 3800, x: 0, y: -10 }
 
   - id: escenario.fortaleza
     en: 3500
     accion: crear
     recurso: escenario.fortaleza
     tramo: interior
-    posicion: { s: 5500, x: 0, y: -20 }
+    posicion: { s: 4598, x: 80, y: -20 }
 
   - id: muro_derecho
     en: 0
@@ -72,41 +72,41 @@ eventos:
 
   # Oleada de enemigos seguidores
   - id: perseguidora_1
-    en: 1300
+    en: 2150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 1550, x: 30, y: 15 }
-    parametros: { vida: 5 }
+    posicion: { s: 2250, x: 30, y: 15 }
+    parametros: { vida: 2 }
 
   - id: perseguidora_2
-    en: 1300
+    en: 2150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 1550, x: 10, y: -5 }
-    parametros: { vida: 5 }
+    posicion: { s: 2250, x: 10, y: -5 }
+    parametros: { vida: 2 }
 
   - id: perseguidora_3
-    en: 1300
+    en: 2150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 1550, x: -15, y: 10 }
-    parametros: { vida: 5 }
+    posicion: { s: 2250, x: -15, y: 10 }
+    parametros: { vida: 2 }
     
   - id: lanzador_rayos2
-    en: 300
+    en: 1000
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: exterior
-    posicion: { s: 800, x: 20, y: 0 }
-    parametros: { vida: 8 }
+    posicion: { s: 1700, x: 20, y: 0 }
+    parametros: { vida: 2 }
 
   - id: lanzador_rayos3
-    en: 300
+    en: 1000
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: exterior
-    posicion: { s: 800, x: -20, y: 0 }
-    parametros: { vida: 8 }
+    posicion: { s: 1700, x: -20, y: 0 }
+    parametros: { vida: 2 }
 
   - id: ambiente_interior
     en: 0
@@ -130,23 +130,87 @@ eventos:
     en: 2500
     accion: crear
     recurso: objeto.reparacion
-    posicion: { s: 2600, x: 0, y: 0 }
+    posicion: { s: 2800, x: 0, y: 0 }
 
   - id: torreta_final
-    en: 340
+    en: 2550
     accion: crear
     recurso: enemigo.torreta
-    tramo: exterior
-    posicion: { s: 500, x: 0, y: 8 }
-    parametros: { vida: 10 }
+    tramo: interior
+    posicion: { s: 3117, x: 20.6, y: 9.4 }
+    parametros: { vida: 1 }
 
   - id: torreta_Rebelde
-    en: 1100
+    en: 2500
     accion: crear
     recurso: enemigo.torreta
-    tramo: exterior
-    posicion: { s: 1250, x: 0, y: 8 }
-    parametros: { vida: 10 }
+    tramo: interior
+    posicion: { s: 3228.4, x: -20, y: 21.3 }
+    parametros: { vida: 3 }
+
+  - id: torreta_Rebelde2
+    en: 2500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 3346.8, x: 45.5, y: 5.1 }
+    parametros: { vida: 2 }
+
+  - id: torreta_Rebelde3
+    en: 2500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 3420, x: 37, y: 4.5 }
+    parametros: { vida: 2 }
+
+  - id: torreta_Rebelde4
+    en: 2500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 3492.5, x: 37, y: 4.5 }
+    parametros: { vida: 2 }
+
+  - id: torreta_Rebelde5
+    en: 2500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 3578.9, x: 38, y: 5.5 }
+    parametros: { vida: 2 }
+
+  - id: torreta_Rebelde6
+    en: 2500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 3616.4, x: -26.5, y: 11.2 }
+    parametros: { vida: 2 }
+
+  - id: torreta_Rebelde7
+    en: 2500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 3559.4, x: -33.5, y: 10.5 }
+    parametros: { vida: 2 }
+
+  - id: Laser
+    en: 2500
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 3559.4, x: -3.35, y: 5 }
+    parametros: { vida: 2 }
+
+  - id: Laser2
+    en: 2500
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 3769.4, x: -3.5, y: 5 }
+    parametros: { vida: 2 }
 
   - id: enemigo_futuro
     habilitado: false
@@ -155,6 +219,58 @@ eventos:
     recurso: enemigo.guardian
     posicion: { s: 1200, x: 0, y: 0 }
 
+  - id: perseguidora_4
+    en: 4600
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4600, x: 25, y: 15 }
+    parametros: { vida: 2 }
+
+  - id: perseguidora_5
+    en: 4600
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4600, x: 15, y: -10 }
+    parametros: { vida: 2 }
+
+  - id: perseguidora_6
+    en: 4600
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4600, x: -15, y: -10 }
+    parametros: { vida: 2 }
+
+  - id: perseguidora_7
+    en: 4600
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4600, x: -25, y: 15 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos4
+    en: 4500
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 4900, x: -5, y: 0.2 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos5
+    en: 4500
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 5150, x: -5, y: 0.2 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos6
+    en: 4500
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 5350, x: -5, y: 0.2 }
+    parametros: { vida: 2 }
+
   - id: salida
-    en: 7500
+    en: 8500
     accion: finalizar

@@ -74,15 +74,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4083501151425157549, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5600
+      value: 3500
       objectReference: {fileID: 0}
     - target: {fileID: 4083501151425157549, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
       propertyPath: m_LocalScale.y
-      value: 24000
+      value: 15000
       objectReference: {fileID: 0}
     - target: {fileID: 4083501151425157549, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
       propertyPath: m_LocalScale.z
-      value: 100
+      value: 62.5
       objectReference: {fileID: 0}
     - target: {fileID: 4083501151425157549, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
       propertyPath: m_LocalPosition.x
@@ -122,11 +122,90 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4083501151425157549, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -8391222552659086748, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1361377996100336900}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6938316767193027948}
+    - targetCorrespondingSourceObject: {fileID: -516098083770646512, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8226012048085184887}
   m_SourcePrefab: {fileID: 100100000, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
+--- !u!1 &58349395919815865 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
+  m_PrefabInstance: {fileID: 868673175383570920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1361377996100336900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58349395919815865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b2329c0387d4264b76b5bfc387dcfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.ContactDamage
+  damage: 10
+  cooldownGolpe: 0.6
+  fuerzaEmpuje: 15
+  duracionEmpuje: 0.2
+--- !u!64 &-6938316767193027948
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58349395919815865}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
+--- !u!1 &8419574200875006456 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -516098083770646512, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}
+  m_PrefabInstance: {fileID: 868673175383570920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &8226012048085184887
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8419574200875006456}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4493585093827132993, guid: 62df925efc6c6774b80bacb01249ee07, type: 3}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1618697032092037813}
   - component: {fileID: -7122308396390159730}
   - component: {fileID: -737791501793126088}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Artillero Mejorado
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 954011709384844223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -43, y: 13.56, z: -759}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5.603547, y: 5.603547, z: 5.603547}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -80,7 +80,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae722136abd24b38917e5a955111eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
-  maximum: 20
+  maximum: 3
+  healthText: {fileID: 0}
+  colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
+  duracionParpadeo: 0.08
+  sfxImpacto: {fileID: 8300000, guid: b8e4ba18d7733314b981945a0495288c, type: 3}
+  volumenImpacto: 0.5
+  prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
+  sfxExplosionMuerte: {fileID: 8300000, guid: e88165429e36bb7478e2a6af9e72cee9, type: 3}
+  volumenExplosion: 0.61
 --- !u!136 &-737791501793126088
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -100,10 +108,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.7611436
+  m_Height: 2.2184434
+  m_Direction: 0
+  m_Center: {x: -0.06936244, y: 0.2, z: -0}
 --- !u!1 &1010466051764322416
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1870523488783474722}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cuerpo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9029109301023144153}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boca
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +187,7 @@ GameObject:
   - component: {fileID: 9012641281487606837}
   - component: {fileID: 1029722868728577680}
   - component: {fileID: 2915705541922628921}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cilindro.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +275,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4963865108588499660}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Punto de disparo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +308,7 @@ GameObject:
   - component: {fileID: 9147832178215610538}
   - component: {fileID: 1757411336873694561}
   - component: {fileID: 6453278127624699239}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cilindro
   m_TagString: Untagged
   m_Icon: {fileID: 0}

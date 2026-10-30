@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4232442349090082209}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Punto de disparo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 1627606701967526549}
   - component: {fileID: 515407157114435755}
   - component: {fileID: 509254491348061014}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 6160759992003162641}
   - component: {fileID: 2900697207030722470}
   - component: {fileID: 3431142490419052305}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Lanzador de rayos
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -213,8 +213,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.30812988, y: 0.6356263, z: 0.18418589}
-  m_Center: {x: -0.000024408102, y: -0.021118164, z: 0.0034392835}
+  m_Size: {x: 0.5710145, y: 0.76982915, z: 0.18418589}
+  m_Center: {x: -0.023263503, y: 0.045983054, z: 0.0034392835}
 --- !u!114 &3431142490419052305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,3 +229,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
   maximum: 8
   healthText: {fileID: 0}
+  colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
+  duracionParpadeo: 0.08
+  sfxImpacto: {fileID: 8300000, guid: 60857dd7f6e41ec47b14668c663aaae0, type: 3}
+  prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
+  sfxExplosionMuerte: {fileID: 8300000, guid: e88165429e36bb7478e2a6af9e72cee9, type: 3}

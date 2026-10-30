@@ -50,6 +50,8 @@ MonoBehaviour:
   velocidad: 450
   tiempoVida: 3
   danio: 1
+  sfxDisparo: {fileID: 8300000, guid: 0170019ab706ff443b0e1a680766e3c2, type: 3}
+  volumenSfx: 0.8
   tagOrigen: Player
   origen: {fileID: 0}
   debugImpact: 0

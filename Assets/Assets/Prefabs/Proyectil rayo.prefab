@@ -202,6 +202,8 @@ MonoBehaviour:
   velocidad: 100
   tiempoVida: 5
   danio: 1
+  sfxDisparo: {fileID: 8300000, guid: ad7f09831f13e2646acccfcf55f01f1c, type: 3}
+  volumenSfx: 0.9
   tagOrigen: Enemy
   origen: {fileID: 0}
   debugImpact: 0
