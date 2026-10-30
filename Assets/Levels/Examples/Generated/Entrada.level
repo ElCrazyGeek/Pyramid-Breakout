@@ -62,14 +62,6 @@ eventos:
     tramo: interior
     posicion: { s: 4598, x: 80, y: -20 }
 
-  - id: muro_derecho
-    en: 0
-    accion: crear
-    recurso: obstaculo.muro
-    tramo: exterior
-    posicion: { s: 170, x: -5, y: 0 }
-    parametros: { vida: 10, dano: 10, duracion_s: 20 }
-
   # Oleada de enemigos seguidores
   - id: perseguidora_1
     en: 2150
@@ -270,6 +262,23 @@ eventos:
     tramo: interior
     posicion: { s: 5350, x: -5, y: 0.2 }
     parametros: { vida: 2 }
+
+  - id: lanzador_rayos7
+    en: 4500
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 5650, x: -5, y: 0.2 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos8
+    en: 4500
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 6050, x: 0, y: 0 }
+    parametros: { vida: 2 }
+
 
   - id: salida
     en: 8500
