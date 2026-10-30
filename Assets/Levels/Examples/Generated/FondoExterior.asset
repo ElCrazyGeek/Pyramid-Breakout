@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FondoExterior
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.BackgroundDefinition
   id: fondo.exterior
-  skybox: {fileID: 0}
-  cameraColor: {r: 0.55, g: 0.3, b: 0.15, a: 1}
+  skybox: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  cameraColor: {r: 0, g: 0, b: 0, a: 1}
   backdropPrefab: {fileID: 0}
   followCamera: 1
   cameraOffset: {x: 0, y: 0, z: 150}

@@ -2,7 +2,7 @@
 version: 1
 id: entrada_piramide
 catalogo: Assets/Levels/Examples/Generated/Catalog.asset
-longitud_m: 2000
+longitud_m: 7500
 
 inicial:
   fondo: fondo.exterior
@@ -14,70 +14,89 @@ tramos:
   - id: exterior
     recurso: escenario.exterior
     inicio_s: 0
-    fin_s: 300
+    fin_s: 2000
     precargar_en: 0
-    descargar_en: 2000
+    descargar_en: 2200
   - id: interior
     recurso: escenario.interior
-    inicio_s: 300
-    fin_s: 2000
-    precargar_en: 120
-    descargar_en: 2000 
+    inicio_s: 2000
+    fin_s: 7500
+    precargar_en: 1800
+    descargar_en: 7500
 
 eventos:
   - id: torreta_izquierda
-    en: 100
+    en: 400
     accion: crear
     recurso: enemigo.torreta
     tramo: exterior
-    posicion: { s: 200, x: -12, y: 0 }
-    parametros: { vida: 5   }
-
-  
+    posicion: { s: 550, x: -15, y: 0 }
+    parametros: { vida: 4 }
 
   - id: lanzador_rayos
-    en: 0
+    en: 400
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: exterior
-    posicion: { s: 200, x: 0, y: 0 }
-    parametros: { vida: 8 }
+    posicion: { s: 500, x: 10, y: 0 }
+    parametros: { vida: 4 }
+
+  - id: escenario.nave_destruida
+    en: 900
+    accion: crear
+    recurso: escenario.nave_destruida
+    tramo: exterior
+    posicion: { s: 1000, x: 0, y: -10 }
+
+  - id: escenario.pasillo_artilleros
+    en: 2000
+    accion: crear
+    recurso: escenario.pasillo_artilleros
+    tramo: interior
+    posicion: { s: 3500, x: 0, y: -10 }
+
+  - id: escenario.fortaleza
+    en: 3500
+    accion: crear
+    recurso: escenario.fortaleza
+    tramo: interior
+    posicion: { s: 5500, x: 0, y: -20 }
 
   - id: muro_derecho
     en: 0
     accion: crear
     recurso: obstaculo.muro
     tramo: exterior
-    posicion: { s: 170, x: 10, y: 0 }
+    posicion: { s: 170, x: -5, y: 0 }
     parametros: { vida: 10, dano: 10, duracion_s: 20 }
 
-    #Oleada de enemigos seguidores
-  #- id: perseguidora_1
-  #  en: 170
-  #  accion: crear
-  #  recurso: enemigo.hostigador
-  #  posicion: { s: 240, x: 30, y: 15 }
-  #  parametros: { vida: 5 }
+  # Oleada de enemigos seguidores
+  - id: perseguidora_1
+    en: 1300
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 1550, x: 30, y: 15 }
+    parametros: { vida: 5 }
 
-  #- id: perseguidora_2
-  #  en: 170
-  #  accion: crear
-  #  recurso: enemigo.hostigador
-  #  posicion: { s: 240, x: 20, y: -5 }
-  #  parametros: { vida: 5 }
+  - id: perseguidora_2
+    en: 1300
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 1550, x: 10, y: -5 }
+    parametros: { vida: 5 }
 
-  #- id: perseguidora_3
-  #  en: 170
-  #  accion: crear
-  #  recurso: enemigo.hostigador
-  #  posicion: { s: 240, x: -15, y: 10 }
-  #  parametros: { vida: 5 }
-   
+  - id: perseguidora_3
+    en: 1300
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 1550, x: -15, y: 10 }
+    parametros: { vida: 5 }
+    
   - id: lanzador_rayos2
     en: 300
     accion: crear
     recurso: enemigo.lanzadorRayos
-    tramo: interior
+    tramo: exterior
     posicion: { s: 800, x: 20, y: 0 }
     parametros: { vida: 8 }
 
@@ -85,41 +104,39 @@ eventos:
     en: 300
     accion: crear
     recurso: enemigo.lanzadorRayos
-    tramo: interior
+    tramo: exterior
     posicion: { s: 800, x: -20, y: 0 }
     parametros: { vida: 8 }
 
-    
   - id: ambiente_interior
-    en: 300
+    en: 0
     accion: ambientacion
     recurso: ambiente.interior
-    transicion_s: 3
+    transicion_s: 0
 
   - id: fondo_interior
-    en: 300
+    en: 0
     accion: fondo
     recurso: fondo.interior
     transicion_s: 2
 
   - id: musica_interior
-    en: 300
+    en: 0
     accion: musica
     recurso: musica.interior
     transicion_s: 2
 
   - id: objeto_curacion1
-    en: 300
+    en: 2500
     accion: crear
     recurso: objeto.reparacion
-    posicion: { s: 400, x: -15, y: 10 }
-    #parametros: { }
+    posicion: { s: 2600, x: 0, y: 0 }
 
   - id: torreta_final
     en: 340
     accion: crear
     recurso: enemigo.torreta
-    tramo: interior
+    tramo: exterior
     posicion: { s: 500, x: 0, y: 8 }
     parametros: { vida: 10 }
 
@@ -127,7 +144,7 @@ eventos:
     en: 1100
     accion: crear
     recurso: enemigo.torreta
-    tramo: interior
+    tramo: exterior
     posicion: { s: 1250, x: 0, y: 8 }
     parametros: { vida: 10 }
 
@@ -139,5 +156,5 @@ eventos:
     posicion: { s: 1200, x: 0, y: 0 }
 
   - id: salida
-    en: 2000
+    en: 7500
     accion: finalizar
