@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5207103325900167026}
   - component: {fileID: 1618697032092037813}
+  - component: {fileID: -8321532590300208320}
   m_Layer: 0
   m_Name: Artillero Mejorado
   m_TagString: Untagged
@@ -58,6 +59,7 @@ MonoBehaviour:
   inclinacionMaxima: 60
   rotacionOffsetEuler: {x: 0, y: 0, z: 0}
   invertirDireccion: 0
+  direccionAvanceJugador: {x: 0, y: 0, z: 1}
   alcance: 250
   cadenciaDisparo: 2
   apuntarDisparoAlObjetivo: 1
@@ -65,6 +67,29 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   prefabProyectil: {fileID: 2759515552060237589, guid: e01e34bf78434cb449fe4ca74abdf655, type: 3}
+--- !u!136 &-8321532590300208320
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954011709384844223}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1010466051764322416
 GameObject:
   m_ObjectHideFlags: 0

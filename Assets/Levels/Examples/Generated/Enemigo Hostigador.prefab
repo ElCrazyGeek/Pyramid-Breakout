@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1294878807145084974}
   - component: {fileID: 8111323029622257804}
+  - component: {fileID: 7876777398107439990}
+  - component: {fileID: 1792569583816790465}
   m_Layer: 0
   m_Name: Enemigo Hostigador
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1562547025066023334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.95708, y: -0, z: 10.8556}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -61,6 +63,43 @@ MonoBehaviour:
   debugVisuals: 0
   debugUseLineRenderer: 0
   debugLength: 100
+--- !u!114 &7876777398107439990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562547025066023334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae722136abd24b38917e5a955111eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
+  maximum: 20
+  healthText: {fileID: 0}
+--- !u!136 &1792569583816790465
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562547025066023334}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2359079661146406513
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,7 +125,7 @@ Transform:
   m_GameObject: {fileID: 2359079661146406513}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.95708, y: 0, z: -10.8556}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -102,7 +141,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.95708
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
       propertyPath: m_LocalPosition.y
@@ -110,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.8556
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
       propertyPath: m_LocalRotation.w

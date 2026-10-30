@@ -21,7 +21,10 @@ namespace Pyramid.Levels
                 staging.gameObject.SetActive(false);
             }
             var pose = route.Evaluate(item.routePosition);
-            var instance = Instantiate(definition.prefab, pose.position, pose.rotation, staging);
+            var rotation = definition.preservePrefabRotation
+                ? pose.rotation * definition.prefab.transform.localRotation
+                : pose.rotation;
+            var instance = Instantiate(definition.prefab, pose.position, rotation, staging);
             instance.SetActive(false);
             var entity = instance.GetComponent<LevelEntity>() ?? instance.AddComponent<LevelEntity>();
             entity.Initialize(item.id, item.segment, item.settings, player, camera);

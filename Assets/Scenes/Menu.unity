@@ -4001,7 +4001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad819e97b68f7c34680de2da32efd045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuManager
-  nombreEscenaJuego: GameScene
+  nombreEscenaJuego: Nivel 1 pruebas
   panelOpciones: {fileID: 1538451472}
   panelCreditos: {fileID: 583437725}
 --- !u!4 &1864042013

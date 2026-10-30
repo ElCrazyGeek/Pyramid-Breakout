@@ -31,6 +31,8 @@ namespace Pyramid.Levels
     public sealed class EntityDefinition : ContentDefinition
     {
         public GameObject prefab;
+        [Tooltip("Conserva la rotación del prefab respecto a la orientación del recorrido.")]
+        public bool preservePrefabRotation;
         public EntitySettings defaults = new EntitySettings();
     }
 }

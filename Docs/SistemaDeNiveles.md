@@ -74,7 +74,47 @@ Los eventos se ordenan por `en`; los empates conservan el orden del archivo. Un 
 
 Los campos desconocidos se rechazan. Se deben usar puntos decimales. Los IDs distinguen mayúsculas/minúsculas. La validación muestra archivo y ubicación; la comprobación previa a compilación también verifica las escenas referenciadas.
 
+## Escenarios 3D del catálogo
+
+`Assets/Levels/Examples/Generated/Catalog.asset` incluye los prefabs de
+`Assets/Escenarios 3D catalogo` como entidades para eventos `accion: crear`:
+
+| Prefab | ID de recurso |
+| --- | --- |
+| Fortaleza | `escenario.fortaleza` |
+| Nave destruida | `escenario.nave_destruida` |
+| Pasillo de artilleros | `escenario.pasillo_artilleros` |
+
+Ejemplo para añadir dentro de `eventos` de un nivel que use ese catálogo:
+
+```yaml
+  - id: nave_01
+    en: 0
+    accion: crear
+    recurso: escenario.nave_destruida
+    posicion: { s: 200, x: 0, y: 4 }
+```
+
+Su duración predeterminada es ilimitada (`duracion_s: 0`). Se puede establecer
+otra duración mediante `parametros` o asignar un `tramo` para retirarlos cuando
+se descargue. Estos recursos son prefabs; las entradas de `tramos` requieren
+definiciones de escenas como `escenario.exterior`.
+
+Las tres definiciones activan `preservePrefabRotation`: mantienen la rotación
+guardada del modelo respecto a la orientación del recorrido y la escala del
+prefab. La posición de su raíz se establece mediante `posicion`; ajustar `y`
+según la altura del modelo y el origen de la ruta.
+
+`Assets/Levels/Examples/Escenarios3D.level` contiene los tres recursos. Para
+probarlo, asignarlo al campo **Level** del componente **LevelSession** en
+`GameRoot.unity`. Sus posiciones son una demostración de autoría y requieren
+ajuste visual para el diseño final.
+
 ## Registrar contenido nuevo
+
+Para instrucciones paso a paso desde el Inspector, ejemplos de escenarios y
+enemigos y resolución de errores, consulta
+[Agregar escenarios y enemigos manualmente](AgregarEscenariosYEnemigos.md).
 
 Crear una definición desde **Assets > Create > Pyramid > Niveles**, asignarle un ID estable y añadirla a `ContentCatalog.entries`.
 

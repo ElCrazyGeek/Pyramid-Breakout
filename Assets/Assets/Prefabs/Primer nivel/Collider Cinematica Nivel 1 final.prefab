@@ -1,0 +1,259 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8597546662328188029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5174320012689824635}
+  - component: {fileID: 8451133399911835277}
+  - component: {fileID: 3158174199953611057}
+  - component: {fileID: 711344169828120376}
+  - component: {fileID: 6939067848689784856}
+  m_Layer: 0
+  m_Name: Collider Cinematica Nivel 1 final
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5174320012689824635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597546662328188029}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6, y: 128, z: 1135}
+  m_LocalScale: {x: 1500, y: 500, z: 20}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &8451133399911835277
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597546662328188029}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &3158174199953611057
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597546662328188029}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials: []
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &711344169828120376
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597546662328188029}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6939067848689784856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597546662328188029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97e66c323a2efbe4fb945b9fa638bbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Collider_cinematicas
+  cambiarDeEscena: 1
+  nombreSiguienteNivel: 0
+  tomasFinales:
+  - fondoEscena: {fileID: 21300000, guid: 40ce24486a2e57a47b1612916d1fbe31, type: 3}
+    transicionEntrada: 1
+    fadeSalida: 0
+    duracionFade: 1.5
+    musicaFondo: {fileID: 8300000, guid: 80b29370057c96747ad6b7cefe4deaf5, type: 3}
+    musicaEnBucle: 1
+    musicaFadeIn: 1
+    mantenerMusicaEnSiguienteEscena: 0
+    sfxImpactoToma: {fileID: 0}
+    personajesPresentes:
+    - idActor: Nave
+      spritePose: {fileID: 21300000, guid: 173fe26700071b444ab260c3553573aa, type: 3}
+      slotUbicacion: {fileID: 0}
+      estaHablando: 1
+    nombreAMostrar: 
+    textoDialogo: 
+    velocidadTipeo: 0
+    tiempoEnPantalla: 3.5
+  - fondoEscena: {fileID: 21300000, guid: 60924609bfba79c4db58ab39644a8c7a, type: 3}
+    transicionEntrada: 0
+    fadeSalida: 0
+    duracionFade: 0
+    musicaFondo: {fileID: 0}
+    musicaEnBucle: 0
+    musicaFadeIn: 0
+    mantenerMusicaEnSiguienteEscena: 0
+    sfxImpactoToma: {fileID: 0}
+    personajesPresentes:
+    - idActor: Lyra
+      spritePose: {fileID: 21300000, guid: bdc6b48c6cd5de343a15424241f38b42, type: 3}
+      slotUbicacion: {fileID: 0}
+      estaHablando: 1
+    nombreAMostrar: Lyra
+    textoDialogo: "Ya saque la basura, puede venir a recoger las sobras\u2026 aunque,
+      deber\xEDa tener una peque\xF1a compensaci\xF3n por escuchar tantos lloriqueos"
+    velocidadTipeo: 0.05
+    tiempoEnPantalla: 0
+  - fondoEscena: {fileID: 21300000, guid: 6307c9d6d6f15d942898fad80f2c9bd0, type: 3}
+    transicionEntrada: 0
+    fadeSalida: 0
+    duracionFade: 0
+    musicaFondo: {fileID: 0}
+    musicaEnBucle: 0
+    musicaFadeIn: 0
+    mantenerMusicaEnSiguienteEscena: 0
+    sfxImpactoToma: {fileID: 0}
+    personajesPresentes:
+    - idActor: Lyra
+      spritePose: {fileID: 21300000, guid: 0d7864fbec198a847a442cea1149d68b, type: 3}
+      slotUbicacion: {fileID: 0}
+      estaHablando: 0
+    nombreAMostrar: Contratista
+    textoDialogo: "Excelente trabajo preciosa, mis chicos llegar\xE1n pronto, puedes
+      retirarte"
+    velocidadTipeo: 0.05
+    tiempoEnPantalla: 0
+  - fondoEscena: {fileID: 21300000, guid: 6307c9d6d6f15d942898fad80f2c9bd0, type: 3}
+    transicionEntrada: 2
+    fadeSalida: 0
+    duracionFade: 0
+    musicaFondo: {fileID: 8300000, guid: c7f73c2cdd13b6d4ea8b5e84c676e171, type: 3}
+    musicaEnBucle: 1
+    musicaFadeIn: 1
+    mantenerMusicaEnSiguienteEscena: 0
+    sfxImpactoToma: {fileID: 0}
+    personajesPresentes:
+    - idActor: Expresiones Lyra
+      spritePose: {fileID: 21300000, guid: 8744225a230f7cf42a4e931fa9a23f2e, type: 3}
+      slotUbicacion: {fileID: 0}
+      estaHablando: 1
+    nombreAMostrar: Lyra
+    textoDialogo: "No estoy muy segura de ello\u2026 tenemos cuentas pendientes \u2026."
+    velocidadTipeo: 0.05
+    tiempoEnPantalla: 0
+  - fondoEscena: {fileID: 21300000, guid: 6307c9d6d6f15d942898fad80f2c9bd0, type: 3}
+    transicionEntrada: 0
+    fadeSalida: 0
+    duracionFade: 0
+    musicaFondo: {fileID: 0}
+    musicaEnBucle: 0
+    musicaFadeIn: 0
+    mantenerMusicaEnSiguienteEscena: 0
+    sfxImpactoToma: {fileID: 0}
+    personajesPresentes:
+    - idActor: Expresiones Lyra
+      spritePose: {fileID: 21300000, guid: 8744225a230f7cf42a4e931fa9a23f2e, type: 3}
+      slotUbicacion: {fileID: 0}
+      estaHablando: 0
+    nombreAMostrar: Contratista
+    textoDialogo: "Vale, no te enojes, olvide mencionarlo, mis chicos se encargaran
+      que el propulsor gama llegue con Orion, puedes estar tranquila Lyra\u2026 "
+    velocidadTipeo: 0.05
+    tiempoEnPantalla: 0
+  - fondoEscena: {fileID: 21300000, guid: 86b1d6e34b95dea4f8525407650f86d1, type: 3}
+    transicionEntrada: 0
+    fadeSalida: 1
+    duracionFade: 0.5
+    musicaFondo: {fileID: 0}
+    musicaEnBucle: 0
+    musicaFadeIn: 0
+    mantenerMusicaEnSiguienteEscena: 0
+    sfxImpactoToma: {fileID: 0}
+    personajesPresentes:
+    - idActor: Lyra
+      spritePose: {fileID: 21300000, guid: 1870c25d6a91c2a42a41a5f6c8a96846, type: 3}
+      slotUbicacion: {fileID: 0}
+      estaHablando: 1
+    nombreAMostrar: Lyra
+    textoDialogo: 'un placer hacer negocios '
+    velocidadTipeo: 0.05
+    tiempoEnPantalla: 0
+  - fondoEscena: {fileID: 21300000, guid: 40ce24486a2e57a47b1612916d1fbe31, type: 3}
+    transicionEntrada: 0
+    fadeSalida: 1
+    duracionFade: 2
+    musicaFondo: {fileID: 0}
+    musicaEnBucle: 0
+    musicaFadeIn: 0
+    mantenerMusicaEnSiguienteEscena: 0
+    sfxImpactoToma: {fileID: 0}
+    personajesPresentes:
+    - idActor: Nave
+      spritePose: {fileID: 21300000, guid: 173fe26700071b444ab260c3553573aa, type: 3}
+      slotUbicacion: {fileID: 0}
+      estaHablando: 1
+    nombreAMostrar: 
+    textoDialogo: 
+    velocidadTipeo: 0
+    tiempoEnPantalla: 1.8
+  reactivarControlesAlTerminar: 0
