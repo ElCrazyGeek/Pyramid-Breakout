@@ -1,11 +1,12 @@
+using System.Collections;
 using UnityEngine;
 using Pyramid.Levels;
 
 [RequireComponent(typeof(Collider))]
 public class EnemigoEvasionYColisiones : MonoBehaviour
 {
-    [Header("Evasión de Escenario (Raycast Whisker)")]
-    [SerializeField] private LayerMask capaObstaculos; // Default / Escenario
+    [Header("Evasión Preventiva de Escenario (Raycast Whisker)")]
+    [SerializeField] private LayerMask capaObstaculos; // Default y Escenario
     [SerializeField] private float distanciaSondeo = 12f;
     [SerializeField] private float radioBigote = 1.2f;
     [SerializeField] private float fuerzaEvasion = 8f;
@@ -13,148 +14,170 @@ public class EnemigoEvasionYColisiones : MonoBehaviour
     [Header("Separación entre Enemigos (Flocking)")]
     [SerializeField] private LayerMask capaEnemigos;   // Layer 'Enemigo'
     [SerializeField] private float radioSeparacion = 3.5f;
-    [SerializeField] private float fuerzaSeparacion = 5f;
+    [SerializeField] private float fuerzaSeparacion = 4f;
 
-    [Header("Daño si la colisión es inevitable")]
-    [SerializeField] private float danioPorChoqueMuro = 3f;
-    [SerializeField] private float danioPorChoqueAliado = 1f;
-    [SerializeField] private float cooldownImpacto = 0.5f;
+    [Header("Audio de Choque con el Escenario")]
+    [SerializeField] private AudioClip sfxChoqueEscenario;
+    [Range(0f, 1f)][SerializeField] private float volumenChoque = 0.8f;
+
+    [Header("Reacción al Choque (Reubicación a Zona Segura)")]
+    [SerializeField] private float danioPorChoqueMuro = 5f;
+    [SerializeField] private float cooldownImpacto = 0.8f;
+    [Tooltip("Rango horizontal y vertical en el que puede reubicarse en pantalla")]
+    [SerializeField] private Vector2 limitesAreaSegura = new Vector2(18f, 10f);
+    [SerializeField] private float velocidadReubicacion = 15f;
+    [SerializeField] private float duracionReubicacion = 0.6f;
 
     private Health miSalud;
-    private Collider miCollider;
     private float tiempoProximoChoque;
+    private bool estaReubicandose = false;
 
     void Awake()
     {
-        miCollider = GetComponent<Collider>();
         miSalud = GetComponent<Health>() ?? GetComponentInChildren<Health>();
     }
 
     void Update()
     {
+        // Si está en medio de la maniobra de reubicación tras chocar, no ejecutamos la evasión estándar
+        if (estaReubicandose) return;
+
         EvitarObstaculos();
         SepararseDeAliados();
     }
 
-    /// <summary>
-    /// Lanza sensores (frente, izquierda, derecha, arriba, abajo) para anticipar muros y esquivarlos
-    /// </summary>
     private void EvitarObstaculos()
     {
         Vector3 direccionEvasion = Vector3.zero;
         Vector3 origen = transform.position;
 
-        // Bigote central
+        // Bigote frontal
         if (Physics.SphereCast(origen, radioBigote, transform.forward, out RaycastHit hitFrontal, distanciaSondeo, capaObstaculos))
         {
             direccionEvasion += hitFrontal.normal;
         }
 
-        // Sensores diagonales (Cruz)
-        Vector3[] direcciones = {
-            transform.right,
-            -transform.right,
-            transform.up,
-            -transform.up
-        };
-
+        // Sensores en cruz
+        Vector3[] direcciones = { transform.right, -transform.right, transform.up, -transform.up };
         foreach (var dir in direcciones)
         {
             Vector3 diagonal = (transform.forward + dir * 0.5f).normalized;
             if (Physics.Raycast(origen, diagonal, out RaycastHit hit, distanciaSondeo * 0.7f, capaObstaculos))
             {
-                // Empuja en dirección contraria al obstáculo detectado
                 direccionEvasion += (origen - hit.point).normalized;
             }
         }
 
-        // Aplica el desplazamiento evasivo de forma fluida
         if (direccionEvasion != Vector3.zero)
         {
-            direccionEvasion.z = 0; // Evita alterar el avance del riel
+            direccionEvasion.z = 0;
             transform.position += direccionEvasion.normalized * fuerzaEvasion * Time.deltaTime;
         }
     }
 
-    /// <summary>
-    /// Evita que dos naves enemigas compartan el mismo espacio tridimensional
-    /// </summary>
     private void SepararseDeAliados()
     {
-        Collider[] aliadosCercanos = Physics.OverlapSphere(transform.position, radioSeparacion, capaEnemigos);
-        Vector3 vectorSeparacion = Vector3.zero;
-        int aliadosDetectados = 0;
+        Collider[] aliados = Physics.OverlapSphere(transform.position, radioSeparacion, capaEnemigos);
+        Vector3 repulsion = Vector3.zero;
+        int conteo = 0;
 
-        foreach (var col in aliadosCercanos)
+        foreach (var col in aliados)
         {
             if (col.gameObject != this.gameObject)
             {
                 Vector3 delta = transform.position - col.transform.position;
-                float distancia = delta.magnitude;
-
-                if (distancia > 0.001f)
+                float dist = delta.magnitude;
+                if (dist > 0.001f)
                 {
-                    // A menor distancia, mayor fuerza de repulsión
-                    vectorSeparacion += (delta.normalized / distancia);
-                    aliadosDetectados++;
+                    repulsion += (delta.normalized / dist);
+                    conteo++;
                 }
             }
         }
 
-        if (aliadosDetectados > 0)
+        if (conteo > 0)
         {
-            vectorSeparacion /= aliadosDetectados;
-            vectorSeparacion.z = 0; // Mantener la profundidad
-            transform.position += vectorSeparacion.normalized * fuerzaSeparacion * Time.deltaTime;
+            repulsion /= conteo;
+            repulsion.z = 0;
+            transform.position += repulsion.normalized * fuerzaSeparacion * Time.deltaTime;
         }
     }
 
-    // --- Recepción de daño si el choque ocurre físicamente ---
-    private void OnTriggerEnter(Collider other) => ProcesarChoque(other.gameObject);
-    private void OnCollisionEnter(Collision collision) => ProcesarChoque(collision.gameObject);
+    private void OnTriggerEnter(Collider other) => ProcesarContacto(other.gameObject, other);
+    private void OnCollisionEnter(Collision collision) => ProcesarContacto(collision.gameObject, collision.collider);
 
-    private void ProcesarChoque(GameObject otro)
+    private void ProcesarContacto(GameObject otro, Collider col)
     {
         if (Time.time < tiempoProximoChoque) return;
 
-        // 1. Ignorar proyectiles propios o el jugador (el jugador tiene su propio script de embestida)
+        // Ignorar proyectiles propios o al jugador
         if (otro.GetComponent<Proyectil>() != null || otro.CompareTag("Player")) return;
 
-        // 2. Choque contra el Escenario / Paredes
+        // Verificar si es escenario
         bool esEscenario = otro.CompareTag("Escenario") || otro.layer == LayerMask.NameToLayer("Default");
+
         if (esEscenario)
         {
             tiempoProximoChoque = Time.time + cooldownImpacto;
-            miSalud?.TakeDamage(danioPorChoqueMuro);
 
-            // Rebote de seguridad inmediato para desincrustar
-            Vector3 rebase = (transform.position - otro.transform.position).normalized;
-            rebase.z = 0;
-            transform.position += rebase * 1.5f;
-            return;
-        }
+            // 1. Reproducir sonido de impacto del choque
+            if (sfxChoqueEscenario != null)
+            {
+                AudioSource.PlayClipAtPoint(sfxChoqueEscenario, transform.position, volumenChoque);
+            }
 
-        // 3. Choque entre dos enemigos aliados
-        if (otro.CompareTag("Enemy") || (otro.layer == LayerMask.NameToLayer("Enemigo") && otro != this.gameObject))
-        {
-            tiempoProximoChoque = Time.time + cooldownImpacto;
-            miSalud?.TakeDamage(danioPorChoqueAliado);
+            // 2. Aplicar daño al enemigo
+            if (miSalud != null)
+            {
+                miSalud.TakeDamage(danioPorChoqueMuro);
+            }
 
-            // Se separan inmediatamente
-            Vector3 dirRebote = (transform.position - otro.transform.position).normalized;
-            dirRebote.z = 0;
-            transform.position += dirRebote * 1.2f;
+            // 3. Si sobrevivió al choque, recolocarse a un carril seguro
+            if (gameObject.activeInHierarchy && (miSalud == null || miSalud.Current > 0))
+            {
+                if (!estaReubicandose)
+                {
+                    StartCoroutine(RutinaReubicacionSegura(col));
+                }
+            }
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private IEnumerator RutinaReubicacionSegura(Collider obstaculo)
     {
-        // Visualizar el radio de separación en Scene view
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, radioSeparacion);
+        estaReubicandose = true;
 
-        // Visualizar el sensor frontal
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position, transform.forward * distanciaSondeo);
+        // 1. Calcular una dirección de rebote inmediato para despegarse de la superficie
+        Vector3 puntoCercano = (obstaculo != null) ? obstaculo.ClosestPoint(transform.position) : transform.position;
+        Vector3 vectorEscape = (transform.position - puntoCercano).normalized;
+        if (vectorEscape.sqrMagnitude < 0.01f) vectorEscape = Vector3.up;
+
+        // 2. Elegir un nuevo carril objetivo en X/Y (dentro de los límites jugables del riel)
+        // Ejemplo: Si chocó a la izquierda (X < 0), lo manda hacia la derecha; si chocó abajo, hacia arriba.
+        float nuevoX = (transform.position.x > 0) ? Random.Range(-limitesAreaSegura.x * 0.7f, 0f) : Random.Range(0f, limitesAreaSegura.x * 0.7f);
+        float nuevoY = (transform.position.y > 0) ? Random.Range(-limitesAreaSegura.y * 0.6f, 0f) : Random.Range(0f, limitesAreaSegura.y * 0.6f);
+
+        Vector3 destinoLocal = new Vector3(nuevoX, nuevoY, transform.localPosition.z);
+
+        // 3. Desplazar rápidamente la nave durante la duración fijada
+        float tiempo = 0f;
+        while (tiempo < duracionReubicacion)
+        {
+            // Combina el impulso de salida de la pared con el viaje hacia el nuevo carril
+            Vector3 pasoSalida = vectorEscape * (fuerzaEvasion * 1.5f) * Time.deltaTime;
+            pasoSalida.z = 0;
+            transform.position += pasoSalida;
+
+            // Interpolación hacia el nuevo carril
+            Vector3 posActual = transform.localPosition;
+            posActual.x = Mathf.MoveTowards(posActual.x, destinoLocal.x, velocidadReubicacion * Time.deltaTime);
+            posActual.y = Mathf.MoveTowards(posActual.y, destinoLocal.y, velocidadReubicacion * Time.deltaTime);
+            transform.localPosition = posActual;
+
+            tiempo += Time.deltaTime;
+            yield return null;
+        }
+
+        estaReubicandose = false;
     }
 }

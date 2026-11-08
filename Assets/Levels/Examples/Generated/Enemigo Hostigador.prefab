@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemigoEvasionYColisiones
   capaObstaculos:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 257
   distanciaSondeo: 12
   radioBigote: 1.2
   fuerzaEvasion: 8
@@ -133,10 +133,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   radioSeparacion: 3.5
-  fuerzaSeparacion: 2
+  fuerzaSeparacion: 4
+  sfxChoqueEscenario: {fileID: 8300000, guid: 5ca68ee6ab39b7f49ad0d8dc557f1580, type: 3}
+  volumenChoque: 0.8
   danioPorChoqueMuro: 5
-  danioPorChoqueAliado: 1
   cooldownImpacto: 0.5
+  limitesAreaSegura: {x: 18, y: 10}
+  velocidadReubicacion: 15
+  duracionReubicacion: 0.6
 --- !u!1 &2359079661146406513
 GameObject:
   m_ObjectHideFlags: 0
