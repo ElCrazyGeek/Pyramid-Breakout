@@ -10,6 +10,7 @@ Library: D:\proyecto videojuegos\Pyramid Breakout\Temp\BurstOutput\Data\Plugins\
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=D:\proyecto videojuegos\Pyramid Breakout\Temp\Burst
+--debug=Full
 --generate-static-linkage-methods
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.8f1/Editor/Data/PlaybackEngines/WebGLSupport
 --decode-folder=D:\proyecto videojuegos\Pyramid Breakout\Library\Burst
@@ -31,6 +32,7 @@ Library: D:\proyecto videojuegos\Pyramid Breakout\Temp\BurstOutput\Data\Plugins\
 --float-mode=Fast
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=D:\proyecto videojuegos\Pyramid Breakout\Temp\Burst
+--debug=Full
 --generate-static-linkage-methods
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.8f1/Editor/Data/PlaybackEngines/WebGLSupport
 --decode-folder=D:\proyecto videojuegos\Pyramid Breakout\Library\Burst
@@ -50,6 +52,7 @@ Library: D:\proyecto videojuegos\Pyramid Breakout\Temp\BurstOutput\Data\Plugins\
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=D:\proyecto videojuegos\Pyramid Breakout\Temp\Burst
+--debug=Full
 --generate-static-linkage-methods
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.8f1/Editor/Data/PlaybackEngines/WebGLSupport
 --decode-folder=D:\proyecto videojuegos\Pyramid Breakout\Library\Burst

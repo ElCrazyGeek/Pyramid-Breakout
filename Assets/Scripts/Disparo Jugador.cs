@@ -7,15 +7,17 @@ public class DisparoJugador : MonoBehaviour
     [Header("Referencias")]
     [SerializeField] private GameObject prefabProyectil;
     [SerializeField] private Transform[] puntosDisparo; // Cañón izquierdo / derecho
-    [SerializeField] public RectTransform mirillaUI;    // Arrastra aquí el RectTransform de MirillaUI
+    [SerializeField] public RectTransform mirillaLejanaUI; // Retícula lejana (Impacto)
 
-    [Header("Control de Delay")]
-    [SerializeField] private float delayEntreDisparos = 0.25f;
+    [Header("Control de Cadencia")]
+    [SerializeField] private float delayEntreDisparos = 0.22f;
     private float tiempoSiguienteDisparo = 0f;
 
     [Header("Ajustes de Apuntado")]
-    [SerializeField] private float distanciaHorizonte = 200f; // Distancia cuando disparas al vacío
-    [SerializeField] private LayerMask capasImpacto = ~0;     // Detecta todo por defecto
+    [Tooltip("Distancia al horizonte a la que convergen los disparos si apuntas al cielo")]
+    [SerializeField] private float distanciaHorizonte = 250f;
+    [Tooltip("Capas con las que choca el rayo de apuntado")]
+    [SerializeField] private LayerMask capasImpacto = ~0;
 
     [Header("Estado")]
     public bool puedeDisparar = true;
@@ -41,37 +43,44 @@ public class DisparoJugador : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
-        Vector3 puntoImpactoFinal;
+        // 1. Trazar rayo desde la cámara a través del centro de la mirilla exterior
+        Ray rayoApuntado = (mirillaLejanaUI != null)
+            ? RectTransformUtility.ScreenPointToRay(cam, mirillaLejanaUI.position)
+            : new Ray(cam.transform.position, cam.transform.forward);
 
-        if (mirillaUI != null)
+        Vector3 puntoImpactoObjetivo;
+
+        // 2. Si hay un enemigo o muro bajo la mira, el blanco exacto es su superficie
+        if (Physics.Raycast(rayoApuntado, out RaycastHit hit, distanciaHorizonte, capasImpacto))
         {
-            // 1. Trazar un rayo desde la cámara que pasa justo a través de la posición de la mirilla en pantalla
-            Ray rayo = RectTransformUtility.ScreenPointToRay(cam, mirillaUI.position);
-
-            // 2. Si el rayo impacta un enemigo o muro en 3D, apuntar directo a ese punto
-            if (Physics.Raycast(rayo, out RaycastHit hit, distanciaHorizonte, capasImpacto))
-            {
-                puntoImpactoFinal = hit.point;
-            }
-            else
-            {
-                // Si dispara al cielo/espacio vacío, viaja al horizonte
-                puntoImpactoFinal = rayo.GetPoint(distanciaHorizonte);
-            }
+            puntoImpactoObjetivo = hit.point;
         }
         else
         {
-            puntoImpactoFinal = cam.transform.position + (cam.transform.forward * distanciaHorizonte);
+            // Si apuntas al vacío, el objetivo es el fondo en el horizonte
+            puntoImpactoObjetivo = rayoApuntado.GetPoint(distanciaHorizonte);
         }
 
-        // 3. Instanciar cada bala orientada hacia ese punto de impacto real
+        // 3. Cada cañón dispara directo hacia el punto de convergencia
         foreach (Transform punto in puntosDisparo)
         {
-            Vector3 direccionDisparo = (puntoImpactoFinal - punto.position).normalized;
-            Quaternion rotacionFinal = Quaternion.LookRotation(direccionDisparo);
+            Vector3 direccionDisparo = (puntoImpactoObjetivo - punto.position).normalized;
+            Quaternion rotacionBala = Quaternion.LookRotation(direccionDisparo);
 
-            var proyectil = Instantiate(prefabProyectil, punto.position, rotacionFinal);
-            if (LevelSession.Active) LevelSession.Active.Objects.Track(proyectil);
+            GameObject bala = Instantiate(prefabProyectil, punto.position, rotacionBala);
+
+            // Configuramos la bala para proteger al jugador de auto-daño
+            Proyectil compProyectil = bala.GetComponent<Proyectil>();
+            if (compProyectil != null)
+            {
+                compProyectil.origen = transform.root.gameObject;
+                compProyectil.tagOrigen = "Player";
+            }
+
+            if (LevelSession.Active != null)
+            {
+                LevelSession.Active.Objects.Track(bala);
+            }
         }
     }
 }

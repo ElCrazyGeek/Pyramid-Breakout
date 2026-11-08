@@ -3,7 +3,8 @@ using Pyramid.Levels;
 
 public class Proyectil : MonoBehaviour
 {
-    [SerializeField] public float velocidad = 60f;
+    [Header("Parámetros de Vuelo")]
+    [SerializeField] public float velocidad = 140f; // Velocidad alta para conservar la línea estética
     [SerializeField] public float tiempoVida = 3f;
     [SerializeField] public float danio = 1;
 
@@ -12,13 +13,13 @@ public class Proyectil : MonoBehaviour
     [SerializeField] private AudioClip sfxDisparo;
     [Range(0f, 1f)][SerializeField] private float volumenSfx = 0.8f;
 
-    [Header("Origen del proyectil")]
+    [Header("Origen del proyectil (Anti-Friendly Fire)")]
     public string tagOrigen = "Player";
     public GameObject origen;
     public bool debugImpact = false;
 
-    Rigidbody rb;
-    bool consumido;
+    private Rigidbody rb;
+    private bool consumido;
 
     void OnDestroy()
     {
@@ -27,7 +28,6 @@ public class Proyectil : MonoBehaviour
 
     void Start()
     {
-        // Reproducir sonido de disparo al instante
         if (sfxDisparo != null)
         {
             AudioSource.PlayClipAtPoint(sfxDisparo, transform.position, volumenSfx);
@@ -36,6 +36,7 @@ public class Proyectil : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
+            // Forzamos el avance directo en su eje frontal
             rb.linearVelocity = transform.forward * velocidad;
         }
 
@@ -62,33 +63,36 @@ public class Proyectil : MonoBehaviour
     {
         if (consumido) return;
 
-        if (!string.IsNullOrEmpty(tagOrigen) && col.CompareTag(tagOrigen))
-        {
-            if (debugImpact) Debug.Log($"Proyectil ignoró impacto por tag: tagOrigen={tagOrigen}, colliderTag={col.tag}");
-            return;
-        }
+        // 1. Ignorar disparos contra uno mismo o piezas de la misma nave
+        if (!string.IsNullOrEmpty(tagOrigen) && col.CompareTag(tagOrigen)) return;
 
         if (origen != null)
         {
             var t = col.transform;
-            if (t == origen.transform || t.IsChildOf(origen.transform))
-            {
-                if (debugImpact) Debug.Log($"Proyectil ignoró impacto por origen: origen={origen.name}, collider={col.name}");
-                return;
-            }
+            if (t == origen.transform || t.IsChildOf(origen.transform) || origen.transform.IsChildOf(t)) return;
         }
 
-        consumido = true;
-        var dmg = objetivo.GetComponentInParent<Pyramid.Levels.IDamageable>();
+        // 2. Ignorar triggers de interfaz o sensores que no deban bloquear disparos
+        if (col.isTrigger && objetivo.GetComponentInParent<Pyramid.Levels.IDamageable>() == null)
+        {
+            return;
+        }
+
+        // 3. Aplicar daño si es un objetivo destructible
+        var dmg = objetivo.GetComponentInParent<Pyramid.Levels.IDamageable>()
+               ?? objetivo.GetComponentInChildren<Pyramid.Levels.IDamageable>();
+
         if (dmg != null)
         {
-            if (debugImpact) Debug.Log($"Proyectil aplicando {danio} de daño a {objetivo.name} (IDamageable en {((Component)dmg).gameObject.name})");
+            consumido = true;
+            if (debugImpact) Debug.Log($"Proyectil impactó a {objetivo.name}. Aplicando daño: {danio}");
             dmg.TakeDamage(danio);
             Destroy(gameObject);
         }
-        else
+        else if (objetivo.CompareTag("Escenario") || objetivo.layer == LayerMask.NameToLayer("Default"))
         {
-            if (debugImpact) Debug.Log($"Proyectil impacto en {objetivo.name} pero no encontró IDamageable. collider.tag={col.tag}");
+            // Chocó con un muro, asteroide o suelo sólido del nivel
+            consumido = true;
             Destroy(gameObject);
         }
     }

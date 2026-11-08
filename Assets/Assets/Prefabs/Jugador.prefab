@@ -222,14 +222,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1bb11490480294e8ae39b5da459b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_rieles
-  speed: 30
+  speed: 20
   LimitesMovimiento: {x: 45, y: 22}
-  VelocidadAvance: 60
+  VelocidadAvance: 40
   VelocidadActual: 0
   Frenado: 0
-  InclinacionX: 15
-  InclinacionZ: 15
-  VelocidadInclinacion: 15
+  InclinacionX: 10
+  InclinacionZ: 10
+  VelocidadInclinacion: 8
   VelocidadMaxima: 80
   VelocidadMinima: 5
   Aceleracion: 25
@@ -239,7 +239,7 @@ MonoBehaviour:
   PlayerInput: {x: 0, y: 0}
   controller: {fileID: 1236008783105916877}
   mirillaUI: {fileID: 0}
-  velocidadOrientacion: 14
+  velocidadOrientacion: 3
   fuerzaArrastreMirilla: {x: 0, y: 0}
 --- !u!114 &4126864029510395587
 MonoBehaviour:
@@ -253,17 +253,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b34036ea60794ce42b363c3e2a5d82e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_mundolibre
-  turnSpeed: 40
+  turnSpeed: 35
   bankRoll: 60
   maxYawOffset: 75
   baseYawFollowSpeed: 0.9
   baseYaw: 0
   yawOffset: 0
-  verticalSpeed: 42
+  verticalSpeed: 35
   limiteInferiorY: -3
   limiteSuperiorY: 35
   bankPitch: 25
-  VelocidadAvance: 60
+  VelocidadAvance: 40
   Frenado: 0
   smoothTiltSpeed: 10
   controller: {fileID: 1236008783105916877}
@@ -309,12 +309,12 @@ MonoBehaviour:
   puntosDisparo:
   - {fileID: 9195954348387955336}
   - {fileID: 6686350305531544078}
-  mirillaUI: {fileID: 0}
+  mirillaLejanaUI: {fileID: 0}
   delayEntreDisparos: 0.09
-  distanciaHorizonte: 400
+  distanciaHorizonte: 500
   capasImpacto:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 384
   puedeDisparar: 1
 --- !u!114 &1819048550107000825
 MonoBehaviour:
@@ -372,7 +372,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!95 &4542381257713785168
 Animator:
   serializedVersion: 7
@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ImpactFeedback
   modeloVisualNave: {fileID: 5900915271108007199}
-  impulseSource: {fileID: 0}
+  impulseSource: {fileID: 8322673138148720555}
   duracionSacudida: 1.5
   intensidadSacudida: 0.2
   retrocesoZ: -0.4

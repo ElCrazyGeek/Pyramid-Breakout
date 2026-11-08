@@ -385,8 +385,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0033332743, y: 0, z: 0, w: 0.99999446}
-  m_LocalPosition: {x: 0, y: 23, z: -948}
+  m_LocalRotation: {x: 0.06975647, y: -3.6131455e-22, z: 5.4724884e-23, w: 0.9975641}
+  m_LocalPosition: {x: 0, y: 15, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -527,9 +527,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   playerTarget: {fileID: 1635421773}
   offset: {x: 0, y: 0, z: -25}
-  margenX: 22
-  margenY: 15
-  seguimientoSuavidad: 2.5
+  margenX: 25
+  margenY: 12
+  seguimientoSuavidad: 8
 --- !u!114 &396840277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineDeoccluder
   CollideAgainst:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   IgnoreTag: Player
   TransparentLayers:
     serializedVersion: 2
@@ -663,7 +663,7 @@ MonoBehaviour:
     Enabled: 1
     DistanceLimit: 0
     MinimumOcclusionTime: 0
-    CameraRadius: 0.2
+    CameraRadius: 0.6
     UseFollowTarget:
       Enabled: 0
       YOffset: 0
@@ -1022,52 +1022,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: mirillaUI
+      propertyPath: mirillaLejanaUI
       value: 
       objectReference: {fileID: 1339351033}
-    - target: {fileID: 3485035434292159568, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4126864029510395587, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: turnSpeed
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4126864029510395587, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: verticalSpeed
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4126864029510395587, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: VelocidadAvance
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: speed
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: mirillaUI
       value: 
       objectReference: {fileID: 2123715489}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: InclinacionX
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: InclinacionZ
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: VelocidadAvance
-      value: 40
+      propertyPath: VelocidadMaxima
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: VelocidadInclinacion
-      value: 8
+      propertyPath: LimitesMovimiento.x
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: velocidadOrientacion
-      value: 3
+      propertyPath: LimitesMovimiento.y
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6802675490704385792, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: barraVidaImagen
@@ -2787,15 +2767,15 @@ MonoBehaviour:
   playerRieles: {fileID: 1635421771}
   mirillaLejana: {fileID: 1339351033}
   mirillaCercana: {fileID: 1190169471}
-  rangoLejana: {x: 700, y: 600}
-  rangoCercana: {x: 380, y: 220}
+  rangoLejana: {x: 1000, y: 600}
   velocidadMirilla: 2.5
-  atraccionAlCentro: 1
+  atraccionAlCentro: 0.2
   velocidadRetornoSoltado: 2
+  factorIntermedio: 0.649
   capaEnemigos:
     serializedVersion: 2
     m_Bits: 128
-  distanciaDeteccion: 900
+  distanciaDeteccion: 600
   factorEscalaObjetivo: 1.3
   velocidadEscala: 10
   colorNormal: {r: 1, g: 1, b: 1, a: 1}
