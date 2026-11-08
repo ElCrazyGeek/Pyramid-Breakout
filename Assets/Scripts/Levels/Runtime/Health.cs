@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 namespace Pyramid.Levels
 {
@@ -23,7 +24,9 @@ namespace Pyramid.Levels
         [SerializeField] private Color colorParpadeo = Color.red;
         [SerializeField] private float duracionParpadeo = 0.08f;
 
-        [Header("Audio de Impacto")]
+        [Header("Audio y Canales del Mixer")]
+        [Tooltip("Arrastra aquí el grupo del AudioMixer (ej. SFX, Jugador o Enemigos)")]
+        [SerializeField] private AudioMixerGroup grupoMixer;
         [SerializeField] private AudioClip sfxImpacto;
         [Tooltip("Control de volumen independiente para el impacto")]
         [Range(0f, 1f)][SerializeField] private float volumenImpacto = 0.5f;
@@ -33,7 +36,7 @@ namespace Pyramid.Levels
         [SerializeField] private AudioClip sfxExplosionMuerte;
         [Tooltip("Control de volumen para la explosión")]
         [Range(0f, 1f)][SerializeField] private float volumenExplosion = 0.7f;
-        
+
         [Header("Feedback de Impacto (Solo Jugador)")]
         [SerializeField] private ImpactFeedback feedbackJugador;
 
@@ -51,6 +54,12 @@ namespace Pyramid.Levels
             if (audioSource == null)
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
+            }
+
+            // Enlazar el AudioSource del objeto al canal del Audio Mixer
+            if (grupoMixer != null)
+            {
+                audioSource.outputAudioMixerGroup = grupoMixer;
             }
 
             if (feedbackJugador == null)
@@ -132,7 +141,6 @@ namespace Pyramid.Levels
 
             if (session != null)
             {
-                // Si existe pantalla de Game Over personalizada, mostrarla; si no, avisar a LevelSession
                 if (GameOverManager.Instance != null)
                 {
                     GameOverManager.Instance.MostrarGameOver();
@@ -159,13 +167,11 @@ namespace Pyramid.Levels
 
         private void ActualizarUI()
         {
-            // Actualizar recorte de la imagen (0 a 1)
             if (barraVidaImagen != null)
             {
                 barraVidaImagen.fillAmount = Mathf.Clamp01(Current / maximum);
             }
 
-            // Actualizar texto si existe
             if (healthText != null)
             {
                 healthText.SetText($"{Current} / {maximum}");
@@ -183,9 +189,26 @@ namespace Pyramid.Levels
                 }
             }
 
+            // Reproductor temporal que enruta la explosión al Audio Mixer en lugar de saltárselo
             if (sfxExplosionMuerte != null)
             {
-                AudioSource.PlayClipAtPoint(sfxExplosionMuerte, transform.position, volumenExplosion);
+                GameObject audioTemp = new GameObject("SonidoExplosionTemp");
+                audioTemp.transform.position = transform.position;
+
+                AudioSource src = audioTemp.AddComponent<AudioSource>();
+                src.clip = sfxExplosionMuerte;
+                src.volume = volumenExplosion;
+                src.spatialBlend = 0.8f;
+                src.minDistance = 5f;
+                src.maxDistance = 60f;
+
+                if (grupoMixer != null)
+                {
+                    src.outputAudioMixerGroup = grupoMixer;
+                }
+
+                src.Play();
+                Destroy(audioTemp, sfxExplosionMuerte.length);
             }
         }
 

@@ -62,6 +62,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8085200485711666756}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4232270589622311371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5967539718787088846}
+  m_Layer: 0
+  m_Name: Disparo cargado
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5967539718787088846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4232270589622311371}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 7.84}
+  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8085200485711666756}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6256953872702972707
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +209,7 @@ Transform:
   - {fileID: 6686350305531544078}
   - {fileID: 6703145477597420160}
   - {fileID: 1972289376687614868}
+  - {fileID: 5967539718787088846}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6024472928235459456
@@ -223,14 +255,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_rieles
   speed: 20
-  LimitesMovimiento: {x: 45, y: 22}
+  LimitesMovimiento: {x: 50, y: 25}
   VelocidadAvance: 40
   VelocidadActual: 0
   Frenado: 0
-  InclinacionX: 10
-  InclinacionZ: 10
+  InclinacionX: 20
+  InclinacionZ: 30
   VelocidadInclinacion: 8
-  VelocidadMaxima: 80
+  VelocidadMaxima: 60
   VelocidadMinima: 5
   Aceleracion: 25
   Desaceleracion: 20
@@ -315,6 +347,13 @@ MonoBehaviour:
   capasImpacto:
     serializedVersion: 2
     m_Bits: 384
+  prefabProyectilCargado: {fileID: 2593995980092043329, guid: b5c6c7225128da146b8442242adf7fda, type: 3}
+  puntoSalidaCargado: {fileID: 5967539718787088846}
+  efectoCarga: {fileID: 0}
+  tiempoNecesarioCarga: 0.9
+  sfxLockOn: {fileID: 0}
+  sfxCargaLista: {fileID: 0}
+  volumenSfx: 0.8
   puedeDisparar: 1
 --- !u!114 &1819048550107000825
 MonoBehaviour:

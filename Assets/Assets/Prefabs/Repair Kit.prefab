@@ -309,6 +309,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   repairAmount: 20
+  grupoMixer: {fileID: -1816582845240284932, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxRecoger: {fileID: 8300000, guid: 4840319ffaa2aad45bb813e645dc81b3, type: 3}
+  volumenAudio: 0.9
+  prefabParticulasRecoger: {fileID: 0}
 --- !u!54 &-9129678704143536781
 Rigidbody:
   m_ObjectHideFlags: 0

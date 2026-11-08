@@ -82,11 +82,12 @@ MonoBehaviour:
   healthText: {fileID: 0}
   colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
   duracionParpadeo: 0.08
+  grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxImpacto: {fileID: 8300000, guid: 708daf7c88986cd4cb7da875d3b183d4, type: 3}
-  volumenImpacto: 0.5
+  volumenImpacto: 0.831
   prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
   sfxExplosionMuerte: {fileID: 8300000, guid: 4e298f198db99fa4cbd40d5109ea8c19, type: 3}
-  volumenExplosion: 0.7
+  volumenExplosion: 0.945
   feedbackJugador: {fileID: 0}
 --- !u!136 &1792569583816790465
 CapsuleCollider:
@@ -134,8 +135,9 @@ MonoBehaviour:
     m_Bits: 128
   radioSeparacion: 3.5
   fuerzaSeparacion: 4
+  grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxChoqueEscenario: {fileID: 8300000, guid: 5ca68ee6ab39b7f49ad0d8dc557f1580, type: 3}
-  volumenChoque: 0.8
+  volumenChoque: 0.93
   danioPorChoqueMuro: 5
   cooldownImpacto: 0.5
   limitesAreaSegura: {x: 18, y: 10}

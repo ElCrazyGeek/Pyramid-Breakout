@@ -232,6 +232,7 @@ MonoBehaviour:
   healthText: {fileID: 0}
   colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
   duracionParpadeo: 0.08
+  grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxImpacto: {fileID: 8300000, guid: 60857dd7f6e41ec47b14668c663aaae0, type: 3}
   volumenImpacto: 0.925
   prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
