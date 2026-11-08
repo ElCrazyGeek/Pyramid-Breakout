@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7878293569620887168}
   m_Layer: 0
   m_Name: Muro
-  m_TagString: Untagged
+  m_TagString: Obstaculo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +127,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
   maximum: 40
+  barraVidaImagen: {fileID: 0}
+  healthText: {fileID: 0}
+  colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
+  duracionParpadeo: 0.08
+  sfxImpacto: {fileID: 0}
+  volumenImpacto: 0.5
+  prefabExplosion: {fileID: 0}
+  sfxExplosionMuerte: {fileID: 0}
+  volumenExplosion: 0.7
+  feedbackJugador: {fileID: 0}
 --- !u!114 &7878293569620887168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,3 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.ContactDamage
   damage: 10
+  cooldownGolpe: 0.6
+  fuerzaEmpuje: 15
+  duracionEmpuje: 0.2

@@ -64,10 +64,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8391222552659086748, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -7918335002988649766, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a715fc281d8d2fb428b595ab8f80beb9, type: 2}
+    - target: {fileID: -7029948723529949830, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -4683669308469848369, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -80,13 +88,25 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5d3bd17c248422e4a91de81a22902dc2, type: 2}
+    - target: {fileID: -516098083770646512, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
       propertyPath: m_Name
       value: Nave destruida
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
       propertyPath: m_TagString
-      value: Obstaculo
+      value: Escenario
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416272007918961125, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -95,9 +115,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3880659459023017501}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -5689772859630862508}
     - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6220861856649291808}
@@ -125,26 +142,13 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &-5689772859630862508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4636400493814187207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3b2329c0387d4264b76b5bfc387dcfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.ContactDamage
-  damage: 10
 --- !u!1 &5973530808558413036 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7029948723529949830, guid: cdfe80da03d4c944db037cad8a36c0fd, type: 3}
@@ -185,3 +189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.ContactDamage
   damage: 10
+  cooldownGolpe: 0.6
+  fuerzaEmpuje: 15
+  duracionEmpuje: 0.2

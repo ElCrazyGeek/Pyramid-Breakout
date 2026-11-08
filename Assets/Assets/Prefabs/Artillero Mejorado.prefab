@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9dd229297cfac4cadbdf8b677a1fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Artillero
-  objetivo: {fileID: 0}
+  objetivo: {fileID: 8085200485711666756, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
   parteCuerpo: {fileID: 1870523488783474722}
   boca: {fileID: 9029109301023144153}
   puntoDisparo: {fileID: 4963865108588499660}

@@ -6,27 +6,18 @@ using UnityEngine.Serialization;
 public class Player_rieles : MonoBehaviour
 {
     [Header("Movimiento del jugador")]
-
-    [SerializeField]
-    public float speed = 15.0f;
-    [SerializeField]
-    Vector2 LimitesMovimiento = new Vector2(20f, 10f);
-
-    [SerializeField]
-    public float VelocidadAvance = 15f;
-
-    [SerializeField]
-    public float VelocidadActual;
-
+    [SerializeField] public float speed = 15.0f;
+    [SerializeField] Vector2 LimitesMovimiento = new Vector2(20f, 10f);
+    [SerializeField] public float VelocidadAvance = 15f;
+    [SerializeField] public float VelocidadActual;
     [SerializeField] public bool Frenado = false;
 
-    [Header("Incrinacion")]
+    [Header("Inclinacion")]
     public float InclinacionX = 15f;
     public float InclinacionZ = 15f;
-
     public float VelocidadInclinacion = 15f;
 
-    [Header ("Controles de jugador")]
+    [Header("Controles de jugador")]
     public float VelocidadMaxima = 50;
     public float VelocidadMinima = 5;
     public float Aceleracion = 10;
@@ -37,6 +28,7 @@ public class Player_rieles : MonoBehaviour
     [Min(0f)] public float TiempoFrenadoMaximoMs = 4000f;
     [FormerlySerializedAs("TiempoCastigoFrenadp")]
     [Min(0f)] public float TiempoCastigoFrenoMs = 8000f;
+
     public Vector2 PlayerInput;
     public CharacterController controller;
     private Vector3 origenRiel;
@@ -46,10 +38,19 @@ public class Player_rieles : MonoBehaviour
     private bool FrenoBloqueado = false;
     private float InicioFrenado;
     private float FinCastigoFreno;
+
+    [Header("Alineación con Mirilla")]
+    [SerializeField] private MirillaUI mirillaUI; // Arrastra tu MirillaUI aquí
+    [SerializeField] private float velocidadOrientacion = 14f;
+
+    // Vector que nos enviará la Mirilla cuando llegue al tope del cuadro
+    [HideInInspector] public Vector2 fuerzaArrastreMirilla = Vector2.zero;
+
     public void OnMovimiento(InputValue value)
     {
         PlayerInput = enabled ? value.Get<Vector2>() : Vector2.zero;
     }
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -65,6 +66,7 @@ public class Player_rieles : MonoBehaviour
         origenRiel = origen;
         VelocidadActual = Mathf.Clamp(VelocidadAvance, VelocidadMinima, VelocidadMaxima);
         PlayerInput = Vector2.zero;
+        fuerzaArrastreMirilla = Vector2.zero;
         Frenado = Frenando = FrenoBloqueado = false;
         InicioFrenado = FinCastigoFreno = 0;
         inicializado = true;
@@ -83,21 +85,18 @@ public class Player_rieles : MonoBehaviour
         mover();
         avance();
         InclinacionJugador();
-
     }
 
     void mover()
     {
-        // Calcula hacia dónde "querrías" moverte según el input
+        // La nave se mueve en X e Y según la palanca
         Vector3 desplazamiento = (Vector3)PlayerInput * speed * Time.deltaTime;
 
-        // Predice la posición resultante para poder clampearla contra los límites del riel
         Vector3 posFutura = transform.position + desplazamiento;
 
         float xClamped = Mathf.Clamp(posFutura.x, origenRiel.x - LimitesMovimiento.x, origenRiel.x + LimitesMovimiento.x);
         float yClamped = Mathf.Clamp(posFutura.y, origenRiel.y - LimitesMovimiento.y, origenRiel.y + LimitesMovimiento.y);
 
-        // Solo mueve la diferencia real (ya clampeada), no el desplazamiento crudo
         Vector3 movimientoReal = new Vector3(xClamped - transform.position.x, yClamped - transform.position.y, 0f);
         controller.Move(movimientoReal);
     }
@@ -105,15 +104,14 @@ public class Player_rieles : MonoBehaviour
     void OnFreno(InputValue value)
     {
         Frenado = enabled && value.isPressed;
-
     }
+
     void avance()
     {
         bool frenoActivo = ActualizarEstadoFreno();
         float velocidadObjetivo = frenoActivo ? VelocidadMinima : VelocidadMaxima;
 
         VelocidadActual = RampaDeAceleracionYDesaceleracion(velocidadObjetivo);
-
         float avanceZ = VelocidadActual * Time.deltaTime;
         controller.Move(new Vector3(0f, 0f, avanceZ));
     }
@@ -126,13 +124,10 @@ public class Player_rieles : MonoBehaviour
 
         if (FrenoBloqueado)
         {
-            // Aunque termine el castigo, el jugador debe soltar el botón
-            // antes de poder iniciar otro frenado.
             if (ahora >= FinCastigoFreno && !Frenado)
             {
                 FrenoBloqueado = false;
             }
-
             return false;
         }
 
@@ -161,26 +156,30 @@ public class Player_rieles : MonoBehaviour
 
     void InclinacionJugador()
     {
-        float targetPitch = -PlayerInput.y * InclinacionX;
-        float targetRoll = -PlayerInput.x * InclinacionZ;
+        if (mirillaUI == null) return;
 
-        Quaternion targetRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, VelocidadInclinacion * Time.deltaTime);
+        // 1. Vector que conecta la nave con el punto al que apunta la mirilla
+        Vector3 direccionHaciaMirilla = (mirillaUI.PuntoMundialImpacto - transform.position).normalized;
+
+        // 2. La nave rota su frente para alinearse en línea recta con la mira
+        Quaternion rotacionAlineada = Quaternion.LookRotation(direccionHaciaMirilla, Vector3.up);
+
+        // 3. Le sumamos el balanceo de las alas (Roll) según el stick para dar el alabeo de Star Fox
+        float rollCosmetico = -PlayerInput.x * InclinacionZ;
+        Quaternion rotacionFinal = rotacionAlineada * Quaternion.Euler(0f, 0f, rollCosmetico);
+
+        // 4. Suavizamos la rotación completa
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotacionFinal, velocidadOrientacion * Time.deltaTime);
     }
 
     float RampaDeAceleracionYDesaceleracion(float velocidadObjetivo)
     {
         velocidadObjetivo = Mathf.Clamp(velocidadObjetivo, VelocidadMinima, VelocidadMaxima);
 
-        // Al aumentar la velocidad usa Aceleracion; al reducirla usa Desaceleracion.
         float velocidadDeCambio = velocidadObjetivo > VelocidadActual
             ? Mathf.Max(0f, Aceleracion)
             : Mathf.Max(0f, Desaceleracion);
 
-        return Mathf.MoveTowards(
-            VelocidadActual,
-            velocidadObjetivo,
-            velocidadDeCambio * Time.deltaTime
-        );
+        return Mathf.MoveTowards(VelocidadActual, velocidadObjetivo, velocidadDeCambio * Time.deltaTime);
     }
 }

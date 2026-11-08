@@ -38,13 +38,31 @@ public class EnemigoSeguidor : MonoBehaviour
         posicionInicial = transform.position;
         timerVida = tiempoVida;
 
+        // 1. Asignar objetivo si no se definió en el Inspector
         if (objetivo == null)
         {
-            var go = GameObject.FindGameObjectWithTag("Player");
-            if (go) objetivo = go.transform;
+            // Prioridad 1: Sesión activa si usas el sistema de niveles
+            if (Pyramid.Levels.LevelSession.Active != null && Pyramid.Levels.LevelSession.Active.player != null)
+            {
+                Transform playerRoot = Pyramid.Levels.LevelSession.Active.player;
+                Transform centro = playerRoot.Find("CentroDisparo");
+                objetivo = (centro != null) ? centro : playerRoot;
+            }
+            else
+            {
+                // Prioridad 2: Búsqueda por Tag "Player"
+                var go = GameObject.FindGameObjectWithTag("Player");
+                if (go != null)
+                {
+                    // Aseguramos buscar desde la raíz de la nave
+                    Transform playerRoot = go.transform.root;
+                    Transform centro = playerRoot.Find("CentroDisparo");
+                    objetivo = (centro != null) ? centro : playerRoot;
+                }
+            }
         }
 
-        // Auto-ajuste si la boca apunta en dirección opuesta al objetivo
+        // 2. Auto-ajuste si la boca apunta en dirección opuesta al objetivo
         if (!visualAutoAdjusted && objetivo != null)
         {
             Vector3 origen = (boca != null) ? boca.position : transform.position;
@@ -58,7 +76,7 @@ public class EnemigoSeguidor : MonoBehaviour
                     if (visual != null) visual.Rotate(0f, 180f, 0f, Space.Self);
                     else transform.Rotate(0f, 180f, 0f, Space.Self);
                     visualAutoAdjusted = true;
-                    if (debugVisuals) Debug.Log($"Auto-ajuste aplicado al {(visual!=null?"visual":"root")}");
+                    if (debugVisuals) Debug.Log($"Auto-ajuste aplicado al {(visual != null ? "visual" : "root")}");
                 }
             }
         }

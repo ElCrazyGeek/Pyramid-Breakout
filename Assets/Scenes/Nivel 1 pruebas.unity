@@ -7228,11 +7228,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1735506949 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3346421839992898898, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-  m_PrefabInstance: {fileID: 2040351680672424864}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1788221228
 GameObject:
   m_ObjectHideFlags: 0
@@ -8690,10 +8685,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 866584012701465560, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: camaraPrincipal
-      value: 
-      objectReference: {fileID: 330585545}
     - target: {fileID: 1819048550107000825, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: camaraCarreraCine
       value: 
@@ -9092,7 +9083,7 @@ PrefabInstance:
     - target: {fileID: 7909635785214606878, guid: a301d69221f4e7b4982622a7d208eb7a, type: 3}
       propertyPath: MirillaRiel
       value: 
-      objectReference: {fileID: 1735506949}
+      objectReference: {fileID: 0}
     - target: {fileID: 7909635785214606878, guid: a301d69221f4e7b4982622a7d208eb7a, type: 3}
       propertyPath: camaraLibre
       value: 
@@ -9100,7 +9091,7 @@ PrefabInstance:
     - target: {fileID: 7909635785214606878, guid: a301d69221f4e7b4982622a7d208eb7a, type: 3}
       propertyPath: MirillaLibre
       value: 
-      objectReference: {fileID: 1735506949}
+      objectReference: {fileID: 0}
     - target: {fileID: 7909635785214606878, guid: a301d69221f4e7b4982622a7d208eb7a, type: 3}
       propertyPath: camaraCarrera
       value: 

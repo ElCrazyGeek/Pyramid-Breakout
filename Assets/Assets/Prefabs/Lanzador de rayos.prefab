@@ -188,7 +188,7 @@ MonoBehaviour:
   objetivo: {fileID: 0}
   puntoDisparo: {fileID: 4232442349090082209}
   prefabProyectil: {fileID: 6165966726186565005, guid: 81347319b3f11bb4c87a314cb2fe5d6d, type: 3}
-  alcance: 200
+  alcance: 400
   velocidadRotacion: 60
   rotarSoloY: 0
   direccionAvanceJugador: {x: 0, y: 0, z: 1}
@@ -227,10 +227,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae722136abd24b38917e5a955111eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
-  maximum: 8
+  maximum: 2
+  barraVidaImagen: {fileID: 0}
   healthText: {fileID: 0}
   colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
   duracionParpadeo: 0.08
   sfxImpacto: {fileID: 8300000, guid: 60857dd7f6e41ec47b14668c663aaae0, type: 3}
+  volumenImpacto: 0.925
   prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
   sfxExplosionMuerte: {fileID: 8300000, guid: e88165429e36bb7478e2a6af9e72cee9, type: 3}
+  volumenExplosion: 0.948
+  feedbackJugador: {fileID: 0}

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Obstaculo
+  - Escenario
   - Suelo
   layers:
   - Default
@@ -16,7 +17,7 @@ TagManager:
   - UI
   - Pista
   - Enemigo
-  - 
+  - Escenario
   - 
   - 
   - 

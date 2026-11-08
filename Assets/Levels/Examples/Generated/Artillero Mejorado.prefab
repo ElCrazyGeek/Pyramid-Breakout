@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -737791501793126088}
   m_Layer: 7
   m_Name: Artillero Mejorado
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,6 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
   maximum: 3
+  barraVidaImagen: {fileID: 0}
   healthText: {fileID: 0}
   colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
   duracionParpadeo: 0.08
@@ -89,6 +90,7 @@ MonoBehaviour:
   prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
   sfxExplosionMuerte: {fileID: 8300000, guid: e88165429e36bb7478e2a6af9e72cee9, type: 3}
   volumenExplosion: 0.61
+  feedbackJugador: {fileID: 0}
 --- !u!136 &-737791501793126088
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -169,7 +171,7 @@ Transform:
   m_GameObject: {fileID: 2709773777706547179}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.185, y: 0, z: 1.065}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -203,7 +205,7 @@ Transform:
   m_GameObject: {fileID: 5776198181330479845}
   serializedVersion: 2
   m_LocalRotation: {x: 0.46288303, y: 0.53454596, z: 0.46288303, w: 0.53454596}
-  m_LocalPosition: {x: -1.1902641, y: 0.541, z: 0.075}
+  m_LocalPosition: {x: 0, y: 0.541, z: 1.318}
   m_LocalScale: {x: 0.5296134, y: 0.5296134, z: 0.5296133}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -291,7 +293,7 @@ Transform:
   m_GameObject: {fileID: 6557851311526466507}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.648, z: 1.789}
+  m_LocalPosition: {x: 0, y: 0.648, z: 1.898}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

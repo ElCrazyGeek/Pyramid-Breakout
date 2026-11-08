@@ -243,7 +243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7655c34545120d479423e5b8ff2717e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerFinNivel
-  panelVictoria: {fileID: 5905546186611419739, guid: e0afb0e3ac1a97d448dab0e1fd79bb63, type: 3}
 --- !u!65 &1887235114
 BoxCollider:
   m_ObjectHideFlags: 0
