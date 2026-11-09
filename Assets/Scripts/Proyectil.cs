@@ -1,14 +1,17 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using Pyramid.Levels;
 
 public class Proyectil : MonoBehaviour
 {
     [Header("Parámetros de Vuelo")]
-    [SerializeField] public float velocidad = 140f; // Velocidad alta para conservar la línea estética
+    [SerializeField] public float velocidad = 140f;
     [SerializeField] public float tiempoVida = 3f;
     [SerializeField] public float danio = 1;
 
-    [Header("Efectos de Audio")]
+    [Header("Efectos de Audio y Mixer")]
+    [Tooltip("Arrastra aquí el grupo SFX, Jugador o Enemigos del AudioMixer")]
+    [SerializeField] private AudioMixerGroup grupoMixer;
     [Tooltip("Clip de sonido que se reproducirá al ser disparado")]
     [SerializeField] private AudioClip sfxDisparo;
     [Range(0f, 1f)][SerializeField] private float volumenSfx = 0.8f;
@@ -23,20 +26,18 @@ public class Proyectil : MonoBehaviour
 
     void OnDestroy()
     {
-        if (LevelSession.Active) LevelSession.Active.Objects.Forget(gameObject);
+        if (LevelSession.Active != null)
+            LevelSession.Active.Objects.Forget(gameObject);
     }
 
     void Start()
     {
-        if (sfxDisparo != null)
-        {
-            AudioSource.PlayClipAtPoint(sfxDisparo, transform.position, volumenSfx);
-        }
+        // Reproducir sonido integrado con el AudioMixer
+        ReproducirAudioDisparo();
 
         rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Forzamos el avance directo en su eje frontal
             rb.linearVelocity = transform.forward * velocidad;
         }
 
@@ -63,7 +64,7 @@ public class Proyectil : MonoBehaviour
     {
         if (consumido) return;
 
-        // 1. Ignorar disparos contra uno mismo o piezas de la misma nave
+        // 1. Ignorar disparos contra el propio lanzador
         if (!string.IsNullOrEmpty(tagOrigen) && col.CompareTag(tagOrigen)) return;
 
         if (origen != null)
@@ -72,13 +73,13 @@ public class Proyectil : MonoBehaviour
             if (t == origen.transform || t.IsChildOf(origen.transform) || origen.transform.IsChildOf(t)) return;
         }
 
-        // 2. Ignorar triggers de interfaz o sensores que no deban bloquear disparos
-        if (col.isTrigger && objetivo.GetComponentInParent<Pyramid.Levels.IDamageable>() == null)
+        // 2. Ignorar triggers de UI, mirillas o sensores sin daño
+        if (col.isTrigger && objetivo.GetComponentInParent<Pyramid.Levels.IDamageable>() == null && objetivo.GetComponentInChildren<Pyramid.Levels.IDamageable>() == null)
         {
             return;
         }
 
-        // 3. Aplicar daño si es un objetivo destructible
+        // 3. Aplicar daño
         var dmg = objetivo.GetComponentInParent<Pyramid.Levels.IDamageable>()
                ?? objetivo.GetComponentInChildren<Pyramid.Levels.IDamageable>();
 
@@ -91,9 +92,33 @@ public class Proyectil : MonoBehaviour
         }
         else if (objetivo.CompareTag("Escenario") || objetivo.layer == LayerMask.NameToLayer("Default"))
         {
-            // Chocó con un muro, asteroide o suelo sólido del nivel
             consumido = true;
             Destroy(gameObject);
         }
+    }
+
+    private void ReproducirAudioDisparo()
+    {
+        if (sfxDisparo == null) return;
+
+        // Objeto temporal que reproduce en la posición 3D sin depender del ciclo de vida del proyectil
+        GameObject audioTemp = new GameObject("SfxDisparoTemp");
+        audioTemp.transform.position = transform.position;
+
+        AudioSource src = audioTemp.AddComponent<AudioSource>();
+        src.clip = sfxDisparo;
+        src.volume = volumenSfx;
+        src.spatialBlend = 0.8f; // Audio 3D espacial
+        src.minDistance = 5f;
+        src.maxDistance = 70f;
+
+        // Enlazar al canal del Audio Mixer
+        if (grupoMixer != null)
+        {
+            src.outputAudioMixerGroup = grupoMixer;
+        }
+
+        src.Play();
+        Destroy(audioTemp, sfxDisparo.length);
     }
 }

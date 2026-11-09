@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.AudioDefinition
   id: musica.exterior
   clip: {fileID: 8300000, guid: c7f73c2cdd13b6d4ea8b5e84c676e171, type: 3}
-  volume: 0.462
+  volume: 0.366
   loop: 1
-  mixerGroup: {fileID: 0}
+  mixerGroup: {fileID: 5517796409602481637, guid: 9271b31c91392384490e12f831303d56, type: 2}
