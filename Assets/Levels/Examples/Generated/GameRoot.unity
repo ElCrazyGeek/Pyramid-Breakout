@@ -886,7 +886,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 1
-  m_Constraints: 0
+  m_Constraints: 32
   m_CollisionDetection: 0
 --- !u!114 &396840280
 MonoBehaviour:
@@ -926,7 +926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineDeoccluder
   CollideAgainst:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 257
   IgnoreTag: Player
   TransparentLayers:
     serializedVersion: 2
@@ -934,9 +934,9 @@ MonoBehaviour:
   MinimumDistanceFromTarget: 1
   AvoidObstacles:
     Enabled: 1
-    DistanceLimit: 0
+    DistanceLimit: 10
     MinimumOcclusionTime: 0
-    CameraRadius: 0.6
+    CameraRadius: 0.2
     UseFollowTarget:
       Enabled: 0
       YOffset: 0

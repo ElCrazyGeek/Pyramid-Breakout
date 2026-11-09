@@ -117,7 +117,7 @@ public class TransitionManager : MonoBehaviour
             yield return null;
         }
 
-        // 5. APAGAR EL SPINNER Y ASEGURAR NEGRO TOTAL
+        // 5. APAGAR EL SPINNER Y FORZAR PANTALLA EN NEGRO TOTAL
         if (contenedorCarga != null)
         {
             contenedorCarga.SetActive(false);
@@ -125,14 +125,26 @@ public class TransitionManager : MonoBehaviour
 
         if (cortinaCanvasGroup != null)
         {
-            cortinaCanvasGroup.alpha = 1f;
+            cortinaCanvasGroup.alpha = 1f; // Mantiene la pantalla 100% tapada
         }
 
-        // 6. ESPERA DE ESTABILIZACIÓN (Awake, Start, cámaras y shaders)
-        yield return null;
+        // 6. ESPERA CLAVE: Dar tiempo al generador de niveles y a Cinemachine
+        // Esperamos a que LevelSession esté activa o al menos 1.5 a 2 segundos reales
+        float tiempoEsperaSeguridad = 1.8f; // Tiempo para que cargue la skybox y asteroides
+        float temporizador = 0f;
+
+        while (temporizador < tiempoEsperaSeguridad)
+        {
+            temporizador += Time.unscaledDeltaTime;
+            // Si tienes LevelSession y ya cargó, puedes acelerar la salida:
+            // if (Pyramid.Levels.LevelSession.Active != null) { ... }
+            yield return null;
+        }
+
+        // Esperar un último frame para refresco visual
         yield return new WaitForEndOfFrame();
 
-        // 7. FADE IN: Retirar la cortina negra suavemente
+        // 7. FADE IN: Ahora sí, revelar el juego ya armado y con las estrellas puestas
         if (cortinaCanvasGroup != null)
         {
             while (cortinaCanvasGroup.alpha > 0f)
