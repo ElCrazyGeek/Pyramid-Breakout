@@ -96,15 +96,18 @@ public class MenuPausaManager : MonoBehaviour
     public void ReiniciarNivel()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (TransitionManager.Instance != null)
+            TransitionManager.Instance.ReiniciarNivel();
+        else
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void IrAlMenuPrincipal()
     {
         Time.timeScale = 1f;
-        if (!string.IsNullOrEmpty(nombreEscenaMenu))
-        {
+        if (TransitionManager.Instance != null)
+            TransitionManager.Instance.CargarEscena(nombreEscenaMenu);
+        else
             SceneManager.LoadScene(nombreEscenaMenu);
-        }
     }
 }

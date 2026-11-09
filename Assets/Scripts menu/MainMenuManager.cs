@@ -8,13 +8,22 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("Paneles / Submenús")]
     [SerializeField] private GameObject panelOpciones;
-    [SerializeField] private GameObject panelCreditos; // <-- Referencia al panel de Créditos
+    [SerializeField] private GameObject panelCreditos;
 
     // 1. Botón JUGAR
     public void Jugar()
     {
-        Debug.Log("Cargando el juego...");
-        SceneManager.LoadScene(nombreEscenaJuego);
+        Debug.Log("Cargando el juego con transición...");
+
+        // Comprobación de seguridad: si existe el TransitionManager hace la transición, si no, usa el método tradicional
+        if (TransitionManager.Instance != null)
+        {
+            TransitionManager.Instance.CargarEscena(nombreEscenaJuego);
+        }
+        else
+        {
+            SceneManager.LoadScene(nombreEscenaJuego);
+        }
     }
 
     // 2. Botón OPCIONES

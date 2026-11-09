@@ -202,13 +202,14 @@ MonoBehaviour:
   velocidad: 100
   tiempoVida: 5
   danio: 1
+  grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxDisparo: {fileID: 8300000, guid: ad7f09831f13e2646acccfcf55f01f1c, type: 3}
   volumenSfx: 0.9
   tagOrigen: Enemy
   origen: {fileID: 0}
   debugImpact: 0
   porcentajeCrecimientoPorSegundo: 200
-  escalaMaxima: 2000
+  multiplicadorEscalaMaxima: 5
 --- !u!54 &1951166630738098548
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -235,7 +236,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 1
 --- !u!1 &7389146369123909153
 GameObject:
   m_ObjectHideFlags: 0
