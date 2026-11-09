@@ -33,7 +33,7 @@ public class ProyectilCargado : MonoBehaviour
             AudioSource.PlayClipAtPoint(sfxLanzamiento, transform.position, volumen);
         }
 
-        Destroy(gameObject, tiempoVida);
+        Invoke(nameof(DetonarExplosion), tiempoVida);
     }
 
     void Update()

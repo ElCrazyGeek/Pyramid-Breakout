@@ -33,6 +33,8 @@ public class DisparoJugador : MonoBehaviour
     private bool cargaCompleta = false;
     private bool audioCargaReproducido = false;
 
+    private GameObject proyectilCargadoActivo;
+
     private Transform blancoFijado = null;
 
     // Mensaje automático del Input System
@@ -167,6 +169,8 @@ public class DisparoJugador : MonoBehaviour
     private void DispararCargado()
     {
         if (prefabProyectilCargado == null) return;
+        if (proyectilCargadoActivo != null) return;
+
 
         Transform spawnPoint = (puntoSalidaCargado != null) ? puntoSalidaCargado : transform;
         Camera cam = Camera.main;
@@ -188,7 +192,7 @@ public class DisparoJugador : MonoBehaviour
 
         Quaternion rotacion = Quaternion.LookRotation(direccion);
         GameObject proyectil = Instantiate(prefabProyectilCargado, spawnPoint.position, rotacion);
-
+        proyectilCargadoActivo = proyectil;
         var compCargado = proyectil.GetComponent<ProyectilCargado>();
         if (compCargado != null)
         {
