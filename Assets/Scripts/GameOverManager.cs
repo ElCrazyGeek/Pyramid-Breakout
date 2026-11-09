@@ -105,19 +105,36 @@ public class GameOverManager : MonoBehaviour
     public void ReiniciarNivel()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        // Si existe el TransitionManager global, usa la cortina suave
+        if (TransitionManager.Instance != null)
+        {
+            TransitionManager.Instance.ReiniciarNivel();
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     public void IrAlMenuPrincipal()
     {
         Time.timeScale = 1f;
-        if (!string.IsNullOrEmpty(nombreEscenaMenu))
+
+        if (string.IsNullOrEmpty(nombreEscenaMenu))
         {
-            SceneManager.LoadScene(nombreEscenaMenu);
+            Debug.LogWarning("No se definió el nombre de la escena del menú principal.");
+            return;
+        }
+
+        // Si existe el TransitionManager global, viaja al menú con la cortina suave
+        if (TransitionManager.Instance != null)
+        {
+            TransitionManager.Instance.CargarEscena(nombreEscenaMenu);
         }
         else
         {
-            Debug.LogWarning("No se definió el nombre de la escena del menú principal.");
+            SceneManager.LoadScene(nombreEscenaMenu);
         }
     }
 }

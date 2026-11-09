@@ -9,16 +9,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 421.046
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 739.3133
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.253507
+      value: -33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000009416426
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -892.50665
+      value: 468.41956
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -30,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_LocalRotation.z
@@ -48,9 +60,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_Name
-      value: Piedra 2
+      value: Piedra 2 in game
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       propertyPath: m_TagString
@@ -66,6 +82,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3976461378198781298}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 274952214994200454}
   m_SourcePrefab: {fileID: 100100000, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
 --- !u!1 &2127118024018693563 stripped
 GameObject:
@@ -111,3 +130,27 @@ MonoBehaviour:
   cooldownGolpe: 0.6
   fuerzaEmpuje: 15
   duracionEmpuje: 0.2
+--- !u!114 &274952214994200454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127118024018693563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae722136abd24b38917e5a955111eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
+  maximum: 1
+  barraVidaImagen: {fileID: 0}
+  healthText: {fileID: 0}
+  colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
+  duracionParpadeo: 0.08
+  grupoMixer: {fileID: -1816582845240284932, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxImpacto: {fileID: 8300000, guid: 8129cfd6c80273e41a252dd424b0016d, type: 3}
+  volumenImpacto: 0.849
+  prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
+  sfxExplosionMuerte: {fileID: 8300000, guid: 95f895e42c6c02741b86497fd75d9132, type: 3}
+  volumenExplosion: 0.855
+  feedbackJugador: {fileID: 0}
