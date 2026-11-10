@@ -130,7 +130,7 @@ MonoBehaviour:
   tiempoVida: 4
   danioDirecto: 10
   radioExplosion: 8
-  prefabExplosion: {fileID: 0}
+  prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
   sfxLanzamiento: {fileID: 0}
   sfxExplosion: {fileID: 0}
   volumen: 0.9
