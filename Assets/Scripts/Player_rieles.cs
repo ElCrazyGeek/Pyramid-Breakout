@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 public class Player_rieles : MonoBehaviour
 {
     [Header("Movimiento del jugador")]
-    [SerializeField] public float speed = 15.0f;
+    [SerializeField] public float velocidadLados = 15.0f;
     [SerializeField] Vector2 LimitesMovimiento = new Vector2(20f, 10f);
     [SerializeField] public float VelocidadAvance = 15f;
     [SerializeField] public float VelocidadActual;
@@ -90,7 +90,7 @@ public class Player_rieles : MonoBehaviour
     void mover()
     {
         // La nave se mueve en X e Y según la palanca
-        Vector3 desplazamiento = (Vector3)PlayerInput * speed * Time.deltaTime;
+        Vector3 desplazamiento = (Vector3)PlayerInput * velocidadLados * Time.deltaTime;
 
         Vector3 posFutura = transform.position + desplazamiento;
 
