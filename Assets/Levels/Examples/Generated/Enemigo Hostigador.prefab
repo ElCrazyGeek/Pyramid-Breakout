@@ -59,7 +59,7 @@ MonoBehaviour:
   cadenciaDisparo: 1.5
   prefabProyectil: {fileID: 2759515552060237589, guid: e01e34bf78434cb449fe4ca74abdf655, type: 3}
   proyectilRotationOffsetEuler: {x: 0, y: 0, z: 0}
-  tiempoVida: 12
+  tiempoVida: 8
   velocidadRetirada: 100
   tiempoRetirada: 5
   debugVisuals: 0
@@ -127,9 +127,9 @@ MonoBehaviour:
   capaObstaculos:
     serializedVersion: 2
     m_Bits: 257
-  distanciaSondeo: 12
-  radioBigote: 1.2
-  fuerzaEvasion: 8
+  distanciaSondeo: 20
+  radioBigote: 5
+  fuerzaEvasion: 20
   capaEnemigos:
     serializedVersion: 2
     m_Bits: 128

@@ -75,6 +75,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "Apuntar",
+                    "type": "Value",
+                    "id": "99eb0c82-fd67-4bc2-b0cb-1b5b521b60e9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -224,7 +234,7 @@
                 {
                     "name": "",
                     "id": "4645ea33-17b4-441f-9919-cff7a16fa9cc",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/rightStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -235,7 +245,7 @@
                 {
                     "name": "",
                     "id": "403ade7e-d269-47da-a96d-398edabe0884",
-                    "path": "<XInputController>/buttonSouth",
+                    "path": "<SwitchProControllerHID>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -245,8 +255,8 @@
                 },
                 {
                     "name": "",
-                    "id": "fb36e1bc-6873-46b6-8fd7-0e528b0317ae",
-                    "path": "<SwitchProControllerHID>/buttonSouth",
+                    "id": "bceb6bc6-00c3-453c-859a-216ba7e406c2",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -345,7 +355,7 @@
                 {
                     "name": "",
                     "id": "ed87ff4c-d489-4b43-87fa-312ddf3ed63a",
-                    "path": "<Keyboard>/x",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -366,8 +376,19 @@
                 },
                 {
                     "name": "",
+                    "id": "9b72cb3e-682c-49f2-995e-fe83e8481387",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GiroLateralDer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "48975076-ce83-442a-bfe8-41ff15bbe455",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -389,11 +410,66 @@
                 {
                     "name": "",
                     "id": "3b1b7057-91b0-473b-a32b-6585b12c91ca",
-                    "path": "",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "GiroLateralIzq",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57919d1c-adba-43d1-9dac-b627d62d1374",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Apuntar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9b77e50-5e27-4011-ae40-24e4550a5eb2",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Apuntar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a2f5629-685f-4fb4-9d54-8c69599a62c1",
+                    "path": "<WebGLGamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Apuntar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4859358f-b348-4d5f-a589-b7c8dc111033",
+                    "path": "<SwitchProControllerHID>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Apuntar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e194f8bf-5ef5-48a8-8ec2-0cd89ec59a2a",
+                    "path": "<XInputController>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Apuntar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

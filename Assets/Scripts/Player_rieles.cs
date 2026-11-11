@@ -12,6 +12,8 @@ public class Player_rieles : MonoBehaviour
     [SerializeField] public float VelocidadActual;
     [SerializeField] public bool Frenado = false;
 
+
+
     [Header("Inclinacion")]
     public float InclinacionX = 15f;
     public float InclinacionZ = 15f;
@@ -85,6 +87,14 @@ public class Player_rieles : MonoBehaviour
         mover();
         avance();
         InclinacionJugador();
+    }
+
+    public void OnApuntar(InputValue value)
+    {
+        if (mirillaUI != null)
+        {
+            mirillaUI.OnApuntar(value);
+        }
     }
 
     void mover()

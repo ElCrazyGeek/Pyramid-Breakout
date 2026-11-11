@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class MirillaUI : MonoBehaviour
 {
@@ -13,20 +14,28 @@ public class MirillaUI : MonoBehaviour
     [Tooltip("El recuadro interior pequeño")]
     [SerializeField] private RectTransform mirillaCercana;
 
-    [Header("Rango de la Mirilla Lejana (Pantalla)")]
-    [Tooltip("Rango en píxeles desde el centro de la pantalla (0, 0)")]
-    [SerializeField] private Vector2 rangoLejana = new Vector2(320f, 180f);
-    [SerializeField] private float velocidadMirilla = 18f;
+    [Header("Límites de Pantalla (Píxeles desde el centro)")]
+    [Tooltip("Rango máximo en píxeles que puede alejarse del centro (0, 0)")]
+    [SerializeField] private Vector2 rangoLejana = new Vector2(360f, 220f);
 
-    [Header("Recentrado al Centro de la Pantalla")]
-    [Tooltip("Fuerza lenta y sutil que jala la mira constantemente hacia el centro")]
-    [SerializeField] private float atraccionAlCentro = 2.0f;
-    [Tooltip("Velocidad elástica de retorno cuando sueltas el stick")]
-    [SerializeField] private float velocidadRetornoSoltado = 12f;
+    [Header("Sensibilidad Input System (Mouse y Stick Derecho)")]
+    [Tooltip("Sensibilidad al mover el ratón (Delta)")]
+    [SerializeField] private float sensibilidadMouse = 0.8f;
+    [Tooltip("Sensibilidad para el Stick Derecho (-1 a 1 continuo)")]
+    [SerializeField] private float sensibilidadStick = 500f;
+    [SerializeField] private float suavizadoMirilla = 20f;
+
+    [Header("Retraso y Recentrado al Centro")]
+    [Tooltip("Tiempo en segundos que la mirilla espera quieta antes de empezar a regresar al centro")]
+    [SerializeField] private float tiempoEsperaRecentrado = 0.35f;
+    [Tooltip("Fuerza continua muy sutil hacia el centro mientras estás apuntando")]
+    [SerializeField] private float atraccionAlCentro = 1.2f;
+    [Tooltip("Velocidad de recuperación elástica una vez expira el tiempo de espera")]
+    [SerializeField] private float velocidadRetornoSoltado = 8f;
 
     [Header("Geometría Star Fox (Mirilla Cercana)")]
     [Range(0.1f, 0.9f)]
-    [Tooltip("0.5 la coloca exactamente en la mitad de la línea entre la nave y la mira exterior")]
+    [Tooltip("0.5 la coloca exactamente a mitad de camino entre la nave y la mira exterior")]
     [SerializeField] private float factorIntermedio = 0.5f;
 
     [Header("Detección de Enemigos (Feedback)")]
@@ -41,6 +50,12 @@ public class MirillaUI : MonoBehaviour
     private Image imagenLejana;
     private Vector3 escalaBaseLejana;
     private Camera cam;
+
+    private Vector2 posTargetLejana = Vector2.zero;
+    private Vector2 inputApuntadoActual = Vector2.zero;
+
+    // Cronómetro interno para el retardo de recentrado
+    private float tiempoSinInput = 0f;
 
     public bool ApuntandoEnemigo { get; private set; } = false;
     public Vector3 PuntoMundialImpacto { get; private set; }
@@ -59,49 +74,78 @@ public class MirillaUI : MonoBehaviour
     {
         cam = Camera.main;
         if (imagenLejana != null) imagenLejana.color = colorNormal;
+        posTargetLejana = Vector2.zero;
+    }
+
+    public void OnApuntar(InputValue value)
+    {
+        inputApuntadoActual = value.Get<Vector2>();
     }
 
     void Update()
     {
         if (cam == null) cam = Camera.main;
 
-        // 1. Obtener input activo y Transform de la nave
-        Vector2 input = Vector2.zero;
+        // 1. Obtener la nave activa según el modo
         Transform naveActiva = null;
-
         if (playerLibre != null && playerLibre.enabled)
         {
-            input = playerLibre.PlayerInput;
             naveActiva = playerLibre.transform;
         }
         else if (playerRieles != null && playerRieles.enabled)
         {
-            input = playerRieles.PlayerInput;
             naveActiva = playerRieles.transform;
         }
 
-        bool hayInput = input.sqrMagnitude > 0.01f;
-
-        // 2. Mover la MIRILLA LEJANA respecto al centro de pantalla (0, 0)
-        Vector2 targetLejana = new Vector2(input.x * rangoLejana.x, input.y * rangoLejana.y);
+        // 2. Comprobar actividad de entrada
+        bool hayInput = inputApuntadoActual.sqrMagnitude > 0.001f;
 
         if (hayInput)
         {
-            mirillaLejana.anchoredPosition = Vector2.Lerp(mirillaLejana.anchoredPosition, targetLejana, velocidadMirilla * Time.deltaTime);
-            // Atracción constante y suave al origen
-            mirillaLejana.anchoredPosition = Vector2.MoveTowards(mirillaLejana.anchoredPosition, Vector2.zero, atraccionAlCentro * 100f * Time.deltaTime);
+            // Resetear el cronómetro de inactividad mientras el jugador mueva el control
+            tiempoSinInput = 0f;
+
+            if (inputApuntadoActual.sqrMagnitude <= 1.05f)
+            {
+                posTargetLejana += inputApuntadoActual * sensibilidadStick * Time.deltaTime;
+            }
+            else
+            {
+                posTargetLejana += inputApuntadoActual * sensibilidadMouse;
+            }
+
+            // Clamping dentro del cuadro de pantalla
+            posTargetLejana.x = Mathf.Clamp(posTargetLejana.x, -rangoLejana.x, rangoLejana.x);
+            posTargetLejana.y = Mathf.Clamp(posTargetLejana.y, -rangoLejana.y, rangoLejana.y);
+
+            // Resistencia continua muy leve mientras apuntas
+            if (atraccionAlCentro > 0f)
+            {
+                posTargetLejana = Vector2.MoveTowards(posTargetLejana, Vector2.zero, atraccionAlCentro * 100f * Time.deltaTime);
+            }
         }
         else
         {
-            // Retorno fluido al soltar el stick
-            mirillaLejana.anchoredPosition = Vector2.Lerp(mirillaLejana.anchoredPosition, Vector2.zero, velocidadRetornoSoltado * Time.deltaTime);
+            // Acumular tiempo de inactividad
+            tiempoSinInput += Time.deltaTime;
+
+            // Solo después de superar el margen de gracia, la mirilla empieza a viajar al centro
+            if (tiempoSinInput >= tiempoEsperaRecentrado)
+            {
+                posTargetLejana = Vector2.Lerp(posTargetLejana, Vector2.zero, velocidadRetornoSoltado * Time.deltaTime);
+            }
         }
 
-        // 3. CALCULAR MIRILLA CERCANA: Punto intermedio entre la Nave y la Mirilla Lejana
-        if (naveActiva != null && mirillaCercana != null && canvasPadre != null)
+        // 3. Suavizado en la mirilla lejana
+        if (mirillaLejana != null)
         {
-            // Convertimos la posición 3D de la nave a coordenadas locales de Canvas (UI)
-            Vector2 screenPosNave = cam.WorldToScreenPoint(naveActiva.position);
+            mirillaLejana.anchoredPosition = Vector2.Lerp(mirillaLejana.anchoredPosition, posTargetLejana, suavizadoMirilla * Time.deltaTime);
+        }
+
+        // 4. Mirilla Cercana (Perspectiva Star Fox)
+        if (naveActiva != null && mirillaCercana != null && canvasPadre != null && cam != null)
+        {
+            Vector3 screenPosNave = cam.WorldToScreenPoint(naveActiva.position);
             RectTransform canvasRect = canvasPadre.transform as RectTransform;
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -111,12 +155,11 @@ public class MirillaUI : MonoBehaviour
                 out Vector2 localPosNave
             );
 
-            // La posición de la mirilla cercana es la interpolación exacta entre la nave y la mira exterior
             Vector2 posIntermedia = Vector2.Lerp(localPosNave, mirillaLejana.anchoredPosition, factorIntermedio);
             mirillaCercana.anchoredPosition = posIntermedia;
         }
 
-        // 4. Raycast de impacto al mundo 3D y detección de enemigos
+        // 5. Raycast de impacto
         ActualizarRayoMundial();
     }
 

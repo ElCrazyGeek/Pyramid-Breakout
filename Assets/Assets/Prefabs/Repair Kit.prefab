@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: -9129678704143536781}
   m_Layer: 0
   m_Name: Repair Kit
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,7 +312,7 @@ MonoBehaviour:
   grupoMixer: {fileID: -1816582845240284932, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxRecoger: {fileID: 8300000, guid: 4840319ffaa2aad45bb813e645dc81b3, type: 3}
   volumenAudio: 0.9
-  prefabParticulasRecoger: {fileID: 0}
+  prefabParticulasRecoger: {fileID: 3641751014818319737, guid: 1f89af61f67ae6347848586371d82bc3, type: 3}
 --- !u!54 &-9129678704143536781
 Rigidbody:
   m_ObjectHideFlags: 0

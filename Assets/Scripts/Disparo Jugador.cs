@@ -26,6 +26,9 @@ public class DisparoJugador : MonoBehaviour
     [Header("Estado")]
     public bool puedeDisparar = true;
 
+    [Header("UI Lock-On")]
+    [SerializeField] private LockOnTargetUI recuadroLockOn;
+
     // Control interno de carga
     private float tiempoSiguienteDisparo = 0f;
     private float tiempoPresionado = 0f;
@@ -34,10 +37,9 @@ public class DisparoJugador : MonoBehaviour
     private bool audioCargaReproducido = false;
 
     private GameObject proyectilCargadoActivo;
-
     private Transform blancoFijado = null;
 
-    // Mensaje automático del Input System
+    // Mensaje automático del Input System (desde Player Input)
     public void OnDisparo(InputValue value)
     {
         if (!enabled || !puedeDisparar || Time.timeScale <= 0) return;
@@ -47,21 +49,26 @@ public class DisparoJugador : MonoBehaviour
 
         if (pulsado)
         {
-            IniciarPulsacion();
+            if (!estaPresionando) IniciarPulsacion();
         }
         else
         {
-            LiberarPulsacion();
+            if (estaPresionando) LiberarPulsacion();
         }
     }
 
     void Update()
     {
-        // Respaldo directo de hardware (asegura detección de release aunque Send Messages falle)
+        // 1. Respaldo directo de hardware: Espacio, Clic Izquierdo del Mouse, ZR (Gatillo) o Botón Sur (A/Cruz)
         bool teclaEspacioSostenida = Keyboard.current != null && Keyboard.current.spaceKey.isPressed;
-        bool gamepadBotonSostenido = Gamepad.current != null && Gamepad.current.buttonSouth.isPressed; // A / Cruz
+        bool mouseClicSostenido = Mouse.current != null && Mouse.current.leftButton.isPressed;
 
-        if (teclaEspacioSostenida || gamepadBotonSostenido)
+        bool gamepadTriggerSostenido = Gamepad.current != null && Gamepad.current.rightTrigger.isPressed; // ZR / RT / R2
+        bool gamepadBotonSostenido = Gamepad.current != null && Gamepad.current.buttonSouth.isPressed;   // A / Cruz
+
+        bool algunInputDisparoActivo = teclaEspacioSostenida || mouseClicSostenido || gamepadTriggerSostenido || gamepadBotonSostenido;
+
+        if (algunInputDisparoActivo)
         {
             if (!estaPresionando)
             {
@@ -73,7 +80,7 @@ public class DisparoJugador : MonoBehaviour
             LiberarPulsacion();
         }
 
-        // Proceso de carga continua
+        // 2. Proceso de carga continua
         if (estaPresionando)
         {
             tiempoPresionado += Time.deltaTime;
@@ -91,7 +98,7 @@ public class DisparoJugador : MonoBehaviour
                         if (!efectoCarga.isPlaying) efectoCarga.Play();
                     }
 
-                    // Sonido de listo
+                    // Sonido de carga lista
                     if (sfxCargaLista != null && !audioCargaReproducido)
                     {
                         AudioSource.PlayClipAtPoint(sfxCargaLista, transform.position, volumenSfx);
@@ -99,7 +106,7 @@ public class DisparoJugador : MonoBehaviour
                     }
                 }
 
-                // Buscar objetivo para lock-on mientras esté cargado
+                // Buscar y fijar objetivo en pantalla
                 EscanearLockOn();
             }
         }
@@ -111,9 +118,14 @@ public class DisparoJugador : MonoBehaviour
         tiempoPresionado = 0f;
         cargaCompleta = false;
         audioCargaReproducido = false;
-        blancoFijado = null;
 
-        // Disparo normal inmediato al primer toque
+        if (proyectilCargadoActivo == null)
+        {
+            blancoFijado = null;
+            if (recuadroLockOn != null) recuadroLockOn.Ocultar();
+        }
+
+        // Disparo normal de toque rápido
         if (Time.time >= tiempoSiguienteDisparo)
         {
             DispararNormal();
@@ -127,15 +139,19 @@ public class DisparoJugador : MonoBehaviour
 
         estaPresionando = false;
 
-        // Si se mantuvo el tiempo necesario, dispara el ataque cargado
         if (cargaCompleta)
         {
             DispararCargado();
         }
+        else
+        {
+            if (proyectilCargadoActivo == null && recuadroLockOn != null)
+            {
+                recuadroLockOn.Ocultar();
+            }
+        }
 
-        // Apagar efectos y limpiar estado
         cargaCompleta = false;
-        blancoFijado = null;
 
         if (efectoCarga != null)
         {
@@ -152,15 +168,26 @@ public class DisparoJugador : MonoBehaviour
         Ray rayo = RectTransformUtility.ScreenPointToRay(cam, mirillaLejanaUI.position);
         if (Physics.Raycast(rayo, out RaycastHit hit, distanciaHorizonte, capasImpacto))
         {
-            var damageable = hit.collider.GetComponentInParent<IDamageable>();
+            var damageable = hit.collider.GetComponentInParent<IDamageable>()
+                          ?? hit.collider.GetComponentInChildren<IDamageable>();
+
             if (damageable != null)
             {
                 Transform nuevoObjetivo = ((Component)damageable).transform;
+
                 if (blancoFijado != nuevoObjetivo)
                 {
                     blancoFijado = nuevoObjetivo;
+
+                    if (recuadroLockOn != null)
+                    {
+                        recuadroLockOn.FijarObjetivo(blancoFijado);
+                    }
+
                     if (sfxLockOn != null)
+                    {
                         AudioSource.PlayClipAtPoint(sfxLockOn, transform.position, volumenSfx);
+                    }
                 }
             }
         }
@@ -170,7 +197,6 @@ public class DisparoJugador : MonoBehaviour
     {
         if (prefabProyectilCargado == null) return;
         if (proyectilCargadoActivo != null) return;
-
 
         Transform spawnPoint = (puntoSalidaCargado != null) ? puntoSalidaCargado : transform;
         Camera cam = Camera.main;
@@ -193,16 +219,25 @@ public class DisparoJugador : MonoBehaviour
         Quaternion rotacion = Quaternion.LookRotation(direccion);
         GameObject proyectil = Instantiate(prefabProyectilCargado, spawnPoint.position, rotacion);
         proyectilCargadoActivo = proyectil;
+
         var compCargado = proyectil.GetComponent<ProyectilCargado>();
         if (compCargado != null)
         {
             compCargado.origen = transform.root.gameObject;
             compCargado.tagOrigen = "Player";
             compCargado.objetivoFijado = blancoFijado;
+            compCargado.recuadroUI = recuadroLockOn;
         }
 
         if (LevelSession.Active != null)
             LevelSession.Active.Objects.Track(proyectil);
+
+        if (blancoFijado == null && recuadroLockOn != null)
+        {
+            recuadroLockOn.Ocultar();
+        }
+
+        blancoFijado = null;
     }
 
     private void DispararNormal()
@@ -242,5 +277,6 @@ public class DisparoJugador : MonoBehaviour
     {
         tiempoSiguienteDisparo = 0;
         LiberarPulsacion();
+        if (recuadroLockOn != null) recuadroLockOn.Ocultar();
     }
 }

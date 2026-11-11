@@ -1295,6 +1295,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: recuadroLockOn
+      value: 
+      objectReference: {fileID: 971830318}
+    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: mirillaLejanaUI
       value: 
       objectReference: {fileID: 1339351033}
@@ -1476,6 +1480,97 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2db9fcdd7fd3548ba4a9750e35acc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PanelFinalUI
+--- !u!1 &971830314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 971830315}
+  - component: {fileID: 971830317}
+  - component: {fileID: 971830316}
+  - component: {fileID: 971830318}
+  m_Layer: 5
+  m_Name: ObjetivoFijado
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &971830315
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971830314}
+  m_LocalRotation: {x: -0, y: -0, z: -1.5777216e-30, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1762183769}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 745.0879, y: 419.24115}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &971830316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971830314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8d651ec0c15785048aa8ddc280905103, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &971830317
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971830314}
+  m_CullTransparentMesh: 1
+--- !u!114 &971830318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971830314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e794a50b4dee0445b30e399e02dad6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockOnTargetUI
+  camaraPrincipal: {fileID: 330585545}
+  velocidadParpadeo: 12
+  offsetAlturaMundo: 0
 --- !u!1001 &1030862142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2897,6 +2992,7 @@ RectTransform:
   - {fileID: 138128762}
   - {fileID: 945856257}
   - {fileID: 1665235480}
+  - {fileID: 971830315}
   - {fileID: 1780195252}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3368,7 +3464,10 @@ MonoBehaviour:
   mirillaLejana: {fileID: 1339351033}
   mirillaCercana: {fileID: 1190169471}
   rangoLejana: {x: 1000, y: 600}
-  velocidadMirilla: 2.5
+  sensibilidadMouse: 0.9
+  sensibilidadStick: 1300
+  suavizadoMirilla: 20
+  tiempoEsperaRecentrado: 0.35
   atraccionAlCentro: 0.2
   velocidadRetornoSoltado: 2
   factorIntermedio: 0.649

@@ -67,22 +67,22 @@ eventos:
     en: 2150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 2250, x: 30, y: 15 }
-    parametros: { vida: 2 }
+    posicion: { s: 2250, x: 10, y: 15 }
+    parametros: { vida: 4 }
 
   - id: perseguidora_2
     en: 2150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 2250, x: 10, y: -5 }
-    parametros: { vida: 2 }
+    posicion: { s: 2250, x: -10, y: -5 }
+    parametros: { vida: 4 }
 
   - id: perseguidora_3
     en: 2150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 2250, x: -15, y: 10 }
-    parametros: { vida: 2 }
+    posicion: { s: 2250, x: -30, y: 10 }
+    parametros: { vida: 4 }
     
   - id: lanzador_rayos2
     en: 1000
@@ -90,7 +90,7 @@ eventos:
     recurso: enemigo.lanzadorRayos
     tramo: exterior
     posicion: { s: 1700, x: 20, y: 0 }
-    parametros: { vida: 2 }
+    parametros: { vida: 4 }
 
   - id: lanzador_rayos3
     en: 1000
@@ -98,7 +98,7 @@ eventos:
     recurso: enemigo.lanzadorRayos
     tramo: exterior
     posicion: { s: 1700, x: -20, y: 0 }
-    parametros: { vida: 2 }
+    parametros: { vida: 4 }
 
   - id: ambiente_interior
     en: 0
@@ -122,7 +122,7 @@ eventos:
     en: 2500
     accion: crear
     recurso: objeto.reparacion
-    posicion: { s: 2800, x: 0, y: 0 }
+    posicion: { s: 2800, x: 0, y: 5 }
 
   - id: torreta_final
     en: 2550
@@ -130,10 +130,10 @@ eventos:
     recurso: enemigo.torreta
     tramo: interior
     posicion: { s: 3117, x: 20.6, y: 9.4 }
-    parametros: { vida: 1 }
+    parametros: { vida: 3 }
 
   - id: torreta_Rebelde
-    en: 2500
+    en: 3000
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
@@ -141,7 +141,7 @@ eventos:
     parametros: { vida: 3 }
 
   - id: torreta_Rebelde2
-    en: 2500
+    en: 3200
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
@@ -149,7 +149,7 @@ eventos:
     parametros: { vida: 2 }
 
   - id: torreta_Rebelde3
-    en: 2500
+    en: 3200
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
@@ -157,7 +157,7 @@ eventos:
     parametros: { vida: 2 }
 
   - id: torreta_Rebelde4
-    en: 2500
+    en: 3200
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
@@ -165,7 +165,7 @@ eventos:
     parametros: { vida: 2 }
 
   - id: torreta_Rebelde5
-    en: 2500
+    en: 3200
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
@@ -173,7 +173,7 @@ eventos:
     parametros: { vida: 2 }
 
   - id: torreta_Rebelde6
-    en: 2500
+    en: 3200
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
@@ -181,7 +181,7 @@ eventos:
     parametros: { vida: 2 }
 
   - id: torreta_Rebelde7
-    en: 2500
+    en: 3200
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
@@ -193,7 +193,7 @@ eventos:
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: interior
-    posicion: { s: 3559.4, x: -3.35, y: 5 }
+    posicion: { s: 3559.4, x: -3.35, y: 0 }
     parametros: { vida: 2 }
 
   - id: Laser2
@@ -212,39 +212,39 @@ eventos:
     posicion: { s: 1200, x: 0, y: 0 }
 
   - id: perseguidora_4
-    en: 4600
+    en: 4100
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4600, x: 25, y: 15 }
+    posicion: { s: 4150, x: 25, y: 15 }
     parametros: { vida: 2 }
 
   - id: perseguidora_5
-    en: 4600
+    en: 4100
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4600, x: 15, y: -10 }
+    posicion: { s: 4150, x: 15, y: -10 }
     parametros: { vida: 2 }
 
   - id: perseguidora_6
-    en: 4600
+    en: 4100
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4600, x: -15, y: -10 }
+    posicion: { s: 4120, x: -15, y: -10 }
     parametros: { vida: 2 }
 
   - id: perseguidora_7
-    en: 4600
+    en: 4100
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4600, x: -25, y: 15 }
+    posicion: { s: 4150, x: -25, y: 15 }
     parametros: { vida: 2 }
 
   - id: lanzador_rayos4
-    en: 4500
+    en: 4400
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: interior
-    posicion: { s: 4900, x: -5, y: 0.2 }
+    posicion: { s: 4600, x: -5, y: 0.2 }
     parametros: { vida: 2 }
 
   - id: lanzador_rayos5
