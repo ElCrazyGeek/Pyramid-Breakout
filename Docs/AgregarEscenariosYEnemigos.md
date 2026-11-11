@@ -175,6 +175,40 @@ esperando que configure esos scripts: el adaptador trabaja con `Torreta`.
 Para otros scripts, configura sus valores directamente en el prefab o implementa
 un adaptador específico.
 
+### Nave perseguidora de otro objeto
+
+El catálogo incluye `enemigo.nave_perseguidora`, con el modelo del hostigador,
+20 de vida y explosión al destruirse. Sigue un punto detrás del eje Z local del
+objetivo, a la distancia y velocidad indicadas, y le dispara cuando está orientada
+hacia él y dentro del alcance. Funciona en modo Riel.
+
+En una instancia colocada en la escena, arrastra el objeto a **Objetivo** del
+componente **EnemigoPerseguidor**. Para crearla desde el catálogo, indica el nombre
+único o la ruta del objeto activo en `objetivo` (por defecto, `ObjetivoNave`):
+
+```yaml
+  - id: nave_perseguidora_01
+    en: 100
+    accion: crear
+    recurso: enemigo.nave_perseguidora
+    posicion: { s: 160, x: 10, y: 0 }
+    parametros:
+      objetivo: ObjetivoNave
+      distancia: 35
+      velocidad: 60
+      cadencia: 1.5
+      alcance: 200
+      dano: 1
+      vida: 20
+      duracion_s: 0
+```
+
+El objeto objetivo debe existir en la escena y moverse con su propia lógica;
+puede ser un objeto vacío que marque el recorrido. Si falta, la nave espera y
+vuelve a buscarlo, sin seleccionar al jugador automáticamente. `velocidad` está
+en unidades por segundo y `cadencia` en disparos por segundo (`0` desactiva el
+disparo). `duracion_s: 0` la mantiene hasta destruirla o limpiar el nivel.
+
 ### Si necesitas parámetros para un script nuevo
 
 Implementa `ILevelEntityAdapter` y añade el componente al prefab:

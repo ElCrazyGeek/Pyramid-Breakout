@@ -88,7 +88,7 @@ MonoBehaviour:
   grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxImpacto: {fileID: 8300000, guid: b8e4ba18d7733314b981945a0495288c, type: 3}
   volumenImpacto: 0.964
-  prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
+  prefabExplosion: {fileID: 1000, guid: 967e900c4b3a44cb9a0668ddd91e91de, type: 3}
   sfxExplosionMuerte: {fileID: 8300000, guid: e88165429e36bb7478e2a6af9e72cee9, type: 3}
   volumenExplosion: 0.956
   feedbackJugador: {fileID: 0}
