@@ -12,7 +12,10 @@ public class Player_rieles : MonoBehaviour
     [SerializeField] public float VelocidadActual;
     [SerializeField] public bool Frenado = false;
 
-
+    [Header("Maniobra de giro")]
+    [SerializeField, Range(0f, 90f)] private float inclinacionMaximaManiobra = 80f;
+    [SerializeField, Min(0f)] private float velocidadInclinacionManiobra = 180f;
+    [SerializeField, Min(1f)] private float multiplicadorVelocidadManiobra = 1.8f;
 
     [Header("Inclinacion")]
     public float InclinacionX = 15f;
@@ -38,8 +41,14 @@ public class Player_rieles : MonoBehaviour
     private bool inicializado;
     private bool Frenando = false;
     private bool FrenoBloqueado = false;
+    private bool girandoDerecha;
+    private bool girandoIzquierda;
+    private InputAction accionGiroDerecha;
+    private InputAction accionGiroIzquierda;
     private float InicioFrenado;
     private float FinCastigoFreno;
+    private float rotacionManiobra;
+    private float rotacionManiobraAplicada;
 
     [Header("Alineación con Mirilla")]
     [SerializeField] private MirillaUI mirillaUI; // Arrastra tu MirillaUI aquí
@@ -56,6 +65,20 @@ public class Player_rieles : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+
+        var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+        if (playerInput == null || playerInput.actions == null)
+        {
+            Debug.LogError("Player_rieles requiere un PlayerInput con las acciones de giro configuradas.", this);
+            return;
+        }
+
+        accionGiroDerecha = playerInput.actions.FindAction("GiroLateralDer", false);
+        accionGiroIzquierda = playerInput.actions.FindAction("GiroLateralIzq", false);
+        if (accionGiroDerecha == null || accionGiroIzquierda == null)
+        {
+            Debug.LogError("Faltan las acciones 'GiroLateralDer' o 'GiroLateralIzq' en PlayerInput.", this);
+        }
     }
 
     void Start()
@@ -70,11 +93,18 @@ public class Player_rieles : MonoBehaviour
         PlayerInput = Vector2.zero;
         fuerzaArrastreMirilla = Vector2.zero;
         Frenado = Frenando = FrenoBloqueado = false;
+        girandoDerecha = girandoIzquierda = false;
+        rotacionManiobra = 0f;
         InicioFrenado = FinCastigoFreno = 0;
         inicializado = true;
     }
 
-    void OnDisable() { PlayerInput = Vector2.zero; Frenado = false; }
+    void OnDisable()
+    {
+        PlayerInput = Vector2.zero;
+        Frenado = false;
+        girandoDerecha = girandoIzquierda = false;
+    }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -84,6 +114,9 @@ public class Player_rieles : MonoBehaviour
 
     void Update()
     {
+        girandoDerecha = accionGiroDerecha != null && accionGiroDerecha.enabled && accionGiroDerecha.IsPressed();
+        girandoIzquierda = accionGiroIzquierda != null && accionGiroIzquierda.enabled && accionGiroIzquierda.IsPressed();
+        ActualizarManiobra();
         mover();
         avance();
         InclinacionJugador();
@@ -99,9 +132,23 @@ public class Player_rieles : MonoBehaviour
 
     void mover()
     {
-        // La nave se mueve en X e Y según la palanca
-        Vector3 desplazamiento = (Vector3)PlayerInput * velocidadLados * Time.deltaTime;
+        // La maniobra acelera el movimiento hacia el lado del giro y en vertical.
+        Vector2 movimiento = PlayerInput;
+        int direccionManiobra = ObtenerDireccionManiobra();
+        if (direccionManiobra != 0)
+        {
+            if (movimiento.x * direccionManiobra > 0f)
+            {
+                movimiento.x *= multiplicadorVelocidadManiobra;
+            }
 
+            if (Mathf.Abs(movimiento.y) > 0f)
+            {
+                movimiento.y *= multiplicadorVelocidadManiobra;
+            }
+        }
+
+        Vector3 desplazamiento = (Vector3)movimiento * velocidadLados * Time.deltaTime;
         Vector3 posFutura = transform.position + desplazamiento;
 
         float xClamped = Mathf.Clamp(posFutura.x, origenRiel.x - LimitesMovimiento.x, origenRiel.x + LimitesMovimiento.x);
@@ -114,6 +161,22 @@ public class Player_rieles : MonoBehaviour
     void OnFreno(InputValue value)
     {
         Frenado = enabled && value.isPressed;
+    }
+
+    void ActualizarManiobra()
+    {
+        int direccionManiobra = ObtenerDireccionManiobra();
+        float inclinacionObjetivo = -direccionManiobra * inclinacionMaximaManiobra;
+        rotacionManiobra = Mathf.MoveTowardsAngle(
+            rotacionManiobra,
+            inclinacionObjetivo,
+            velocidadInclinacionManiobra * Time.deltaTime);
+    }
+
+    int ObtenerDireccionManiobra()
+    {
+        if (girandoDerecha == girandoIzquierda) return 0;
+        return girandoDerecha ? 1 : -1;
     }
 
     void avance()
@@ -166,7 +229,13 @@ public class Player_rieles : MonoBehaviour
 
     void InclinacionJugador()
     {
-        if (mirillaUI == null) return;
+        if (mirillaUI == null)
+        {
+            float cambioRoll = Mathf.DeltaAngle(rotacionManiobraAplicada, rotacionManiobra);
+            transform.Rotate(0f, 0f, cambioRoll, Space.Self);
+            rotacionManiobraAplicada = rotacionManiobra;
+            return;
+        }
 
         // 1. Vector que conecta la nave con el punto al que apunta la mirilla
         Vector3 direccionHaciaMirilla = (mirillaUI.PuntoMundialImpacto - transform.position).normalized;
@@ -174,12 +243,13 @@ public class Player_rieles : MonoBehaviour
         // 2. La nave rota su frente para alinearse en línea recta con la mira
         Quaternion rotacionAlineada = Quaternion.LookRotation(direccionHaciaMirilla, Vector3.up);
 
-        // 3. Le sumamos el balanceo de las alas (Roll) según el stick para dar el alabeo de Star Fox
+        // 3. Combinamos el balanceo de movimiento con el giro de la maniobra.
         float rollCosmetico = -PlayerInput.x * InclinacionZ;
-        Quaternion rotacionFinal = rotacionAlineada * Quaternion.Euler(0f, 0f, rollCosmetico);
+        Quaternion rotacionFinal = rotacionAlineada * Quaternion.Euler(0f, 0f, rollCosmetico + rotacionManiobra);
 
         // 4. Suavizamos la rotación completa
         transform.rotation = Quaternion.Slerp(transform.rotation, rotacionFinal, velocidadOrientacion * Time.deltaTime);
+        rotacionManiobraAplicada = rotacionManiobra;
     }
 
     float RampaDeAceleracionYDesaceleracion(float velocidadObjetivo)
