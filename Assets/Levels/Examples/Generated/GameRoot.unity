@@ -1418,6 +1418,14 @@ PrefabInstance:
       propertyPath: VelocidadInclinacion
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: inclinacionMaximaManiobra
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: velocidadInclinacionManiobra
+      value: 350
+      objectReference: {fileID: 0}
     - target: {fileID: 6802675490704385792, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: barraVidaImagen
       value: 

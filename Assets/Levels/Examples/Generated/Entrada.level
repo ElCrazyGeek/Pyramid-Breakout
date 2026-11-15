@@ -57,24 +57,24 @@ eventos:
 
   # Oleada de enemigos seguidores
   - id: perseguidora_1
-    en: 2150
+    en: 2100
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 2250, x: 10, y: 15 }
+    posicion: { s: 2180, x: 10, y: 15 }
     parametros: { vida: 4 }
 
   - id: perseguidora_2
-    en: 2150
+    en: 2100
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 2250, x: -10, y: -5 }
+    posicion: { s: 2180, x: -10, y: -5 }
     parametros: { vida: 4 }
 
   - id: perseguidora_3
-    en: 2150
+    en: 2100
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 2250, x: -30, y: 10 }
+    posicion: { s: 2180, x: -30, y: 10 }
     parametros: { vida: 4 }
     
   - id: lanzador_rayos2
@@ -315,7 +315,7 @@ eventos:
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
-    posicion: { s: 4700, x: 34, y: 20 }
+    posicion: { s: 4720, x: 36.83, y: 40 }
     parametros: { vida: 3 }
 
   - id: torreta_final01
@@ -323,7 +323,7 @@ eventos:
     accion: crear
     recurso: enemigo.torreta
     tramo: interior
-    posicion: { s: 4700, x: -34, y: 20 }
+    posicion: { s: 4720, x: -31.78, y: 40 }
     parametros: { vida: 3 }
 
   - id: torreta_final
@@ -355,7 +355,7 @@ eventos:
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: interior
-    posicion: { s: 6050, x: 10, y: 0 }
+    posicion: { s: 6050, x: 39, y: 0 }
     parametros: { vida: 2 }
 
   - id: lanzador_rayos9
@@ -363,7 +363,7 @@ eventos:
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: interior
-    posicion: { s: 6050, x: 81, y: 0 }
+    posicion: { s: 6050, x: -45, y: 0 }
     parametros: { vida: 2 }
 
   - id: lanzador_rayos10
@@ -371,7 +371,7 @@ eventos:
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: interior
-    posicion: { s: 6064, x: -10, y: 67 }
+    posicion: { s: 6064, x: -68, y: 69 }
     parametros: { vida: 2 }
 
   - id: lanzador_rayos11
@@ -379,7 +379,7 @@ eventos:
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: interior
-    posicion: { s: 6064, x: 112, y: 69 }
+    posicion: { s: 6064, x: 52, y: 69 }
     parametros: { vida: 4 }
 
 
