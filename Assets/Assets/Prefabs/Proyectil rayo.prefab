@@ -203,7 +203,7 @@ MonoBehaviour:
   tiempoVida: 5
   danio: 1
   grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
-  sfxDisparo: {fileID: 8300000, guid: ad7f09831f13e2646acccfcf55f01f1c, type: 3}
+  sfxDisparo: {fileID: 8300000, guid: 8ce26f6d8ae76814a892090d07830cd8, type: 3}
   volumenSfx: 0.9
   tagOrigen: Enemy
   origen: {fileID: 0}
