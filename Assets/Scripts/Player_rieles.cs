@@ -16,6 +16,7 @@ public class Player_rieles : MonoBehaviour
     [SerializeField, Range(0f, 90f)] private float inclinacionMaximaManiobra = 80f;
     [SerializeField, Min(0f)] private float velocidadInclinacionManiobra = 180f;
     [SerializeField, Min(1f)] private float multiplicadorVelocidadManiobra = 1.8f;
+    [SerializeField] private AudioSource sonidoManiobra;
 
     [Header("Inclinacion")]
     public float InclinacionX = 15f;
@@ -49,6 +50,7 @@ public class Player_rieles : MonoBehaviour
     private float FinCastigoFreno;
     private float rotacionManiobra;
     private float rotacionManiobraAplicada;
+    private bool maniobraActivaAnterior;
 
     [Header("Alineación con Mirilla")]
     [SerializeField] private MirillaUI mirillaUI; // Arrastra tu MirillaUI aquí
@@ -104,6 +106,7 @@ public class Player_rieles : MonoBehaviour
         PlayerInput = Vector2.zero;
         Frenado = false;
         girandoDerecha = girandoIzquierda = false;
+        maniobraActivaAnterior = false;
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -116,6 +119,7 @@ public class Player_rieles : MonoBehaviour
     {
         girandoDerecha = accionGiroDerecha != null && accionGiroDerecha.enabled && accionGiroDerecha.IsPressed();
         girandoIzquierda = accionGiroIzquierda != null && accionGiroIzquierda.enabled && accionGiroIzquierda.IsPressed();
+        ActualizarSonidoManiobra(ObtenerDireccionManiobra() != 0);
         ActualizarManiobra();
         mover();
         avance();
@@ -161,6 +165,16 @@ public class Player_rieles : MonoBehaviour
     void OnFreno(InputValue value)
     {
         Frenado = enabled && value.isPressed;
+    }
+
+    void ActualizarSonidoManiobra(bool maniobraActiva)
+    {
+        if (maniobraActiva && !maniobraActivaAnterior && sonidoManiobra != null && !sonidoManiobra.isPlaying)
+        {
+            sonidoManiobra.Play();
+        }
+
+        maniobraActivaAnterior = maniobraActiva;
     }
 
     void ActualizarManiobra()

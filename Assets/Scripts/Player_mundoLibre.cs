@@ -18,6 +18,7 @@ public class Player_mundolibre : MonoBehaviour
     [SerializeField] public float limiteInferiorY = 25f;
     [SerializeField] public float limiteSuperiorY = 25f;
     [SerializeField] public float bankPitch = 25f; 
+    [SerializeField] private AudioSource sonidoGiro;
 
     [Header("Avance")]
     [SerializeField] public float VelocidadAvance = 20f;
@@ -28,6 +29,7 @@ public class Player_mundolibre : MonoBehaviour
 
     public Vector2 PlayerInput;
     private float currentYaw = 0f;
+    private bool giroActivoAnterior;
     public Vector3 CurrentForward { get; private set; } = Vector3.forward;
 
 
@@ -53,9 +55,20 @@ public class Player_mundolibre : MonoBehaviour
 
     void Update()
     {
+        ActualizarSonidoGiro(Mathf.Abs(PlayerInput.x) > 0.01f);
         RotarYAvance();
         MoverVertical();
         AplicarInclinacionVisual();
+    }
+
+    void ActualizarSonidoGiro(bool giroActivo)
+    {
+        if (giroActivo && !giroActivoAnterior && sonidoGiro != null && !sonidoGiro.isPlaying)
+        {
+            sonidoGiro.Play();
+        }
+
+        giroActivoAnterior = giroActivo;
     }
 
    void RotarYAvance()
