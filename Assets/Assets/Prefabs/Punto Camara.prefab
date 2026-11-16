@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 1117624775807354215}
   m_Layer: 0
   m_Name: Punto Camara
-  m_TagString: Untagged
+  m_TagString: Punto Camara
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

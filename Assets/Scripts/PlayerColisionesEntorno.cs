@@ -26,7 +26,15 @@ public class PlayerColisionesEntorno : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[Choque Detectado] La nave tocó: {other.gameObject.name} (Tag: {other.tag})");
+        // 1. Ignorar puntos de cámara, zonas de rescate y triggers sin ContactDamage
+        if (other.CompareTag("Punto Camara") ||
+            other.GetComponentInParent<PuntoTrayectoriaCamara>() != null ||
+            other.GetComponentInParent<ZonaSeguraOInstakill>() != null ||
+            (other.isTrigger && other.GetComponentInParent<Pyramid.Levels.ContactDamage>() == null))
+        {
+            return;
+        }
+
         ProcesarContacto(other.gameObject);
     }
 
@@ -49,6 +57,14 @@ public class PlayerColisionesEntorno : MonoBehaviour
             return;
         }
 
+        if (obstaculo.CompareTag("Punto Camara") ||
+    obstaculo.GetComponentInParent<PuntoTrayectoriaCamara>() != null ||
+    obstaculo.GetComponentInParent<ZonaSeguraOInstakill>() != null)
+        {
+            return;
+        }
+
+
         // 3. Si chocó contra un muro, suelo o asteroide genérico del escenario
         if (obstaculo.CompareTag("Escenario") || obstaculo.layer == LayerMask.NameToLayer("Default"))
         {
@@ -63,6 +79,8 @@ public class PlayerColisionesEntorno : MonoBehaviour
             // Empuje de rebote al centro del riel
             RebotarAlCentro();
         }
+
+
     }
 
     private void RebotarAlCentro()
