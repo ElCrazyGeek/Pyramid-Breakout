@@ -27,13 +27,6 @@ tramos:
 eventos:
 
   # --- TRAMO EXTERIOR (0 a 4900) ---
-  - id: lanzador_rayos
-    en: 800
-    accion: crear
-    recurso: enemigo.lanzadorRayos
-    tramo: exterior
-    posicion: { s: 500, x: 10, y: 0 }
-    parametros: { vida: 4 }
 
   # Barco: inicia en 1500 y termina en 3044
   - id: escenario.nave_destruida
@@ -43,42 +36,120 @@ eventos:
     tramo: exterior
     posicion: { s: 1500, x: 0, y: -10 }
 
-  - id: lanzador_rayos2
-    en: 1000
+  - id: lanzador_rayos
+    en: 1800
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: exterior
-    posicion: { s: 1700, x: 20, y: 0 }
-    parametros: { vida: 4 }
+    posicion: { s: 2150, x: 10, y: 0 }
+    parametros: { vida: 1 }
+
+  - id: lanzador_rayos2
+    en: 1800
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 2150, x: -20, y: 0 }
+    parametros: { vida: 1 }
 
   - id: lanzador_rayos3
-    en: 1000
+    en: 2000
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: exterior
-    posicion: { s: 1700, x: -20, y: 0 }
-    parametros: { vida: 4 }
+    posicion: { s: 2300, x: -20, y: 0 }
+    parametros: { vida: 2 }
 
-  # Oleada de enemigos seguidores en zona vacía (+1150)
+  - id: lanzador_rayos3.1
+    en: 2000
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 2300, x: 10, y: 0 }
+    parametros: { vida: 2 }
+
+  # Oleada de enemigos seguidores en zona vacía
+
   - id: perseguidora_1
-    en: 3450
+    en: 3150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 3530, x: 10, y: 15 }
+    posicion: { s: 3230, x: 15, y: 10 }
     parametros: { vida: 4 }
 
   - id: perseguidora_2
-    en: 3450
+    en: 3150
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 3530, x: -10, y: -5 }
+    posicion: { s: 3230, x: -25, y: 10 }
     parametros: { vida: 4 }
 
   - id: perseguidora_3
-    en: 3450
+    en: 3650
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 3530, x: -30, y: 10 }
+    posicion: { s: 3730, x: -40, y: 20 }
+    parametros: { vida: 4 }
+
+  - id: perseguidora_4.1
+    en: 3650
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 3730, x: 20, y: 20 }
+    parametros: { vida: 4 }
+
+
+  - id: perseguidora_4.2
+    en: 3650
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 3730, x: 0, y: -5 }
+    parametros: { vida: 4 }
+
+#enemigos posteriores a los asteroides
+
+
+  - id: perseguidora_4.3
+    en: 4370
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4450, x: -25, y: 20 }
+    parametros: { vida: 4 }
+
+  - id: perseguidora_4.4
+    en: 4370
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4450, x: 20, y: 20 }
+    parametros: { vida: 4 }
+
+
+  - id: perseguidora_4.5
+    en: 4370
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4450, x: 0, y: -20 }
+    parametros: { vida: 4 }
+
+  - id: perseguidora_4.6
+    en: 4370
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4450, x: 20, y: -20 }
+    parametros: { vida: 4 }
+
+  - id: perseguidora_4.7
+    en: 4370
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4450, x: -20, y: 0 }
+    parametros: { vida: 4 }
+
+  - id: perseguidora_4.8
+    en: 4370
+    accion: crear
+    recurso: enemigo.hostigador
+    posicion: { s: 4450, x: 25, y: -20 }
     parametros: { vida: 4 }
 
   - id: ambiente_interior

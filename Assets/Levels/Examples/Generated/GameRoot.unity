@@ -775,10 +775,11 @@ GameObject:
   m_Component:
   - component: {fileID: 396840278}
   - component: {fileID: 396840277}
+  - component: {fileID: 396840283}
   - component: {fileID: 396840280}
   - component: {fileID: 396840276}
-  - component: {fileID: 396840279}
   - component: {fileID: 396840281}
+  - component: {fileID: 396840279}
   m_Layer: 0
   m_Name: CamaraRiel
   m_TagString: Untagged
@@ -798,11 +799,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dfbcc4025454214aa499a1db0b25a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
+  follow: {fileID: 396840283}
   playerTarget: {fileID: 1635421773}
-  offset: {x: 0, y: 0, z: -25}
+  offsetBase: {x: 0, y: 0.2, z: -30}
   margenX: 25
   margenY: 12
-  seguimientoSuavidad: 8
+  seguimientoSuavidad: 4
+  activarGuiaEscenario: 1
+  capasEscenario:
+    serializedVersion: 2
+    m_Bits: 256
+  distanciaDeteccion: 25
+  aperturaSensoresX: 8
+  desplazamientoMaximoX: 14
+  velocidadEsquive: 4
 --- !u!114 &396840277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -855,7 +865,7 @@ Transform:
   m_GameObject: {fileID: 396840275}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0033332743, y: -0, z: -0, w: 0.99999446}
-  m_LocalPosition: {x: 0, y: 23, z: -948}
+  m_LocalPosition: {x: 0, y: 15, z: -25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -886,7 +896,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 1
-  m_Constraints: 32
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &396840280
 MonoBehaviour:
@@ -931,7 +941,7 @@ MonoBehaviour:
   TransparentLayers:
     serializedVersion: 2
     m_Bits: 128
-  MinimumDistanceFromTarget: 1
+  MinimumDistanceFromTarget: 2.5
   AvoidObstacles:
     Enabled: 1
     DistanceLimit: 10
@@ -939,10 +949,10 @@ MonoBehaviour:
     CameraRadius: 0.2
     UseFollowTarget:
       Enabled: 0
-      YOffset: 0
+      YOffset: 2
     Strategy: 0
     MaximumEffort: 4
-    SmoothingTime: 0
+    SmoothingTime: 0.15
     Damping: 0.15
     DampingWhenOccluded: 0.2
   ShotQualityEvaluation:
@@ -951,6 +961,25 @@ MonoBehaviour:
     NearLimit: 5
     FarLimit: 30
     MaxQualityBoost: 0.2
+--- !u!114 &396840283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396840275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
+  TrackerSettings:
+    BindingMode: 4
+    PositionDamping: {x: 0.15, y: 0.15, z: 0.15}
+    AngularDampingMode: 0
+    RotationDamping: {x: 1, y: 1, z: 1}
+    QuaternionDamping: 1
+  FollowOffset: {x: 0, y: 0, z: -25}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,6 +1407,10 @@ PrefabInstance:
       propertyPath: mirillaLejanaUI
       value: 
       objectReference: {fileID: 1339351033}
+    - target: {fileID: 3485035434292159568, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: speed
       value: 35
@@ -3721,7 +3754,7 @@ MonoBehaviour:
   mirillaCercana: {fileID: 1190169471}
   rangoLejana: {x: 1000, y: 600}
   sensibilidadMouse: 0.9
-  sensibilidadStick: 1300
+  sensibilidadStick: 1800
   suavizadoMirilla: 20
   tiempoEsperaRecentrado: 0.35
   atraccionAlCentro: 0.2
