@@ -13,6 +13,7 @@ namespace Pyramid.Levels.Editor
             output.valid = false;
             output.events = Array.Empty<LevelEvent>();
             output.segments = Array.Empty<LevelSegment>();
+            output.meteoriteZones = Array.Empty<MeteoriteZoneDefinition>();
             var root = LevelYamlReader.Read(text, source);
             if (root.Number("version", 0, true) != 1) throw root.Error("Solo se admite version: 1.");
             output.version = 1;
@@ -65,6 +66,74 @@ namespace Pyramid.Levels.Editor
                 }
                 if (Mathf.Abs(end - output.length) > 0.001f) throw root.Error("Los tramos deben cubrir toda longitud_m.");
             }
+            var zones = new List<MeteoriteZoneDefinition>();
+            var zoneIds = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var entry in root.List("zonas_meteoritos"))
+            {
+                var zone = new MeteoriteZoneDefinition
+                {
+                    id = entry.Text("id", required: true),
+                    start = entry.Number("desde_s", required: true),
+                    end = entry.Number("hasta_s", required: true),
+                    minInterval = entry.Number("intervalo_min_m", required: true),
+                    maxInterval = entry.Number("intervalo_max_m", required: true),
+                    anticipation = entry.Number("anticipacion_m", 80),
+                    maxActive = ReadPositiveInteger(entry, "max_activos"),
+                    lifetime = entry.Number("duracion_s", 15),
+                    seed = ReadSeed(entry),
+                    segment = entry.Text("tramo")
+                };
+                if (!zoneIds.Add(zone.id)) throw entry.Error($"Zona de meteoritos duplicada '{zone.id}'.");
+                if (zone.start < 0 || zone.start >= zone.end || zone.end > output.length)
+                    throw entry.Error($"Zona '{zone.id}': se requiere 0 <= desde_s < hasta_s <= longitud_m.");
+                if (zone.minInterval <= 0 || zone.maxInterval < zone.minInterval || zone.anticipation < 0 || zone.lifetime <= 0)
+                    throw entry.Error($"Zona '{zone.id}': intervalos y duración deben ser positivos, el máximo debe ser >= al mínimo y anticipacion_m >= 0.");
+
+                var area = entry.Child("area", true);
+                zone.xMin = area.Number("x_min", required: true);
+                zone.xMax = area.Number("x_max", required: true);
+                zone.yMin = area.Number("y_min", required: true);
+                zone.yMax = area.Number("y_max", required: true);
+                area.Complete();
+                if (zone.xMin > zone.xMax || zone.yMin > zone.yMax)
+                    throw entry.Error($"Zona '{zone.id}': los límites mínimos del área deben ser menores o iguales a los máximos.");
+                if (float.IsInfinity(zone.xMax - zone.xMin) || float.IsInfinity(zone.yMax - zone.yMin))
+                    throw entry.Error($"Zona '{zone.id}': el tamaño del área debe ser finito.");
+
+                if (segments.Count > 0)
+                {
+                    if (string.IsNullOrWhiteSpace(zone.segment)) throw entry.Error($"Zona '{zone.id}': tramo es obligatorio cuando el nivel usa tramos.");
+                    var owner = segments.Find(x => x.id == zone.segment);
+                    if (owner == null) throw entry.Error($"Tramo desconocido '{zone.segment}'.");
+                    if (zone.start < owner.start || zone.end > owner.end)
+                        throw entry.Error($"Zona '{zone.id}': su rango debe quedar dentro del tramo '{zone.segment}'.");
+                }
+                else if (zone.segment != null)
+                    throw entry.Error($"Zona '{zone.id}': no puede indicar tramo si el nivel no define tramos.");
+
+                var choices = new List<MeteoriteSpawnChoice>();
+                foreach (var choice in entry.List("meteoritos"))
+                {
+                    var definition = Resolve<EntityDefinition>(choice.Text("recurso", required: true), choice, index);
+                    if (!definition.prefab) throw choice.Error($"Entidad '{definition.id}' sin prefab.");
+                    float weight = choice.Number("peso", 1);
+                    if (weight <= 0) throw choice.Error("peso debe ser mayor que cero.");
+                    var settings = definition.defaults.Copy();
+                    ValidateSettings(settings, choice);
+                    foreach (var adapter in definition.prefab.GetComponentsInChildren<ILevelEntityAdapter>(true))
+                    {
+                        string error = adapter.ValidateSettings(settings);
+                        if (error != null) throw choice.Error($"'{definition.id}': {error}");
+                    }
+                    choice.Complete();
+                    choices.Add(new MeteoriteSpawnChoice { resource = definition, weight = weight });
+                }
+                if (choices.Count == 0) throw entry.Error($"Zona '{zone.id}': debe incluir al menos un meteorito.");
+                zone.meteorites = choices.ToArray();
+                entry.Complete();
+                zones.Add(zone);
+            }
+            output.meteoriteZones = zones.ToArray();
             var events = new List<LevelEvent>();
             var eventIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (var entry in root.List("eventos"))
@@ -167,6 +236,19 @@ namespace Pyramid.Levels.Editor
             var values = new[] { value.health, value.damage, value.fireRate, value.range, value.lifetime, value.speed };
             if (values.Any(x => float.IsNaN(x) || float.IsInfinity(x) || x < 0) || value.health <= 0)
                 throw map.Error("Parámetros inválidos: vida > 0; daño, cadencia, alcance, duración y velocidad >= 0.");
+        }
+        static int ReadPositiveInteger(Map map, string key)
+        {
+            double value = map.Number(key, required: true);
+            if (value < 1 || value > int.MaxValue || value != Math.Floor(value)) throw map.Error($"'{key}' debe ser un entero positivo.");
+            return (int)value;
+        }
+        static int ReadSeed(Map map)
+        {
+            double value = map.Number("semilla");
+            if (value == 0) return 0;
+            if (value < int.MinValue || value > int.MaxValue || value != Math.Floor(value)) throw map.Error("'semilla' debe ser un entero dentro del rango de 32 bits.");
+            return (int)value;
         }
     }
 }

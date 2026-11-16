@@ -24,6 +24,33 @@ tramos:
     precargar_en: 1800
     descargar_en: 8500
 
+# Zonas que generan meteoritos aleatoriamente durante el recorrido.
+zonas_meteoritos:
+  - id: campo_meteoritos # Identificador único de esta zona.
+    desde_s: 2000 # Distancia en que empieza a generar; aparece uno al llegar.
+    hasta_s: 3000 # Distancia en que deja de generar.
+    tramo: interior # Tramo que cubre todo el rango de la zona.
+    area: # Límites laterales (X) y verticales (Y) de aparición.
+      x_min: -30
+      x_max: 30
+      y_min: -15
+      y_max: 30
+    intervalo_min_m: 30 # Separación mínima entre apariciones, en metros.
+    intervalo_max_m: 50 # Separación máxima aleatoria, en metros.
+    anticipacion_m: 300 # Distancia máxima delante del jugador para aparecer.
+    max_activos: 50 # Límite de meteoritos simultáneos de esta zona.
+    duracion_s: 30 # Segundos antes de retirar cada meteorito.
+    semilla: 2026 # Repite la secuencia; usa 0 para una secuencia aleatoria.
+    meteoritos: # Recursos EntityDefinition registrados en el catálogo.
+      - recurso: obstaculo.piedra1
+        peso: 1 # Peso relativo: mayor peso significa más apariciones.
+      - recurso: obstaculo.piedra2
+        peso: 2
+      - recurso: obstaculo.piedra3
+        peso: 3
+      - recurso: obstaculo.piedra4
+        peso: 4
+
 eventos:
 
   - id: lanzador_rayos
@@ -47,6 +74,7 @@ eventos:
     recurso: escenario.pasillo_artilleros
     tramo: interior
     posicion: { s: 3800, x: 0, y: -10 }
+
 
   - id: escenario.fortaleza
     en: 3500

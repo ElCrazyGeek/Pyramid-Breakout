@@ -44,6 +44,30 @@ namespace Pyramid.Levels.Editor
                 compile(header + spawn);
                 Check(level.valid && level.events.Length == 1, "Importación del nivel.");
                 Check(level.events[0].routePosition == new Vector3(-4, 2, 30), "Conversión de coordenadas.");
+                string zone = "zonas_meteoritos:\n" +
+                    "  - id: campo\n" +
+                    "    desde_s: 20\n" +
+                    "    hasta_s: 80\n" +
+                    "    area: {x_min: -30, x_max: 30, y_min: -10, y_max: 20}\n" +
+                    "    intervalo_min_m: 25\n" +
+                    "    intervalo_max_m: 60\n" +
+                    "    anticipacion_m: 80\n" +
+                    "    max_activos: 4\n" +
+                    "    duracion_s: 15\n" +
+                    "    semilla: 2026\n" +
+                    "    meteoritos:\n" +
+                    "      - recurso: enemigo.test\n" +
+                    "        peso: 3\n";
+                compile(header + zone);
+                Check(level.valid && level.meteoriteZones.Length == 1, "Importación de zona aleatoria de meteoritos.");
+                Check(level.meteoriteZones[0].meteorites[0].resource == definition && level.meteoriteZones[0].meteorites[0].weight == 3, "Resolución del meteorito desde el catálogo y su peso.");
+                Check(level.meteoriteZones[0].start == 20 && level.meteoriteZones[0].end == 80 && level.meteoriteZones[0].seed == 2026, "Lectura de rango, zona y semilla.");
+                Reject(() => compile(header + zone.Replace("enemigo.test", "desconocido")), "Meteorito desconocido en zona.");
+                Reject(() => compile(header + zone.Replace("intervalo_max_m: 60", "intervalo_max_m: 5")), "Intervalo máximo menor que el mínimo.");
+                Reject(() => compile(header + zone.Replace("x_min: -30, x_max: 30", "x_min: 30, x_max: -30")), "Límites de área invertidos.");
+                compile(header + spawn);
+                Check(level.valid && level.events.Length == 1 && level.meteoriteZones.Length == 0, "Un nivel sin zonas mantiene su comportamiento anterior.");
+                Check(level.events[0].routePosition == new Vector3(-4, 2, 30), "Conversión de coordenadas.");
                 Check(level.events[0].settings.health == 12 && definition.defaults.health == 40, "Los overrides no mutan el catálogo.");
                 var a = level.events[0].settings.Copy();
                 a.extra.Add(new EntityParameter { key = "test", value = "x" });

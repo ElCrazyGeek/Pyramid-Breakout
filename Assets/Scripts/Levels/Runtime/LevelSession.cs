@@ -34,6 +34,7 @@ namespace Pyramid.Levels
         EnvironmentController environment;
         LevelAudioChannel music, ambience;
         LevelRunner runner;
+        MeteoriteZoneRunner meteoriteZones;
         LevelDefinition activeLevel;
         Player_rieles railPlayer;
         DisparoJugador weapon;
@@ -84,6 +85,7 @@ namespace Pyramid.Levels
             {
                 int current = revision;
                 runner = null;
+                meteoriteZones = null;
                 spawner.Clear();
                 Objects.Clear();
                 music.Clear(); ambience.Clear();
@@ -132,6 +134,7 @@ namespace Pyramid.Levels
                 runner.Register(LevelAction.Music, e => music.Play((AudioDefinition)e.resource, e.transition));
                 runner.Register(LevelAction.Ambience, e => ambience.Play((AudioDefinition)e.resource, e.transition));
                 runner.Register(LevelAction.Finish, e => Complete());
+                meteoriteZones = new MeteoriteZoneRunner(activeLevel.meteoriteZones, spawner, route, player, viewCamera);
                 State = LevelState.Running;
                 SetFrozen(false);
                 break;
@@ -187,6 +190,7 @@ namespace Pyramid.Levels
             {
                 int previous = runner.NextIndex;
                 runner.Advance(Distance);
+                if (State == LevelState.Running) meteoriteZones?.Tick(Distance);
                 streamer.RetirePassed(Distance);
                 if (logEvents && previous != runner.NextIndex)
                     Debug.Log($"Nivel {activeLevel.levelId}: ejecutados {runner.NextIndex - previous} eventos en {Distance:F1} m.", this);
