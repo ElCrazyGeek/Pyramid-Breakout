@@ -32,6 +32,7 @@ Añade un evento dentro de `eventos`:
     recurso: enemigo.pasada
     posicion: { s: 210, x: 90, y: 12 }
     parametros:
+      activacion: 150
       vida: 20
       velocidad: 65
       cadencia: 2
@@ -41,7 +42,10 @@ Añade un evento dentro de `eventos`:
       duracion_s: 0
 ```
 
-`en` determina cuándo se crea. La trayectoria se calcula respecto al jugador
+`en` determina cuándo se crea. Espera inmóvil hasta que el jugador esté dentro
+de `distanciaActivacion` (distancia 3D en unidades de Unity, 150 por defecto).
+Se configura en el Inspector o con `activacion` en el archivo `.level`. Una vez
+activada, continúa repitiendo sus pasadas; `alcance` controla por separado cuándo dispara. La trayectoria se calcula respecto al jugador
 al comenzar cada pasada; `posicion` es la posición inicial del generador.
 La nave conserva el avance longitudinal del jugador y fija el recorrido lateral
 durante cada pase, de modo que el jugador puede esquivarlo.
@@ -50,6 +54,7 @@ durante cada pase, de modo que el jugador puede esquivarlo.
 
 | Parámetro `.level` | Función | Valor inicial |
 | --- | --- | --- |
+| `activacion` | Radio para iniciar el primer pase desde la posición de aparición. | `150` |
 | `velocidad` | Velocidad del pase respecto al avance del jugador, en unidades/s. | `65` |
 | `entrada` | Distancia por delante del jugador al iniciar. | `110` |
 | `lateral` | Separación lateral de la entrada. | `90` |
