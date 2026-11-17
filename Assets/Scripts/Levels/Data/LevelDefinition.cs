@@ -26,6 +26,25 @@ namespace Pyramid.Levels
         public float start, end, preloadAt, unloadAt;
     }
 
+    [Serializable]
+    public sealed class MeteoriteSpawnChoice
+    {
+        public EntityDefinition resource;
+        public float weight;
+    }
+
+    [Serializable]
+    public sealed class MeteoriteZoneDefinition
+    {
+        public string id;
+        public float start, end;
+        public float xMin, xMax, yMin, yMax;
+        public float minInterval, maxInterval, anticipation, lifetime;
+        public int maxActive, seed;
+        public string segment;
+        public MeteoriteSpawnChoice[] meteorites = Array.Empty<MeteoriteSpawnChoice>();
+    }
+
     public sealed class LevelDefinition : ScriptableObject
     {
         public int version = 1;
@@ -37,6 +56,7 @@ namespace Pyramid.Levels
         public AudioDefinition initialAmbience;
         public LevelEvent[] events = Array.Empty<LevelEvent>();
         public LevelSegment[] segments = Array.Empty<LevelSegment>();
+        public MeteoriteZoneDefinition[] meteoriteZones = Array.Empty<MeteoriteZoneDefinition>();
         [HideInInspector] public bool valid;
         [HideInInspector] public string diagnostics;
         [HideInInspector] public string sourceHash;
