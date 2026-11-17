@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e475aedf692fb4e718184570dd9eea57, type: 3}
   m_Name: Piedra2
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.EntityDefinition
-  id: 
-  prefab: {fileID: 0}
+  id: obstaculo.piedra2
+  prefab: {fileID: 919132149155446097, guid: a1698a4b95e17ed40aa1e8a1b6d462d4, type: 3}
   preservePrefabRotation: 0
   defaults:
-    health: 40
-    damage: 10
+    health: 1
+    damage: 5
     fireRate: 1
     range: 50
     lifetime: 20
