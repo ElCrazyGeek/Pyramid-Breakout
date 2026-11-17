@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 14374368321385668}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.8, y: 0, z: 191.1}
+  m_LocalPosition: {x: 169, y: 66, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -57,7 +57,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5419594621680157398}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.5, y: 4, z: 132.3}
   m_LocalScale: {x: 0.28571427, y: 0.28571427, z: 0.28571427}
   m_ConstrainProportionsScale: 0
@@ -84,8 +84,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 197.6561, y: 103.906006, z: 126.95137}
-  m_Center: {x: -39.633606, y: 26.952738, z: 139.94563}
+  m_Size: {x: 423.04062, y: 278.46997, z: 161.02682}
+  m_Center: {x: 226.2774, y: 22.629572, z: 6.85433}
 --- !u!114 &1117624775807354215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   camaraRiel: {fileID: 0}
   puntoDestino: {fileID: 8499531481171465733}
   usarAnguloManualY: 1
-  anguloYEnZona: 0
+  anguloYEnZona: 10
   velocidadTransicion: 2
   autoRegresarAlRebasarZ: 1
   restaurarAlSalirTrigger: 1
