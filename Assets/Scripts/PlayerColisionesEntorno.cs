@@ -26,6 +26,9 @@ public class PlayerColisionesEntorno : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.isTrigger && other.GetComponentInParent<PuertaContacto>() != null)
+            return;
+
         Debug.Log($"[Choque Detectado] La nave tocó: {other.gameObject.name} (Tag: {other.tag})");
         ProcesarContacto(other.gameObject);
     }
@@ -39,6 +42,14 @@ public class PlayerColisionesEntorno : MonoBehaviour
     {
         // 1. Ignorar disparos propios o amigos
         if (obstaculo.CompareTag("Player") || obstaculo.GetComponent<Proyectil>() != null) return;
+
+        var puerta = obstaculo.GetComponentInParent<PuertaContacto>();
+        if (puerta != null)
+        {
+            puerta.ProcesarContacto(saludJugador);
+            return;
+        }
+
         if (Time.time < proximoChoquePermitido) return;
 
         // 2. Si el obstáculo tiene ContactDamage, delegamos en él

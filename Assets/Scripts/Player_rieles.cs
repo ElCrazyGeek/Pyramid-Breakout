@@ -111,6 +111,17 @@ public class Player_rieles : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        var puerta = hit.collider.GetComponentInParent<PuertaContacto>();
+        if (puerta != null)
+        {
+            var saludJugador = GetComponent<Pyramid.Levels.Health>();
+            if (saludJugador == null)
+                saludJugador = GetComponentInChildren<Pyramid.Levels.Health>();
+
+            puerta.ProcesarContacto(saludJugador);
+            return;
+        }
+
         var obstacle = hit.collider.GetComponentInParent<Pyramid.Levels.ContactDamage>();
         if (obstacle) obstacle.Hit(gameObject);
     }
