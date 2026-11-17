@@ -9,6 +9,7 @@ TagManager:
   - Escenario
   - Suelo
   - Item
+  - Punto Camara
   layers:
   - Default
   - TransparentFX

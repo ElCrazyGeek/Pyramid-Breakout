@@ -53,13 +53,19 @@ MonoBehaviour:
   objetivo: {fileID: 0}
   boca: {fileID: 8188326374282563623}
   visual: {fileID: 0}
+  usarAnimacionEntrada: 1
+  magnitudEntrada: {x: 50, y: 15, z: 35}
+  duracionEntrada: 1.2
+  inclinacionEntrada: 45
   distanciaSeguimiento: 100
+  usarPosicionSpawnComoFormacion: 1
+  offsetCombateXY: {x: 0, y: 0.5}
   velocidadRespuesta: 100
   velocidadRotacion: 25
   cadenciaDisparo: 1.5
   prefabProyectil: {fileID: 2759515552060237589, guid: e01e34bf78434cb449fe4ca74abdf655, type: 3}
   proyectilRotationOffsetEuler: {x: 0, y: 0, z: 0}
-  tiempoVida: 8
+  tiempoVida: 4
   velocidadRetirada: 100
   tiempoRetirada: 5
   debugVisuals: 0
@@ -133,7 +139,7 @@ MonoBehaviour:
   capaEnemigos:
     serializedVersion: 2
     m_Bits: 128
-  radioSeparacion: 3.5
+  radioSeparacion: 8
   fuerzaSeparacion: 4
   grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxChoqueEscenario: {fileID: 8300000, guid: 5ca68ee6ab39b7f49ad0d8dc557f1580, type: 3}
@@ -141,8 +147,8 @@ MonoBehaviour:
   danioPorChoqueMuro: 5
   cooldownImpacto: 0.5
   limitesAreaSegura: {x: 18, y: 10}
-  velocidadReubicacion: 15
-  duracionReubicacion: 0.6
+  velocidadReubicacion: 20
+  duracionReubicacion: 1
 --- !u!1 &2359079661146406513
 GameObject:
   m_ObjectHideFlags: 0

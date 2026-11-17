@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2410116156866361099}
   m_Layer: 0
   m_Name: Cruz vertical
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8232158658854995006}
   m_Layer: 0
   m_Name: Cruz Horizontal
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -308,10 +308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2024fdc046202ff47839c51606afae33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  repairAmount: 20
+  repairAmount: 35
   grupoMixer: {fileID: -1816582845240284932, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxRecoger: {fileID: 8300000, guid: 4840319ffaa2aad45bb813e645dc81b3, type: 3}
-  volumenAudio: 0.9
+  volumenAudio: 1
   prefabParticulasRecoger: {fileID: 3641751014818319737, guid: 1f89af61f67ae6347848586371d82bc3, type: 3}
 --- !u!54 &-9129678704143536781
 Rigidbody:
