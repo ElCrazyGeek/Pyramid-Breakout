@@ -147,6 +147,8 @@ public class Player_rieles : MonoBehaviour
 
     void mover()
     {
+        if (controller == null || !controller.enabled) return;
+
         // La maniobra acelera el movimiento hacia el lado del giro y en vertical.
         Vector2 movimiento = PlayerInput;
         int direccionManiobra = ObtenerDireccionManiobra();
@@ -211,7 +213,11 @@ public class Player_rieles : MonoBehaviour
 
         VelocidadActual = RampaDeAceleracionYDesaceleracion(velocidadObjetivo);
         float avanceZ = VelocidadActual * Time.deltaTime;
-        controller.Move(new Vector3(0f, 0f, avanceZ));
+
+        if (controller != null && controller.enabled)
+        {
+            controller.Move(new Vector3(0f, 0f, avanceZ));
+        }
     }
 
     bool ActualizarEstadoFreno()
@@ -262,17 +268,28 @@ public class Player_rieles : MonoBehaviour
             return;
         }
 
-        // 1. Vector que conecta la nave con el punto al que apunta la mirilla
-        Vector3 direccionHaciaMirilla = (mirillaUI.PuntoMundialImpacto - transform.position).normalized;
+        // 1. Evitar que un obstáculo pegado a la cabina invierta o tuerza el vector de apuntado
+        Vector3 vectorObjetivo = mirillaUI.PuntoMundialImpacto - transform.position;
+        if (vectorObjetivo.z < 15f)
+        {
+            // Si el impacto de la mirilla está demasiado cerca o detrás, proyectamos hacia el frente
+            vectorObjetivo = new Vector3(vectorObjetivo.x, vectorObjetivo.y, 15f);
+        }
 
-        // 2. La nave rota su frente para alinearse en línea recta con la mira
-        Quaternion rotacionAlineada = Quaternion.LookRotation(direccionHaciaMirilla, Vector3.up);
+        Vector3 direccionHaciaMirilla = vectorObjetivo.normalized;
 
-        // 3. Combinamos el balanceo de movimiento con el giro de la maniobra.
+        // 2. Limitar el ángulo máximo de desviación respecto al frente del riel (máx. 40 grados)
+        float maxAnguloRadianes = 40f * Mathf.Deg2Rad;
+        Vector3 direccionSegura = Vector3.RotateTowards(Vector3.forward, direccionHaciaMirilla, maxAnguloRadianes, 0f);
+
+        // 3. La nave rota su frente para alinearse con la dirección segura
+        Quaternion rotacionAlineada = Quaternion.LookRotation(direccionSegura, Vector3.up);
+
+        // 4. Combinamos el balanceo de movimiento con el giro de la maniobra
         float rollCosmetico = -PlayerInput.x * InclinacionZ;
         Quaternion rotacionFinal = rotacionAlineada * Quaternion.Euler(0f, 0f, rollCosmetico + rotacionManiobra);
 
-        // 4. Suavizamos la rotación completa
+        // 5. Suavizamos la rotación completa
         transform.rotation = Quaternion.Slerp(transform.rotation, rotacionFinal, velocidadOrientacion * Time.deltaTime);
         rotacionManiobraAplicada = rotacionManiobra;
     }

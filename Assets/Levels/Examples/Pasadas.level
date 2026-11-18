@@ -1,0 +1,35 @@
+# Asignar al campo Level de LevelSession en GameRoot para probar la nave.
+# Una sola nave repite pasadas alternas hasta ser destruida o terminar el nivel.
+version: 1
+id: prueba_pasadas
+catalogo: Assets/Levels/Examples/Generated/Catalog.asset
+longitud_m: 2000
+
+inicial:
+  fondo: fondo.exterior
+  ambientacion: ambiente.exterior
+
+eventos:
+  - id: nave_de_pasada_01
+    en: 30
+    accion: crear
+    recurso: enemigo.pasada
+    posicion: { s: 140, x: 90, y: 12 }
+    parametros:
+      vida: 20
+      velocidad: 65
+      cadencia: 2
+      dano: 1
+      alcance: 95
+      entrada: 110
+      lateral: 90
+      separacion: 20
+      salida: 65
+      pausa: 1.5
+      lado: derecha
+      alternar: true
+      duracion_s: 0
+
+  - id: salida
+    en: 2000
+    accion: finalizar
