@@ -29,7 +29,7 @@ zonas_meteoritos:
   - id: campo_meteoritos # Identificador único de esta zona.
     desde_s: 2000 # Distancia en que empieza a generar; aparece uno al llegar.
     hasta_s: 3000 # Distancia en que deja de generar.
-    tramo: interior # Tramo que cubre todo el rango de la zona.
+    tramo: exterior # Tramo que cubre todo el rango de la zona.
     area: # Límites laterales (X) y verticales (Y) de aparición.
       x_min: -30
       x_max: 30
