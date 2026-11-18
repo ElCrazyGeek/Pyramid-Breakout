@@ -59,14 +59,14 @@ MonoBehaviour:
   inclinacionEntrada: 45
   distanciaSeguimiento: 100
   usarPosicionSpawnComoFormacion: 1
-  offsetCombateXY: {x: 0, y: 0.5}
-  velocidadRespuesta: 100
+  offsetCombateXY: {x: 15, y: 10}
+  velocidadRespuesta: 200
   velocidadRotacion: 25
   cadenciaDisparo: 1.5
   prefabProyectil: {fileID: 2759515552060237589, guid: e01e34bf78434cb449fe4ca74abdf655, type: 3}
   proyectilRotationOffsetEuler: {x: 0, y: 0, z: 0}
   tiempoVida: 4
-  velocidadRetirada: 100
+  velocidadRetirada: 30
   tiempoRetirada: 5
   debugVisuals: 0
   debugUseLineRenderer: 0
@@ -132,15 +132,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemigoEvasionYColisiones
   capaObstaculos:
     serializedVersion: 2
-    m_Bits: 257
-  distanciaSondeo: 20
-  radioBigote: 5
-  fuerzaEvasion: 20
+    m_Bits: 385
+  distanciaSondeo: 10
+  radioBigote: 4
+  fuerzaEvasion: 4
   capaEnemigos:
     serializedVersion: 2
     m_Bits: 128
-  radioSeparacion: 8
-  fuerzaSeparacion: 4
+  radioSeparacion: 4
+  fuerzaSeparacion: 2
   grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxChoqueEscenario: {fileID: 8300000, guid: 5ca68ee6ab39b7f49ad0d8dc557f1580, type: 3}
   volumenChoque: 0.93

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Piedra1
   m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.EntityDefinition
   id: obstaculo.piedra1
-  prefab: {fileID: 919132149155446097, guid: 6503a46304ebbe24f8eaf02457714e13, type: 3}
+  prefab: {fileID: 2150095904401952490, guid: cf595b74ac5408f4da48fc3f123aef28, type: 3}
   preservePrefabRotation: 0
   defaults:
     health: 500

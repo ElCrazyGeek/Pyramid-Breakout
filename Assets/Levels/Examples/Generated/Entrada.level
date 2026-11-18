@@ -24,26 +24,52 @@ tramos:
     precargar_en: 4400
     descargar_en: 8500
 
-# Zonas que generan meteoritos aleatoriamente durante el recorrido.
 zonas_meteoritos:
-  - id: campo_meteoritos # Identificador único de esta zona.
-    desde_s: 50 # Distancia en que empieza a generar; aparece uno al llegar.
-    hasta_s: 1000 # Distancia en que deja de generar.
-    tramo: exterior # Tramo que cubre todo el rango de la zona.
-    area: # Límites laterales (X) y verticales (Y) de aparición.
-      x_min: -30
-      x_max: 30
-      y_min: -15
-      y_max: 30
-    intervalo_min_m: 30 # Separación mínima entre apariciones, en metros.
-    intervalo_max_m: 50 # Separación máxima aleatoria, en metros.
-    anticipacion_m: 300 # Distancia máxima delante del jugador para aparecer.
-    max_activos: 50 # Límite de meteoritos simultáneos de esta zona.
-    duracion_s: 30 # Segundos antes de retirar cada meteorito.
-    semilla: 2026 # Repite la secuencia; usa 0 para una secuencia aleatoria.
-    meteoritos: # Recursos EntityDefinition registrados en el catálogo.
+  # --- ZONA 1: INICIO DEL NIVEL ---
+  - id: campo_meteoritos
+    desde_s: 50
+    hasta_s: 1000
+    tramo: exterior
+    area:
+      x_min: -18
+      x_max: 18
+      y_min: -10
+      y_max: 18
+    intervalo_min_m: 8
+    intervalo_max_m: 15
+    anticipacion_m: 300
+    max_activos: 120
+    duracion_s: 30
+    semilla: 2026
+    meteoritos:
       - recurso: obstaculo.piedra1
-        peso: 1 # Peso relativo: mayor peso significa más apariciones.
+        peso: 1
+      - recurso: obstaculo.piedra2
+        peso: 2
+      - recurso: obstaculo.piedra3
+        peso: 3
+      - recurso: obstaculo.piedra4
+        peso: 4
+
+  # --- ZONA 2: SEGUNDO CAMPO MÁS ADELANTE ---
+  - id: campo_meteoritos_2
+    desde_s: 3800
+    hasta_s: 4350
+    tramo: exterior
+    area:
+      x_min: -20
+      x_max: 20
+      y_min: -12
+      y_max: 20
+    intervalo_min_m: 10
+    intervalo_max_m: 18
+    anticipacion_m: 300
+    max_activos: 100
+    duracion_s: 30
+    semilla: 2027
+    meteoritos:
+      - recurso: obstaculo.piedra1
+        peso: 1
       - recurso: obstaculo.piedra2
         peso: 2
       - recurso: obstaculo.piedra3
@@ -95,6 +121,47 @@ eventos:
     posicion: { s: 2300, x: 10, y: 0 }
     parametros: { vida: 2 }
 
+  - id: lanzador_rayos3.2
+    en: 2000
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 2450, x: -20, y: 0 }
+    parametros: { vida: 2 }
+
+
+  - id: lanzador_rayos3.3
+    en: 2000
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 2450, x: 10, y: 0 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos3.4
+    en: 2000
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 2650, x: -20, y: 0 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos3.5
+    en: 2000
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 2550, x: -5, y: 0 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos3.6
+    en: 2000
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: exterior
+    posicion: { s: 2650, x: 10, y: 0 }
+    parametros: { vida: 2 }
+
   # Oleada de enemigos seguidores en zona vacía
   - id: perseguidora_1
     en: 3150
@@ -128,7 +195,7 @@ eventos:
     en: 3650
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 3730, x: 0, y: -5 }
+    posicion: { s: 3730, x: -40, y: 0 }
     parametros: { vida: 4 }
 
   # Enemigos posteriores a los asteroides
@@ -136,42 +203,42 @@ eventos:
     en: 4370
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4450, x: -25, y: 20 }
+    posicion: { s: 4450, x: -45, y: -20 }
     parametros: { vida: 4 }
 
   - id: perseguidora_4.4
     en: 4370
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4450, x: 20, y: 20 }
+    posicion: { s: 4450, x: 30, y: -20 }
     parametros: { vida: 4 }
 
   - id: perseguidora_4.5
     en: 4370
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4450, x: 0, y: -20 }
+    posicion: { s: 4450, x: -20, y: 20 }
     parametros: { vida: 4 }
 
   - id: perseguidora_4.6
     en: 4370
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4450, x: 20, y: -20 }
+    posicion: { s: 4450, x: 20, y: 20 }
     parametros: { vida: 4 }
 
   - id: perseguidora_4.7
     en: 4370
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4450, x: -20, y: 0 }
+    posicion: { s: 4450, x: -35, y: 0 }
     parametros: { vida: 4 }
 
   - id: perseguidora_4.8
     en: 4370
     accion: crear
     recurso: enemigo.hostigador
-    posicion: { s: 4450, x: 25, y: -20 }
+    posicion: { s: 4450, x: 25, y: 0 }
     parametros: { vida: 4 }
 
   # --- CAMBIO A INTERIOR (4800) ---
@@ -491,12 +558,28 @@ eventos:
     posicion: { s: 8352, x: -45, y: 0 }
     parametros: { vida: 2 }
 
+  - id: lanzador_rayos9.5
+    en: 8102
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 8352, x: 5, y: 0 }
+    parametros: { vida: 2 }
+
   - id: lanzador_rayos10
     en: 8102
     accion: crear
     recurso: enemigo.lanzadorRayos
     tramo: interior
     posicion: { s: 8366, x: -68, y: 69 }
+    parametros: { vida: 2 }
+
+  - id: lanzador_rayos10.5
+    en: 8102
+    accion: crear
+    recurso: enemigo.lanzadorRayos
+    tramo: interior
+    posicion: { s: 8366, x: 5, y: 69 }
     parametros: { vida: 2 }
 
   - id: lanzador_rayos11

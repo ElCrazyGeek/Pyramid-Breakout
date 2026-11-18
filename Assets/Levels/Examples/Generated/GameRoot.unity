@@ -2269,6 +2269,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2737265151175831398, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
       propertyPath: m_Name
       value: Menu principal
@@ -2280,6 +2284,34 @@ PrefabInstance:
     - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
       propertyPath: m_text
       value: Menu principal
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontSize
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3865,6 +3897,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2737265151175831398, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
       propertyPath: m_Name
       value: Reiniciar
@@ -3875,9 +3911,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
       propertyPath: m_text
-      value: '/ Reinciar \
-
-'
+      value: 'Reinciar '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontSize
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565523668805360692, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
