@@ -5091,20 +5091,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1bb11490480294e8ae39b5da459b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_rieles
-  speed: 20
+  velocidadLados: 15
   LimitesMovimiento: {x: 50, y: 25}
   VelocidadAvance: 40
   VelocidadActual: 0
   Frenado: 0
-  InclinacionX: 20
-  InclinacionZ: 30
-  VelocidadInclinacion: 8
+  AcelerandoBoost: 0
+  InclinacionX: 15
+  InclinacionZ: 15
+  VelocidadInclinacion: 25
+  inclinacionMaximaManiobra: 85
+  velocidadInclinacionManiobra: 350
+  VelocidadBoost: 60
   VelocidadMaxima: 60
   VelocidadMinima: 5
   Aceleracion: 25
+  AceleracionBoost: 35
   Desaceleracion: 20
-  TiempoFrenadoMaximoMs: 4000
-  TiempoCastigoFrenoMs: 8000
+  duracionMaxFrenoSeg: 4
+  duracionMaxBoostSeg: 2.5
+  tiempoRecargaCompletaSeg: 5
+  exigirBarraLlenaTrasUso: 1
+  barraPropulsionUI: {fileID: 0}
+  colorListo: {r: 0.2, g: 0.9, b: 1, a: 1}
+  colorRecargando: {r: 1, g: 0.35, b: 0.2, a: 1}
+  activarSonidoMotor: 1
+  grupoMixerJugador: {fileID: 4213617729934077432, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxMotorLoop: {fileID: 8300000, guid: 6cfc9ae4cb458a548a42ec68cbd8394d, type: 3}
+  sfxBoostActivado: {fileID: 8300000, guid: 0fbc2b3bb722f594cb8372675e6aace5, type: 3}
+  volumenMotor: 0.627
+  pitchMinimoFreno: 0.75
+  pitchNormalCrucero: 1
+  pitchMaximoBoost: 1.45
+  suavizadoAudioMotor: 6
+  sfxManiobraGiro: {fileID: 8300000, guid: bad2d0117a705cf4f85fa59e645b35f3, type: 3}
+  volumenManiobra: 0.75
+  umbralInputGiro: 0.85
   PlayerInput: {x: 0, y: 0}
   controller: {fileID: 1236008783105916877}
   mirillaUI: {fileID: 0}
@@ -5132,6 +5154,7 @@ MonoBehaviour:
   limiteInferiorY: -3
   limiteSuperiorY: 35
   bankPitch: 25
+  sonidoGiro: {fileID: 0}
   VelocidadAvance: 40
   Frenado: 0
   smoothTiltSpeed: 10
@@ -5188,10 +5211,11 @@ MonoBehaviour:
   puntoSalidaCargado: {fileID: 5967539718787088846}
   efectoCarga: {fileID: 1134240941027137837}
   tiempoNecesarioCarga: 0.9
-  sfxLockOn: {fileID: 0}
-  sfxCargaLista: {fileID: 0}
+  sfxLockOn: {fileID: 8300000, guid: cb9fd6c74fadd3d45ad7aee1fe12e9be, type: 3}
+  sfxCargaLista: {fileID: 8300000, guid: dce6d7833038c284dabdaa01c5bf92d5, type: 3}
   volumenSfx: 0.8
   puedeDisparar: 1
+  recuadroLockOn: {fileID: 0}
 --- !u!114 &1819048550107000825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5247,7 +5271,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 3
 --- !u!95 &4542381257713785168
 Animator:

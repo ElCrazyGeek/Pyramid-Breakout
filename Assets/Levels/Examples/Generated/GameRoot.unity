@@ -1402,6 +1402,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: volumenSfx
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: recuadroLockOn
       value: 
       objectReference: {fileID: 971830318}
@@ -1409,58 +1413,34 @@ PrefabInstance:
       propertyPath: mirillaLejanaUI
       value: 
       objectReference: {fileID: 1339351033}
-    - target: {fileID: 3485035434292159568, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: speed
-      value: 35
-      objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: mirillaUI
       value: 
       objectReference: {fileID: 2123715489}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: InclinacionX
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: InclinacionZ
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: sfxMotorLoop
-      value: 
-      objectReference: {fileID: 8300000, guid: 6cfc9ae4cb458a548a42ec68cbd8394d, type: 3}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: volumenMotor
-      value: 0.627
+      value: 0.396
       objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: VelocidadBoost
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: grupoMixerMotor
+      propertyPath: sfxManiobraGiro
       value: 
-      objectReference: {fileID: 4213617729934077432, guid: 9271b31c91392384490e12f831303d56, type: 2}
+      objectReference: {fileID: 8300000, guid: 34846529466a78147acb7ffce4184d4d, type: 3}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: umbralInputGiro
+      value: 0.106
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: volumenManiobra
+      value: 0.343
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: sfxBoostActivado
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: barraPropulsionUI
       value: 
       objectReference: {fileID: 1602440559}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: VelocidadInclinacion
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: inclinacionMaximaManiobra
-      value: 85
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: velocidadInclinacionManiobra
-      value: 350
-      objectReference: {fileID: 0}
     - target: {fileID: 6802675490704385792, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: barraVidaImagen
       value: 
@@ -1533,7 +1513,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &945856257
 RectTransform:
   m_ObjectHideFlags: 0

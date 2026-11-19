@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class Player_rieles : MonoBehaviour
@@ -11,75 +13,137 @@ public class Player_rieles : MonoBehaviour
     [SerializeField] public float VelocidadAvance = 15f;
     [SerializeField] public float VelocidadActual;
     [SerializeField] public bool Frenado = false;
+    [SerializeField] public bool AcelerandoBoost = false;
 
-    [Header("Maniobra de giro")]
+    [Header("Maniobra de Giro (L / R)")]
     [SerializeField, Range(0f, 90f)] private float inclinacionMaximaManiobra = 80f;
     [SerializeField, Min(0f)] private float velocidadInclinacionManiobra = 180f;
     [SerializeField, Min(1f)] private float multiplicadorVelocidadManiobra = 1.8f;
-    [SerializeField] private AudioSource sonidoManiobra;
 
-    [Header("Inclinacion")]
+    [Header("Inclinación Normal")]
     public float InclinacionX = 15f;
     public float InclinacionZ = 15f;
     public float VelocidadInclinacion = 15f;
 
-    [Header("Controles de jugador")]
-    public float VelocidadMaxima = 50;
-    public float VelocidadMinima = 5;
-    public float Aceleracion = 10;
-    public float Desaceleracion = 20;
+    [Header("Velocidades (Freno / Crucero / Boost)")]
+    public float VelocidadBoost = 85f;
+    public float VelocidadMaxima = 50f;
+    public float VelocidadMinima = 5f;
+    public float Aceleracion = 10f;
+    public float AceleracionBoost = 35f;
+    public float Desaceleracion = 20f;
 
-    [Header("Control del freno (milisegundos)")]
-    [FormerlySerializedAs("TiempoFrenadoMaximo")]
-    [Min(0f)] public float TiempoFrenadoMaximoMs = 4000f;
-    [FormerlySerializedAs("TiempoCastigoFrenadp")]
-    [Min(0f)] public float TiempoCastigoFrenoMs = 8000f;
+    [Header("Barra Compartida de Freno e Impulsor")]
+    [Min(0.1f)] public float duracionMaxFrenoSeg = 4.0f;
+    [Min(0.1f)] public float duracionMaxBoostSeg = 2.5f;
+    [Min(0.1f)] public float tiempoRecargaCompletaSeg = 5.0f;
+    [SerializeField] private bool exigirBarraLlenaTrasUso = true;
+
+    [Header("UI Barra de Propulsión (Opcional)")]
+    [SerializeField] private Image barraPropulsionUI;
+    [SerializeField] private Color colorListo = new Color(0.2f, 0.9f, 1f);
+    [SerializeField] private Color colorRecargando = new Color(1f, 0.35f, 0.2f);
+
+    [Header("Audio Mixer y Motor")]
+    [SerializeField] private bool activarSonidoMotor = true;
+    [Tooltip("Arrastra aquí el grupo SFX o Jugador de tu Audio Mixer")]
+    [SerializeField] private AudioMixerGroup grupoMixerJugador;
+    [SerializeField] private AudioClip sfxMotorLoop;
+    [SerializeField] private AudioClip sfxBoostActivado;
+    [Range(0f, 1f)][SerializeField] private float volumenMotor = 0.5f;
+    [SerializeField] private float pitchMinimoFreno = 0.75f;
+    [SerializeField] private float pitchNormalCrucero = 1.0f;
+    [SerializeField] private float pitchMaximoBoost = 1.45f;
+    [SerializeField] private float suavizadoAudioMotor = 6f;
+
+    [Header("Sonido Maniobra de Giro (Solo L / R)")]
+    [Tooltip("Suena levemente únicamente al presionar GiroLateralIzq o GiroLateralDer")]
+    [SerializeField] private AudioClip sfxManiobraGiro;
+    [Range(0f, 1f)][SerializeField] private float volumenManiobra = 0.35f;
 
     public Vector2 PlayerInput;
     public CharacterController controller;
     private Vector3 origenRiel;
 
+    public float EnergiaPropulsion { get; private set; } = 1f;
+    public bool PropulsorBloqueado { get; private set; } = false;
+
     private bool inicializado;
-    private bool Frenando = false;
-    private bool FrenoBloqueado = false;
-    private bool girandoDerecha;
-    private bool girandoIzquierda;
+    private bool usandoFreno = false;
+    private bool usandoBoost = false;
+
+    // Acciones y estado de maniobra de giro (L / R)
     private InputAction accionGiroDerecha;
     private InputAction accionGiroIzquierda;
-    private float InicioFrenado;
-    private float FinCastigoFreno;
-    private float rotacionManiobra;
-    private float rotacionManiobraAplicada;
-    private bool maniobraActivaAnterior;
+    private bool girandoDerecha = false;
+    private bool girandoIzquierda = false;
+    private bool maniobraActivaAnterior = false;
+    private float rotacionManiobra = 0f;
 
     [Header("Alineación con Mirilla")]
-    [SerializeField] private MirillaUI mirillaUI; // Arrastra tu MirillaUI aquí
+    [SerializeField] private MirillaUI mirillaUI;
     [SerializeField] private float velocidadOrientacion = 14f;
 
-    // Vector que nos enviará la Mirilla cuando llegue al tope del cuadro
     [HideInInspector] public Vector2 fuerzaArrastreMirilla = Vector2.zero;
+
+    // Fuentes de audio
+    private AudioSource sourceMotor;
+    private AudioSource sourceSFX;
 
     public void OnMovimiento(InputValue value)
     {
         PlayerInput = enabled ? value.Get<Vector2>() : Vector2.zero;
     }
 
+    public void OnFreno(InputValue value)
+    {
+        Frenado = enabled && value.isPressed;
+    }
+
+    public void OnBoost(InputValue value)
+    {
+        AcelerandoBoost = enabled && value.isPressed;
+    }
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        ConfigurarAudio();
 
-        var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
-        if (playerInput == null || playerInput.actions == null)
+        // Recuperar tus acciones exactas del Input System para el giro lateral (L / R)
+        var playerInputComp = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+        if (playerInputComp != null && playerInputComp.actions != null)
         {
-            Debug.LogError("Player_rieles requiere un PlayerInput con las acciones de giro configuradas.", this);
-            return;
+            accionGiroDerecha = playerInputComp.actions.FindAction("GiroLateralDer", false);
+            accionGiroIzquierda = playerInputComp.actions.FindAction("GiroLateralIzq", false);
+        }
+    }
+
+    private void ConfigurarAudio()
+    {
+        // 1. Fuente para efectos puntuales (Maniobra L/R y Boost)
+        sourceSFX = gameObject.AddComponent<AudioSource>();
+        sourceSFX.playOnAwake = false;
+        sourceSFX.spatialBlend = 0f;
+        if (grupoMixerJugador != null)
+        {
+            sourceSFX.outputAudioMixerGroup = grupoMixerJugador;
         }
 
-        accionGiroDerecha = playerInput.actions.FindAction("GiroLateralDer", false);
-        accionGiroIzquierda = playerInput.actions.FindAction("GiroLateralIzq", false);
-        if (accionGiroDerecha == null || accionGiroIzquierda == null)
+        // 2. Fuente continua en bucle para el motor
+        if (activarSonidoMotor && sfxMotorLoop != null)
         {
-            Debug.LogError("Faltan las acciones 'GiroLateralDer' o 'GiroLateralIzq' en PlayerInput.", this);
+            sourceMotor = gameObject.AddComponent<AudioSource>();
+            sourceMotor.clip = sfxMotorLoop;
+            sourceMotor.loop = true;
+            sourceMotor.playOnAwake = false;
+            sourceMotor.volume = volumenMotor;
+            sourceMotor.pitch = pitchNormalCrucero;
+            sourceMotor.spatialBlend = 0.2f;
+            if (grupoMixerJugador != null)
+            {
+                sourceMotor.outputAudioMixerGroup = grupoMixerJugador;
+            }
         }
     }
 
@@ -88,25 +152,53 @@ public class Player_rieles : MonoBehaviour
         if (!inicializado) ResetForLevel(transform.position);
     }
 
-    public void ResetForLevel(Vector3 origen)
+    void OnEnable()
     {
-        origenRiel = origen;
-        VelocidadActual = Mathf.Clamp(VelocidadAvance, VelocidadMinima, VelocidadMaxima);
-        PlayerInput = Vector2.zero;
-        fuerzaArrastreMirilla = Vector2.zero;
-        Frenado = Frenando = FrenoBloqueado = false;
-        girandoDerecha = girandoIzquierda = false;
-        rotacionManiobra = 0f;
-        InicioFrenado = FinCastigoFreno = 0;
-        inicializado = true;
+        if (activarSonidoMotor && sourceMotor != null && !sourceMotor.isPlaying)
+        {
+            sourceMotor.Play();
+        }
     }
 
     void OnDisable()
     {
         PlayerInput = Vector2.zero;
         Frenado = false;
+        AcelerandoBoost = false;
+        usandoFreno = false;
+        usandoBoost = false;
+        girandoDerecha = false;
+        girandoIzquierda = false;
+        maniobraActivaAnterior = false;
+
+        if (sourceMotor != null && sourceMotor.isPlaying)
+        {
+            sourceMotor.Stop();
+        }
+    }
+
+    public void ResetForLevel(Vector3 origen)
+    {
+        origenRiel = origen;
+        VelocidadActual = Mathf.Clamp(VelocidadAvance, VelocidadMinima, VelocidadMaxima);
+        PlayerInput = Vector2.zero;
+        fuerzaArrastreMirilla = Vector2.zero;
+
+        EnergiaPropulsion = 1f;
+        PropulsorBloqueado = false;
+        Frenado = AcelerandoBoost = false;
+        usandoFreno = usandoBoost = false;
         girandoDerecha = girandoIzquierda = false;
         maniobraActivaAnterior = false;
+        rotacionManiobra = 0f;
+        inicializado = true;
+
+        ActualizarUIPropulsion();
+
+        if (activarSonidoMotor && sourceMotor != null && !sourceMotor.isPlaying && enabled)
+        {
+            sourceMotor.Play();
+        }
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -117,13 +209,169 @@ public class Player_rieles : MonoBehaviour
 
     void Update()
     {
+        // Leer directamente las acciones L / R del PlayerInput
         girandoDerecha = accionGiroDerecha != null && accionGiroDerecha.enabled && accionGiroDerecha.IsPressed();
         girandoIzquierda = accionGiroIzquierda != null && accionGiroIzquierda.enabled && accionGiroIzquierda.IsPressed();
-        ActualizarSonidoManiobra(ObtenerDireccionManiobra() != 0);
+
         ActualizarManiobra();
         mover();
         avance();
         InclinacionJugador();
+        ActualizarSonidoMotor();
+        ActualizarUIPropulsion();
+    }
+
+    private void ActualizarManiobra()
+    {
+        int direccionManiobra = ObtenerDireccionManiobra();
+        bool maniobraActiva = (direccionManiobra != 0);
+
+        // Suena únicamente en el instante en que presionas L o R, no al moverte normal
+        if (maniobraActiva && !maniobraActivaAnterior)
+        {
+            if (sfxManiobraGiro != null && sourceSFX != null)
+            {
+                sourceSFX.pitch = Random.Range(0.96f, 1.04f);
+                sourceSFX.PlayOneShot(sfxManiobraGiro, volumenManiobra);
+            }
+        }
+        maniobraActivaAnterior = maniobraActiva;
+
+        float inclinacionObjetivo = -direccionManiobra * inclinacionMaximaManiobra;
+        rotacionManiobra = Mathf.MoveTowardsAngle(
+            rotacionManiobra,
+            inclinacionObjetivo,
+            velocidadInclinacionManiobra * Time.deltaTime
+        );
+    }
+
+    private int ObtenerDireccionManiobra()
+    {
+        if (girandoDerecha == girandoIzquierda) return 0;
+        return girandoDerecha ? 1 : -1;
+    }
+
+    private void ActualizarEstadoPropulsion()
+    {
+        float dt = Time.deltaTime;
+
+        if (PropulsorBloqueado)
+        {
+            usandoFreno = false;
+            usandoBoost = false;
+
+            EnergiaPropulsion += (1f / tiempoRecargaCompletaSeg) * dt;
+            if (EnergiaPropulsion >= 1f)
+            {
+                EnergiaPropulsion = 1f;
+                if (!Frenado && !AcelerandoBoost)
+                {
+                    PropulsorBloqueado = false;
+                }
+            }
+            return;
+        }
+
+        if (AcelerandoBoost && EnergiaPropulsion > 0f)
+        {
+            if (!usandoBoost && sourceSFX != null && sfxBoostActivado != null)
+            {
+                sourceSFX.pitch = 1f;
+                sourceSFX.PlayOneShot(sfxBoostActivado, volumenMotor);
+            }
+
+            usandoBoost = true;
+            usandoFreno = false;
+            EnergiaPropulsion -= (1f / duracionMaxBoostSeg) * dt;
+
+            if (EnergiaPropulsion <= 0f)
+            {
+                EnergiaPropulsion = 0f;
+                usandoBoost = false;
+                PropulsorBloqueado = true;
+            }
+            return;
+        }
+
+        if (Frenado && EnergiaPropulsion > 0f)
+        {
+            usandoFreno = true;
+            usandoBoost = false;
+            EnergiaPropulsion -= (1f / duracionMaxFrenoSeg) * dt;
+
+            if (EnergiaPropulsion <= 0f)
+            {
+                EnergiaPropulsion = 0f;
+                usandoFreno = false;
+                PropulsorBloqueado = true;
+            }
+            return;
+        }
+
+        if ((usandoBoost || usandoFreno) && exigirBarraLlenaTrasUso && EnergiaPropulsion < 1f)
+        {
+            PropulsorBloqueado = true;
+        }
+
+        usandoBoost = false;
+        usandoFreno = false;
+
+        if (EnergiaPropulsion < 1f)
+        {
+            EnergiaPropulsion = Mathf.MoveTowards(EnergiaPropulsion, 1f, (1f / tiempoRecargaCompletaSeg) * dt);
+        }
+    }
+
+    void avance()
+    {
+        ActualizarEstadoPropulsion();
+
+        float velocidadObjetivo = VelocidadMaxima;
+        if (usandoBoost) velocidadObjetivo = VelocidadBoost;
+        else if (usandoFreno) velocidadObjetivo = VelocidadMinima;
+
+        VelocidadActual = RampaDeAceleracionYDesaceleracion(velocidadObjetivo);
+        float avanceZ = VelocidadActual * Time.deltaTime;
+
+        if (controller != null && controller.enabled)
+            controller.Move(new Vector3(0f, 0f, avanceZ));
+    }
+
+    private void ActualizarUIPropulsion()
+    {
+        if (barraPropulsionUI == null) return;
+
+        barraPropulsionUI.fillAmount = EnergiaPropulsion;
+        barraPropulsionUI.color = PropulsorBloqueado ? colorRecargando : colorListo;
+    }
+
+    private void ActualizarSonidoMotor()
+    {
+        if (!activarSonidoMotor || sourceMotor == null) return;
+
+        if (Time.timeScale <= 0f)
+        {
+            if (sourceMotor.isPlaying) sourceMotor.Pause();
+            return;
+        }
+        else if (!sourceMotor.isPlaying)
+        {
+            sourceMotor.UnPause();
+        }
+
+        float pitchObjetivo = pitchNormalCrucero;
+        if (usandoBoost)
+        {
+            pitchObjetivo = pitchMaximoBoost;
+        }
+        else if (usandoFreno)
+        {
+            pitchObjetivo = pitchMinimoFreno;
+        }
+
+        float extraManiobra = PlayerInput.magnitude * 0.08f;
+        sourceMotor.pitch = Mathf.Lerp(sourceMotor.pitch, pitchObjetivo + extraManiobra, suavizadoAudioMotor * Time.deltaTime);
+        sourceMotor.volume = volumenMotor;
     }
 
     public void OnApuntar(InputValue value)
@@ -136,9 +384,7 @@ public class Player_rieles : MonoBehaviour
 
     void mover()
     {
-        if (controller == null || !controller.enabled) return;
-
-        // La maniobra acelera el movimiento hacia el lado del giro y en vertical.
+        // Restaurado: la maniobra L / R acelera el desplazamiento hacia ese lado y en vertical
         Vector2 movimiento = PlayerInput;
         int direccionManiobra = ObtenerDireccionManiobra();
         if (direccionManiobra != 0)
@@ -161,135 +407,49 @@ public class Player_rieles : MonoBehaviour
         float yClamped = Mathf.Clamp(posFutura.y, origenRiel.y - LimitesMovimiento.y, origenRiel.y + LimitesMovimiento.y);
 
         Vector3 movimientoReal = new Vector3(xClamped - transform.position.x, yClamped - transform.position.y, 0f);
-        controller.Move(movimientoReal);
-    }
-
-    void OnFreno(InputValue value)
-    {
-        Frenado = enabled && value.isPressed;
-    }
-
-    void ActualizarSonidoManiobra(bool maniobraActiva)
-    {
-        if (maniobraActiva && !maniobraActivaAnterior && sonidoManiobra != null && !sonidoManiobra.isPlaying)
-        {
-            sonidoManiobra.Play();
-        }
-
-        maniobraActivaAnterior = maniobraActiva;
-    }
-
-    void ActualizarManiobra()
-    {
-        int direccionManiobra = ObtenerDireccionManiobra();
-        float inclinacionObjetivo = -direccionManiobra * inclinacionMaximaManiobra;
-        rotacionManiobra = Mathf.MoveTowardsAngle(
-            rotacionManiobra,
-            inclinacionObjetivo,
-            velocidadInclinacionManiobra * Time.deltaTime);
-    }
-
-    int ObtenerDireccionManiobra()
-    {
-        if (girandoDerecha == girandoIzquierda) return 0;
-        return girandoDerecha ? 1 : -1;
-    }
-
-    void avance()
-    {
-        bool frenoActivo = ActualizarEstadoFreno();
-        float velocidadObjetivo = frenoActivo ? VelocidadMinima : VelocidadMaxima;
-
-        VelocidadActual = RampaDeAceleracionYDesaceleracion(velocidadObjetivo);
-        float avanceZ = VelocidadActual * Time.deltaTime;
-
         if (controller != null && controller.enabled)
-        {
-            controller.Move(new Vector3(0f, 0f, avanceZ));
-        }
-    }
-
-    bool ActualizarEstadoFreno()
-    {
-        float ahora = Time.time;
-        float duracionMaxima = TiempoFrenadoMaximoMs / 1000f;
-        float duracionCastigo = TiempoCastigoFrenoMs / 1000f;
-
-        if (FrenoBloqueado)
-        {
-            if (ahora >= FinCastigoFreno && !Frenado)
-            {
-                FrenoBloqueado = false;
-            }
-            return false;
-        }
-
-        if (!Frenado)
-        {
-            Frenando = false;
-            return false;
-        }
-
-        if (!Frenando)
-        {
-            Frenando = true;
-            InicioFrenado = ahora;
-        }
-
-        if (ahora - InicioFrenado < duracionMaxima)
-        {
-            return true;
-        }
-
-        Frenando = false;
-        FrenoBloqueado = true;
-        FinCastigoFreno = ahora + duracionCastigo;
-        return false;
+            controller.Move(movimientoReal);
     }
 
     void InclinacionJugador()
     {
         if (mirillaUI == null)
         {
-            float cambioRoll = Mathf.DeltaAngle(rotacionManiobraAplicada, rotacionManiobra);
-            transform.Rotate(0f, 0f, cambioRoll, Space.Self);
-            rotacionManiobraAplicada = rotacionManiobra;
+            float rollDirecto = (-PlayerInput.x * InclinacionZ) + rotacionManiobra;
+            Quaternion rotSinMirilla = Quaternion.Euler(-PlayerInput.y * InclinacionX, 0f, rollDirecto);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotSinMirilla, velocidadOrientacion * Time.deltaTime);
             return;
         }
 
-        // 1. Evitar que un obstáculo pegado a la cabina invierta o tuerza el vector de apuntado
         Vector3 vectorObjetivo = mirillaUI.PuntoMundialImpacto - transform.position;
         if (vectorObjetivo.z < 15f)
         {
-            // Si el impacto de la mirilla está demasiado cerca o detrás, proyectamos hacia el frente
             vectorObjetivo = new Vector3(vectorObjetivo.x, vectorObjetivo.y, 15f);
         }
 
         Vector3 direccionHaciaMirilla = vectorObjetivo.normalized;
-
-        // 2. Limitar el ángulo máximo de desviación respecto al frente del riel (máx. 40 grados)
         float maxAnguloRadianes = 40f * Mathf.Deg2Rad;
         Vector3 direccionSegura = Vector3.RotateTowards(Vector3.forward, direccionHaciaMirilla, maxAnguloRadianes, 0f);
 
-        // 3. La nave rota su frente para alinearse con la dirección segura
         Quaternion rotacionAlineada = Quaternion.LookRotation(direccionSegura, Vector3.up);
 
-        // 4. Combinamos el balanceo de movimiento con el giro de la maniobra
         float rollCosmetico = -PlayerInput.x * InclinacionZ;
         Quaternion rotacionFinal = rotacionAlineada * Quaternion.Euler(0f, 0f, rollCosmetico + rotacionManiobra);
 
-        // 5. Suavizamos la rotación completa
         transform.rotation = Quaternion.Slerp(transform.rotation, rotacionFinal, velocidadOrientacion * Time.deltaTime);
-        rotacionManiobraAplicada = rotacionManiobra;
     }
 
     float RampaDeAceleracionYDesaceleracion(float velocidadObjetivo)
     {
-        velocidadObjetivo = Mathf.Clamp(velocidadObjetivo, VelocidadMinima, VelocidadMaxima);
+        velocidadObjetivo = Mathf.Clamp(velocidadObjetivo, VelocidadMinima, VelocidadBoost);
 
-        float velocidadDeCambio = velocidadObjetivo > VelocidadActual
-            ? Mathf.Max(0f, Aceleracion)
-            : Mathf.Max(0f, Desaceleracion);
+        float velocidadDeCambio;
+        if (usandoBoost)
+            velocidadDeCambio = Mathf.Max(0f, AceleracionBoost);
+        else if (velocidadObjetivo > VelocidadActual)
+            velocidadDeCambio = Mathf.Max(0f, Aceleracion);
+        else
+            velocidadDeCambio = Mathf.Max(0f, Desaceleracion);
 
         return Mathf.MoveTowards(VelocidadActual, velocidadObjetivo, velocidadDeCambio * Time.deltaTime);
     }

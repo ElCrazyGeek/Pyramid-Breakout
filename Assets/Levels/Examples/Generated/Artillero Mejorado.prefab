@@ -67,7 +67,7 @@ MonoBehaviour:
   mascaraObjetivo:
     serializedVersion: 2
     m_Bits: 4294967295
-  prefabProyectil: {fileID: 2759515552060237589, guid: e01e34bf78434cb449fe4ca74abdf655, type: 3}
+  prefabProyectil: {fileID: 2759515552060237589, guid: a3548c54ed4426445a29377864d38c17, type: 3}
 --- !u!114 &-7122308396390159730
 MonoBehaviour:
   m_ObjectHideFlags: 0

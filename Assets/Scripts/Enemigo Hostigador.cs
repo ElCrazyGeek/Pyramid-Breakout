@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class EnemigoSeguidor : MonoBehaviour
 {
@@ -36,6 +37,22 @@ public class EnemigoSeguidor : MonoBehaviour
     public float velocidadRetirada = 8f;
     public float tiempoRetirada = 2f;
 
+    [Header("Audio y Mezcla (Audio Mixer)")]
+    [Tooltip("Arrastra aquí el grupo SFX o Enemigos de tu Audio Mixer")]
+    [SerializeField] private AudioMixerGroup grupoMixer;
+
+    [Header("Sonido de Motor")]
+    [SerializeField] private bool activarSonidoMotor = true;
+    [SerializeField] private AudioClip sfxMotorLoop;
+    [Range(0f, 1f)][SerializeField] private float volumenMotor = 0.45f;
+    [SerializeField] private float pitchMotorCrucero = 1.0f;
+    [SerializeField] private float pitchMotorManiobra = 1.3f;
+
+    [Header("Sonido Maniobra de Giro / Entrada")]
+    [Tooltip("Sonido de propulsor o silbido al hacer la entrada en curva o al retirarse")]
+    [SerializeField] private AudioClip sfxManiobraGiro;
+    [Range(0f, 1f)][SerializeField] private float volumenManiobra = 0.7f;
+
     [Header("Debug")]
     public bool debugVisuals = false;
     public bool debugUseLineRenderer = true;
@@ -55,10 +72,50 @@ public class EnemigoSeguidor : MonoBehaviour
     private Vector2 puestoFormacionActual;
     private Vector3 direccionEntradaCalculada;
 
+    // Fuentes de audio
+    private AudioSource sourceMotor;
+    private AudioSource sourceSFX;
+
+    void Awake()
+    {
+        ConfigurarAudio();
+    }
+
+    private void ConfigurarAudio()
+    {
+        // 1. AudioSource para efectos puntuales (maniobra de giro / retirada)
+        sourceSFX = gameObject.AddComponent<AudioSource>();
+        sourceSFX.playOnAwake = false;
+        sourceSFX.spatialBlend = 0.85f; // Audio 3D espacial
+        sourceSFX.minDistance = 5f;
+        sourceSFX.maxDistance = 80f;
+        if (grupoMixer != null) sourceSFX.outputAudioMixerGroup = grupoMixer;
+
+        // 2. AudioSource en bucle para el motor continuo
+        if (activarSonidoMotor && sfxMotorLoop != null)
+        {
+            sourceMotor = gameObject.AddComponent<AudioSource>();
+            sourceMotor.clip = sfxMotorLoop;
+            sourceMotor.loop = true;
+            sourceMotor.playOnAwake = false;
+            sourceMotor.volume = volumenMotor;
+            sourceMotor.pitch = pitchMotorCrucero;
+            sourceMotor.spatialBlend = 0.85f;
+            sourceMotor.minDistance = 5f;
+            sourceMotor.maxDistance = 80f;
+            if (grupoMixer != null) sourceMotor.outputAudioMixerGroup = grupoMixer;
+        }
+    }
+
     void Start()
     {
         posicionInicial = transform.position;
         timerVida = tiempoVida;
+
+        if (activarSonidoMotor && sourceMotor != null && !sourceMotor.isPlaying)
+        {
+            sourceMotor.Play();
+        }
 
         // 1. Asignar objetivo si no se definió en el Inspector
         if (objetivo == null)
@@ -97,7 +154,6 @@ public class EnemigoSeguidor : MonoBehaviour
                 puestoFormacionActual = offsetCombateXY;
             }
 
-            // La entrada viene desde el mismo lado de su puesto (si va a la derecha, entra por la derecha)
             float signoX = (puestoFormacionActual.x >= 0f) ? 1f : -1f;
             float signoY = (puestoFormacionActual.y >= 0f) ? 1f : -1f;
             direccionEntradaCalculada = new Vector3(
@@ -135,6 +191,8 @@ public class EnemigoSeguidor : MonoBehaviour
 
     void Update()
     {
+        ActualizarAudioMotor();
+
         // Si está entrando o retirándose, cedemos el control total a sus respectivas corrutinas
         if (estaEntrando || estaRetirandose || objetivo == null) return;
 
@@ -144,9 +202,39 @@ public class EnemigoSeguidor : MonoBehaviour
         GestionarTiempoVida();
     }
 
+    private void ActualizarAudioMotor()
+    {
+        if (!activarSonidoMotor || sourceMotor == null) return;
+
+        if (Time.timeScale <= 0f)
+        {
+            if (sourceMotor.isPlaying) sourceMotor.Pause();
+            return;
+        }
+        else if (!sourceMotor.isPlaying)
+        {
+            sourceMotor.UnPause();
+        }
+
+        // Sube el tono del motor cuando hace la curva de entrada o la maniobra de retirada
+        float pitchObjetivo = (estaEntrando || estaRetirandose) ? pitchMotorManiobra : pitchMotorCrucero;
+        sourceMotor.pitch = Mathf.Lerp(sourceMotor.pitch, pitchObjetivo, Time.deltaTime * 6f);
+        sourceMotor.volume = volumenMotor;
+    }
+
+    private void ReproducirSonidoManiobra()
+    {
+        if (sfxManiobraGiro != null && sourceSFX != null)
+        {
+            sourceSFX.pitch = Random.Range(0.95f, 1.05f);
+            sourceSFX.PlayOneShot(sfxManiobraGiro, volumenManiobra);
+        }
+    }
+
     IEnumerator EntradaCoroutine()
     {
         estaEntrando = true;
+        ReproducirSonidoManiobra();
 
         Transform modelo = (visual != null) ? visual : transform;
         Quaternion rotacionBaseVisual = modelo.localRotation;
@@ -280,7 +368,17 @@ public class EnemigoSeguidor : MonoBehaviour
 
     void SetLine(LineRenderer lr, Vector3 a, Vector3 b) { if (lr == null) return; lr.SetPosition(0, a); lr.SetPosition(1, b); }
 
-    void OnDisable() { if (lrDeseada != null) Destroy(lrDeseada.gameObject); if (lrReal != null) Destroy(lrReal.gameObject); lrDeseada = lrReal = null; }
+    void OnDisable()
+    {
+        if (lrDeseada != null) Destroy(lrDeseada.gameObject);
+        if (lrReal != null) Destroy(lrReal.gameObject);
+        lrDeseada = lrReal = null;
+
+        if (sourceMotor != null && sourceMotor.isPlaying)
+        {
+            sourceMotor.Stop();
+        }
+    }
 
     void OnDrawGizmosSelected()
     {
@@ -307,6 +405,8 @@ public class EnemigoSeguidor : MonoBehaviour
     IEnumerator RetirarCoroutine()
     {
         estaRetirandose = true;
+        ReproducirSonidoManiobra();
+
         Vector3 dir = transform.right;
         if (objetivo != null)
         {

@@ -63,11 +63,19 @@ MonoBehaviour:
   velocidadRespuesta: 200
   velocidadRotacion: 25
   cadenciaDisparo: 1.5
-  prefabProyectil: {fileID: 2759515552060237589, guid: e01e34bf78434cb449fe4ca74abdf655, type: 3}
+  prefabProyectil: {fileID: 2759515552060237589, guid: a3548c54ed4426445a29377864d38c17, type: 3}
   proyectilRotationOffsetEuler: {x: 0, y: 0, z: 0}
   tiempoVida: 4
   velocidadRetirada: 30
   tiempoRetirada: 5
+  grupoMixer: {fileID: 0}
+  activarSonidoMotor: 1
+  sfxMotorLoop: {fileID: 0}
+  volumenMotor: 0.45
+  pitchMotorCrucero: 1
+  pitchMotorManiobra: 1.3
+  sfxManiobraGiro: {fileID: 0}
+  volumenManiobra: 0.7
   debugVisuals: 0
   debugUseLineRenderer: 0
   debugLength: 100
