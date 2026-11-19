@@ -26,15 +26,15 @@ public class PlayerColisionesEntorno : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 1. Ignorar puntos de cámara, zonas de rescate y triggers sin ContactDamage
         if (other.CompareTag("Punto Camara") ||
             other.GetComponentInParent<PuntoTrayectoriaCamara>() != null ||
             other.GetComponentInParent<ZonaSeguraOInstakill>() != null ||
-            (other.isTrigger && other.GetComponentInParent<Pyramid.Levels.ContactDamage>() == null))
+            (other.isTrigger && other.GetComponentInParent<ContactDamage>() == null))
         {
             return;
         }
 
+        Debug.Log($"[Choque Detectado] La nave tocó: {other.gameObject.name} (Tag: {other.tag})");
         ProcesarContacto(other.gameObject);
     }
 
@@ -45,25 +45,32 @@ public class PlayerColisionesEntorno : MonoBehaviour
 
     private void ProcesarContacto(GameObject obstaculo)
     {
-        // 1. Ignorar disparos propios o amigos
+        // 1. Ignorar disparos propios, puntos de cámara y zonas especiales
         if (obstaculo.CompareTag("Player") || obstaculo.GetComponent<Proyectil>() != null) return;
+        if (obstaculo.CompareTag("Punto Camara") ||
+            obstaculo.GetComponentInParent<PuntoTrayectoriaCamara>() != null ||
+            obstaculo.GetComponentInParent<ZonaSeguraOInstakill>() != null)
+        {
+            return;
+        }
+
+        var puerta = obstaculo.GetComponentInParent<PuertaContacto>();
+        if (puerta != null)
+        {
+            puerta.ProcesarContacto(saludJugador);
+            return;
+        }
+
         if (Time.time < proximoChoquePermitido) return;
 
         // 2. Si el obstáculo tiene ContactDamage, delegamos en él
-        if (obstaculo.TryGetComponent<ContactDamage>(out var cd))
+        var cd = obstaculo.GetComponentInParent<ContactDamage>();
+        if (cd != null)
         {
             cd.Hit(transform.root.gameObject);
             proximoChoquePermitido = Time.time + cooldownEntreImpactos;
             return;
         }
-
-        if (obstaculo.CompareTag("Punto Camara") ||
-    obstaculo.GetComponentInParent<PuntoTrayectoriaCamara>() != null ||
-    obstaculo.GetComponentInParent<ZonaSeguraOInstakill>() != null)
-        {
-            return;
-        }
-
 
         // 3. Si chocó contra un muro, suelo o asteroide genérico del escenario
         if (obstaculo.CompareTag("Escenario") || obstaculo.layer == LayerMask.NameToLayer("Default"))
