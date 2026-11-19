@@ -14,6 +14,9 @@ public sealed class EnemigoPasada : MonoBehaviour, ILevelEntityAdapter
     public Camera camara;
     public Transform boca;
 
+    [Header("Activación")]
+    [Min(1f)] public float distanciaActivacion = 150f;
+
     [Header("Trayectoria respecto al riel")]
     [Min(1f)] public float distanciaEntrada = 110f;
     [Tooltip("Se amplía automáticamente si hace falta para aparecer completamente fuera de cámara.")]
@@ -82,6 +85,8 @@ public sealed class EnemigoPasada : MonoBehaviour, ILevelEntityAdapter
         }
         if (!iniciada)
         {
+            float radio = Mathf.Max(1f, distanciaActivacion);
+            if ((objetivo.position - transform.position).sqrMagnitude > radio * radio) return;
             iniciada = IniciarPasada();
             return;
         }
@@ -235,12 +240,12 @@ public sealed class EnemigoPasada : MonoBehaviour, ILevelEntityAdapter
 
     public bool SupportsParameter(string key) => key == "velocidad" || key == "cadencia" ||
         key == "dano" || key == "alcance" || key == "entrada" || key == "lateral" ||
-        key == "separacion" || key == "salida" || key == "pausa" || key == "lado" || key == "alternar";
+        key == "activacion" || key == "separacion" || key == "salida" || key == "pausa" || key == "lado" || key == "alternar";
 
     public string ValidateSettings(EntitySettings settings)
     {
         if (settings.speed <= 0f) return "La velocidad de la pasada debe ser mayor que cero.";
-        foreach (string key in new[] { "entrada", "lateral", "separacion", "salida", "pausa" })
+        foreach (string key in new[] { "activacion", "entrada", "lateral", "separacion", "salida", "pausa" })
         {
             string texto = settings.Get(key);
             if (texto == null) continue;
@@ -265,6 +270,7 @@ public sealed class EnemigoPasada : MonoBehaviour, ILevelEntityAdapter
         cadenciaDisparo = settings.fireRate;
         danio = settings.damage;
         alcance = settings.range;
+        distanciaActivacion = LeerNumero(settings, "activacion", distanciaActivacion);
         distanciaEntrada = LeerNumero(settings, "entrada", distanciaEntrada);
         lateralEntrada = LeerNumero(settings, "lateral", lateralEntrada);
         separacionPaso = LeerNumero(settings, "separacion", separacionPaso);
@@ -284,6 +290,11 @@ public sealed class EnemigoPasada : MonoBehaviour, ILevelEntityAdapter
 
     void OnDrawGizmosSelected()
     {
+        if (!Application.isPlaying || !iniciada)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, Mathf.Max(1f, distanciaActivacion));
+        }
         Vector3 centro = Application.isPlaying && iniciada ? centroPasada : (objetivo != null ? objetivo.position : transform.position);
         Transform riel = LevelSession.Active != null ? LevelSession.Active.transform : null;
         Vector3 frente = riel != null ? riel.forward : Vector3.forward;

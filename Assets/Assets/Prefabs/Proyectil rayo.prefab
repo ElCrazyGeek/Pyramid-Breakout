@@ -201,7 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   velocidad: 100
   tiempoVida: 5
-  danio: 1
+  danio: 8
   grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxDisparo: {fileID: 8300000, guid: 8ce26f6d8ae76814a892090d07830cd8, type: 3}
   volumenSfx: 0.9

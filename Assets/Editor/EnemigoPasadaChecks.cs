@@ -31,6 +31,7 @@ public static class EnemigoPasadaChecks
             "Solo un comportamiento de movimiento controla la nave.");
 
         CheckCatalog(prefab);
+        using (var fixture = new Fixture(prefab)) CheckActivation(fixture);
         using (var fixture = new Fixture(prefab)) CheckPasses(fixture);
         foreach (float playerX in new[] { -50f, 50f })
             foreach (bool fromRight in new[] { false, true })
@@ -40,6 +41,20 @@ public static class EnemigoPasadaChecks
         LevelSystemChecks.RunAll();
         LevelBuildValidator.ValidateAll();
         Debug.Log($"PYRAMID_PASADA_CHECKS_OK: {assertions} comprobaciones del prefab, disparo, salida y repetición.");
+    }
+
+    static void CheckActivation(Fixture fixture)
+    {
+        var ship = fixture.Ship;
+        ship.distanciaActivacion = 50f;
+        ship.transform.position = fixture.Player.position + new Vector3(0, 60, 0);
+        Vector3 initial = ship.transform.position;
+        fixture.Step(1f);
+        Check(ship.PasadasIniciadas == 0 && ship.transform.position == initial && fixture.Shots == 0,
+            "Fuera del radio 3D no se mueve, no se recoloca y no dispara.");
+        fixture.Player.position = initial - Vector3.up * 50f;
+        fixture.Step(0.001f);
+        Check(ship.PasadasIniciadas == 1, "Se activa justo al entrar en la distancia configurada.");
     }
 
     static void CheckCatalog(GameObject prefab)
@@ -60,7 +75,7 @@ public static class EnemigoPasadaChecks
     {
         var ship = fixture.Ship;
         fixture.Step(0.001f);
-        Check(ship.PasadasIniciadas == 1, "El primer pase comienza automáticamente.");
+        Check(ship.PasadasIniciadas == 1, "El primer pase comienza cuando el jugador está dentro del radio.");
         Check(ship.transform.position.z > fixture.Player.position.z && ship.transform.position.x > fixture.Player.position.x,
             "La entrada comienza adelante y en un lateral.");
         Check(!fixture.Visible(), "La malla completa comienza fuera del encuadre.");
@@ -220,6 +235,7 @@ public static class EnemigoPasadaChecks
             var instance = Object.Instantiate(prefab);
             SceneManager.MoveGameObjectToScene(instance, scene);
             Ship = instance.GetComponent<EnemigoPasada>();
+            Ship.transform.position = Player.position;
             Ship.objetivo = Player;
             Ship.camara = Camera;
             Ship.GetComponent<Health>().ResetHealth(20f);

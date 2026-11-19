@@ -16,8 +16,8 @@ MonoBehaviour:
   prefab: {fileID: 7095758997652584153, guid: 9d35349ad4702774a889ce8d02b904e1, type: 3}
   preservePrefabRotation: 0
   defaults:
-    health: 40
-    damage: 10
+    health: 500
+    damage: 8
     fireRate: 1
     range: 50
     lifetime: 20

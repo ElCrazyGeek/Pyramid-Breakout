@@ -179,31 +179,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1117624775807354215, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
       propertyPath: anguloYEnZona
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1385103381610141967, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
-      propertyPath: m_Size.x
-      value: 212.25848
-      objectReference: {fileID: 0}
-    - target: {fileID: 1385103381610141967, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
-      propertyPath: m_Size.y
-      value: 189.41876
-      objectReference: {fileID: 0}
-    - target: {fileID: 1385103381610141967, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
-      propertyPath: m_Size.z
-      value: 163.83081
-      objectReference: {fileID: 0}
-    - target: {fileID: 1385103381610141967, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
-      propertyPath: m_Center.x
-      value: 54.487103
-      objectReference: {fileID: 0}
-    - target: {fileID: 1385103381610141967, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
-      propertyPath: m_Center.y
-      value: 3.1557415
-      objectReference: {fileID: 0}
-    - target: {fileID: 1385103381610141967, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
-      propertyPath: m_Center.z
-      value: 76.829704
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3813844316592653012, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
       propertyPath: m_LocalPosition.x
@@ -248,6 +224,14 @@ PrefabInstance:
     - target: {fileID: 5419594621680157398, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
       propertyPath: m_Name
       value: Punto Camara
+      objectReference: {fileID: 0}
+    - target: {fileID: 8499531481171465733, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 66.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8499531481171465733, guid: 3bbed27456645114d8526dadfc68c0ca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 40.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
