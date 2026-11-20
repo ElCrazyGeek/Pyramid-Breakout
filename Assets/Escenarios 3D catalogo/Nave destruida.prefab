@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3417546509685234873}
   - component: {fileID: 8204931754882030929}
   - component: {fileID: 3827079436800515031}
+  - component: {fileID: 8555076533974873688}
   m_Layer: 0
   m_Name: Colision esquina
   m_TagString: Untagged
@@ -56,8 +57,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 270.21533, y: 100, z: 14.092972}
-  m_Center: {x: 22.365662, y: -63.499893, z: 4.1502304}
+  m_Size: {x: 272.54346, y: 100, z: 14.092972}
+  m_Center: {x: 21.2016, y: -63.499893, z: 4.1502304}
 --- !u!114 &24735145152098904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZonaSeguraOInstakill
   modo: 0
-  danioAlEntrar: 25
+  danioAlEntrar: 15
   puntoSeguroDestino: {fileID: 6040484739090107673}
   duracionRescate: 0.15
   cooldownRescate: 1
@@ -138,6 +139,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 106.02362, y: 37.10837, z: 10.271469}
   m_Center: {x: 103.804474, y: 4.6224384, z: -1.3432999}
+--- !u!65 &8555076533974873688
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838081914970896556}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 272.54346, y: 100, z: 41.680557}
+  m_Center: {x: 21.2016, y: -70.4, z: 30.67379}
 --- !u!1 &6904058241937180630
 GameObject:
   m_ObjectHideFlags: 0

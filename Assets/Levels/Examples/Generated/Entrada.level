@@ -7,7 +7,6 @@ longitud_m: 8500
 inicial:
   fondo: fondo.exterior
   ambientacion: ambiente.exterior
-  musica: musica.exterior
   sonido_ambiental: sonido.ambiente
 
 tramos:
@@ -78,10 +77,7 @@ zonas_meteoritos:
         peso: 4
 
 eventos:
-
   # --- TRAMO EXTERIOR (0 a 4800) ---
-
-  # Barco: inicia en 1500 y termina en 3044
   - id: escenario.nave_destruida
     en: 400
     accion: crear
@@ -128,7 +124,6 @@ eventos:
     tramo: exterior
     posicion: { s: 2450, x: -20, y: 0 }
     parametros: { vida: 2 }
-
 
   - id: lanzador_rayos3.3
     en: 2000
@@ -254,12 +249,6 @@ eventos:
     recurso: fondo.interior
     transicion_s: 2
 
-  - id: musica_interior
-    en: 4800
-    accion: musica
-    recurso: musica.interior
-    transicion_s: 2
-
   # --- ESCENARIOS INTERIORES ---
   - id: escenario.pasillo_artilleros
     en: 4550
@@ -275,7 +264,7 @@ eventos:
     tramo: interior
     posicion: { s: 6900, x: 10, y: -10 }
 
-  # --- GRUPO 1: ENEMIGOS DEL PASILLO (+1150 respecto al original) ---
+  # --- GRUPO 1: ENEMIGOS DEL PASILLO ---
   - id: torreta_izquierda
     en: 4500
     accion: crear
@@ -435,7 +424,7 @@ eventos:
     posicion: { s: 6520, x: -25, y: 15 }
     parametros: { vida: 2 }
 
-  # --- GRUPO 2: ENEMIGOS DE LA FORTALEZA (+2302 respecto al original) ---
+  # --- GRUPO 2: ENEMIGOS DE LA FORTALEZA ---
   - id: torreta_Rebelde7.2
     en: 6802
     accion: crear
@@ -517,7 +506,7 @@ eventos:
     posicion: { s: 7652, x: -5, y: 5.5 }
     parametros: { vida: 5 }
 
-  # Puerta 3 (falta ajustar)
+  # Puerta 3
   - id: torreta_final
     en: 7852
     accion: crear

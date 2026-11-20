@@ -100,7 +100,7 @@ public class Player_rieles : MonoBehaviour
         Frenado = enabled && value.isPressed;
     }
 
-    public void OnBoost(InputValue value)
+    public void OnAcelerar(InputValue value)
     {
         AcelerandoBoost = enabled && value.isPressed;
     }

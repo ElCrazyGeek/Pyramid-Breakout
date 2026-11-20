@@ -15,27 +15,19 @@ public class MirillaUI : MonoBehaviour
     [SerializeField] private RectTransform mirillaCercana;
 
     [Header("Límites de Pantalla (Píxeles desde el centro)")]
-    [Tooltip("Rango máximo en píxeles que puede alejarse del centro (0, 0)")]
-    [SerializeField] private Vector2 rangoLejana = new Vector2(360f, 220f);
+    [SerializeField] private Vector2 rangoLejana = new Vector2(450f, 260f);
 
-    [Header("Sensibilidad Input System (Mouse y Stick Derecho)")]
-    [Tooltip("Sensibilidad al mover el ratón (Delta)")]
-    [SerializeField] private float sensibilidadMouse = 0.8f;
-    [Tooltip("Sensibilidad para el Stick Derecho (-1 a 1 continuo)")]
+    [Header("Control con Mouse (Posición directa)")]
+    [SerializeField] private bool usarPosicionDirectaMouse = true;
+    [SerializeField] private float suavizadoMouse = 35f;
+
+    [Header("Control con Stick Derecho (Gamepad)")]
     [SerializeField] private float sensibilidadStick = 500f;
-    [SerializeField] private float suavizadoMirilla = 20f;
-
-    [Header("Retraso y Recentrado al Centro")]
-    [Tooltip("Tiempo en segundos que la mirilla espera quieta antes de empezar a regresar al centro")]
     [SerializeField] private float tiempoEsperaRecentrado = 0.35f;
-    [Tooltip("Fuerza continua muy sutil hacia el centro mientras estás apuntando")]
-    [SerializeField] private float atraccionAlCentro = 1.2f;
-    [Tooltip("Velocidad de recuperación elástica una vez expira el tiempo de espera")]
     [SerializeField] private float velocidadRetornoSoltado = 8f;
 
     [Header("Geometría Star Fox (Mirilla Cercana)")]
     [Range(0.1f, 0.9f)]
-    [Tooltip("0.5 la coloca exactamente a mitad de camino entre la nave y la mira exterior")]
     [SerializeField] private float factorIntermedio = 0.5f;
 
     [Header("Detección de Enemigos (Feedback)")]
@@ -47,15 +39,16 @@ public class MirillaUI : MonoBehaviour
     [SerializeField] private Color colorFijado = Color.red;
 
     private Canvas canvasPadre;
+    private RectTransform canvasRect;
     private Image imagenLejana;
     private Vector3 escalaBaseLejana;
     private Camera cam;
 
     private Vector2 posTargetLejana = Vector2.zero;
-    private Vector2 inputApuntadoActual = Vector2.zero;
-
-    // Cronómetro interno para el retardo de recentrado
-    private float tiempoSinInput = 0f;
+    private Vector2 inputStickActual = Vector2.zero;
+    private Vector2 ultimoMousePos;
+    private bool usandoMouse = true;
+    private float tiempoSinInputStick = 0f;
 
     public bool ApuntandoEnemigo { get; private set; } = false;
     public Vector3 PuntoMundialImpacto { get; private set; }
@@ -63,6 +56,11 @@ public class MirillaUI : MonoBehaviour
     void Awake()
     {
         canvasPadre = GetComponentInParent<Canvas>();
+        if (canvasPadre != null)
+        {
+            canvasRect = canvasPadre.transform as RectTransform;
+        }
+
         if (mirillaLejana != null)
         {
             imagenLejana = mirillaLejana.GetComponent<Image>();
@@ -75,91 +73,143 @@ public class MirillaUI : MonoBehaviour
         cam = Camera.main;
         if (imagenLejana != null) imagenLejana.color = colorNormal;
         posTargetLejana = Vector2.zero;
+
+        if (Mouse.current != null)
+        {
+            ultimoMousePos = Mouse.current.position.ReadValue();
+        }
+    }
+
+    void OnEnable()
+    {
+        // Al activarse la mirilla en gameplay, oculta el cursor del sistema y lo confina a la ventana
+        if (Time.timeScale > 0f)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
     }
 
     public void OnApuntar(InputValue value)
     {
-        inputApuntadoActual = value.Get<Vector2>();
+        Vector2 lectura = value.Get<Vector2>();
+        if (lectura.sqrMagnitude <= 1.05f && lectura.sqrMagnitude > 0.01f)
+        {
+            inputStickActual = lectura;
+            usandoMouse = false;
+        }
+        else if (lectura.sqrMagnitude <= 0.01f)
+        {
+            inputStickActual = Vector2.zero;
+        }
     }
 
     void Update()
     {
+        // Si el juego está pausado o hay un panel de Game Over / Final / Pausa abierto, dejar el cursor libre y visible
+        bool menuAbierto = (Time.timeScale <= 0f)
+                           || (MenuPausaManager.Instance != null && MenuPausaManager.Instance.EstaPausado)
+                           || (PanelFinalUI.Instance != null && PanelFinalUI.Instance.gameObject.activeInHierarchy)
+                           || (GameOverManager.Instance != null && GameOverManager.Instance.EstaActivo);
+
+        if (menuAbierto)
+        {
+            if (!Cursor.visible || Cursor.lockState != CursorLockMode.None)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            return;
+        }
+
+        // Asegurar que durante el gameplay el puntero del ratón permanezca invisible y confinado
+        if (Cursor.visible || Cursor.lockState != CursorLockMode.Confined)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        // Si el juego está en pausa o menú (Time.timeScale == 0), no actualizar la mirilla ni ocultar el mouse
+        if (Time.timeScale <= 0f) return;
+
+        // Asegurar que durante el gameplay el puntero del ratón permanezca invisible y dentro de la pantalla
+        if (Cursor.visible || Cursor.lockState != CursorLockMode.Confined)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+
         if (cam == null) cam = Camera.main;
 
-        // 1. Obtener la nave activa según el modo
         Transform naveActiva = null;
-        if (playerLibre != null && playerLibre.enabled)
-        {
-            naveActiva = playerLibre.transform;
-        }
-        else if (playerRieles != null && playerRieles.enabled)
-        {
-            naveActiva = playerRieles.transform;
-        }
+        if (playerLibre != null && playerLibre.enabled) naveActiva = playerLibre.transform;
+        else if (playerRieles != null && playerRieles.enabled) naveActiva = playerRieles.transform;
 
-        // 2. Comprobar actividad de entrada
-        bool hayInput = inputApuntadoActual.sqrMagnitude > 0.001f;
-
-        if (hayInput)
+        // 1. Detectar si el jugador movió el mouse
+        if (usarPosicionDirectaMouse && Mouse.current != null && canvasRect != null)
         {
-            // Resetear el cronómetro de inactividad mientras el jugador mueva el control
-            tiempoSinInput = 0f;
-
-            if (inputApuntadoActual.sqrMagnitude <= 1.05f)
+            Vector2 mousePosActual = Mouse.current.position.ReadValue();
+            if ((mousePosActual - ultimoMousePos).sqrMagnitude > 0.5f)
             {
-                posTargetLejana += inputApuntadoActual * sensibilidadStick * Time.deltaTime;
+                usandoMouse = true;
+                ultimoMousePos = mousePosActual;
+            }
+
+            if (usandoMouse)
+            {
+                // Convertir la posición real del mouse en pantalla a coordenadas locales del Canvas
+                Camera camCanvas = (canvasPadre.renderMode == RenderMode.ScreenSpaceOverlay) ? null : cam;
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, mousePosActual, camCanvas, out Vector2 localMousePos))
+                {
+                    posTargetLejana.x = Mathf.Clamp(localMousePos.x, -rangoLejana.x, rangoLejana.x);
+                    posTargetLejana.y = Mathf.Clamp(localMousePos.y, -rangoLejana.y, rangoLejana.y);
+                }
+            }
+        }
+
+        // 2. Si no está usando el mouse, procesar el stick derecho con recentrado retardado
+        if (!usandoMouse)
+        {
+            if (inputStickActual.sqrMagnitude > 0.01f)
+            {
+                tiempoSinInputStick = 0f;
+                posTargetLejana += inputStickActual * sensibilidadStick * Time.deltaTime;
+                posTargetLejana.x = Mathf.Clamp(posTargetLejana.x, -rangoLejana.x, rangoLejana.x);
+                posTargetLejana.y = Mathf.Clamp(posTargetLejana.y, -rangoLejana.y, rangoLejana.y);
             }
             else
             {
-                posTargetLejana += inputApuntadoActual * sensibilidadMouse;
-            }
-
-            // Clamping dentro del cuadro de pantalla
-            posTargetLejana.x = Mathf.Clamp(posTargetLejana.x, -rangoLejana.x, rangoLejana.x);
-            posTargetLejana.y = Mathf.Clamp(posTargetLejana.y, -rangoLejana.y, rangoLejana.y);
-
-            // Resistencia continua muy leve mientras apuntas
-            if (atraccionAlCentro > 0f)
-            {
-                posTargetLejana = Vector2.MoveTowards(posTargetLejana, Vector2.zero, atraccionAlCentro * 100f * Time.deltaTime);
-            }
-        }
-        else
-        {
-            // Acumular tiempo de inactividad
-            tiempoSinInput += Time.deltaTime;
-
-            // Solo después de superar el margen de gracia, la mirilla empieza a viajar al centro
-            if (tiempoSinInput >= tiempoEsperaRecentrado)
-            {
-                posTargetLejana = Vector2.Lerp(posTargetLejana, Vector2.zero, velocidadRetornoSoltado * Time.deltaTime);
+                tiempoSinInputStick += Time.deltaTime;
+                if (tiempoSinInputStick >= tiempoEsperaRecentrado)
+                {
+                    posTargetLejana = Vector2.Lerp(posTargetLejana, Vector2.zero, velocidadRetornoSoltado * Time.deltaTime);
+                }
             }
         }
 
-        // 3. Suavizado en la mirilla lejana
+        // 3. Posicionar Mirilla Lejana (justo en el centro del puntero invisibilizado)
         if (mirillaLejana != null)
         {
-            mirillaLejana.anchoredPosition = Vector2.Lerp(mirillaLejana.anchoredPosition, posTargetLejana, suavizadoMirilla * Time.deltaTime);
+            float vel = usandoMouse ? suavizadoMouse : 20f;
+            mirillaLejana.anchoredPosition = Vector2.Lerp(mirillaLejana.anchoredPosition, posTargetLejana, vel * Time.deltaTime);
         }
 
-        // 4. Mirilla Cercana (Perspectiva Star Fox)
-        if (naveActiva != null && mirillaCercana != null && canvasPadre != null && cam != null)
+        // 4. Mirilla Cercana (Perspectiva Star Fox entre la nave y la mirilla exterior)
+        if (naveActiva != null && mirillaCercana != null && canvasRect != null && cam != null)
         {
             Vector3 screenPosNave = cam.WorldToScreenPoint(naveActiva.position);
-            RectTransform canvasRect = canvasPadre.transform as RectTransform;
+            Camera camCanvas = (canvasPadre.renderMode == RenderMode.ScreenSpaceOverlay) ? null : cam;
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 canvasRect,
                 screenPosNave,
-                canvasPadre.renderMode == RenderMode.ScreenSpaceOverlay ? null : cam,
+                camCanvas,
                 out Vector2 localPosNave
             );
 
-            Vector2 posIntermedia = Vector2.Lerp(localPosNave, mirillaLejana.anchoredPosition, factorIntermedio);
-            mirillaCercana.anchoredPosition = posIntermedia;
+            mirillaCercana.anchoredPosition = Vector2.Lerp(localPosNave, mirillaLejana.anchoredPosition, factorIntermedio);
         }
 
-        // 5. Raycast de impacto
+        // 5. Raycast de impacto y feedback de enemigos
         ActualizarRayoMundial();
     }
 

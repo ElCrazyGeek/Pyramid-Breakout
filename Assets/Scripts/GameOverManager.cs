@@ -12,6 +12,8 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private GameObject panelGameOver;
     [SerializeField] private CanvasGroup grupoGameOver;
 
+    public bool EstaActivo => panelGameOver != null && panelGameOver.activeInHierarchy;
+
     [Header("Textos Adaptables")]
     [Tooltip("El texto principal que dice 'GAME OVER' o 'GRACIAS POR JUGAR'")]
     [SerializeField] private TextMeshProUGUI textoTitulo;
@@ -37,6 +39,7 @@ public class GameOverManager : MonoBehaviour
     }
 
     // 1. Llamada tradicional de muerte
+    // 1. Llamada tradicional de muerte
     public void MostrarGameOver()
     {
         if (textoTitulo != null)
@@ -48,6 +51,12 @@ public class GameOverManager : MonoBehaviour
         if (textoSubtitulo != null)
         {
             textoSubtitulo.text = "La nave ha sido destruida.";
+        }
+
+        // ---> AQUÍ: Detener en seco la música del nivel y reproducir la de Game Over <---
+        if (NivelMusicManager.Instance != null)
+        {
+            NivelMusicManager.Instance.ActivarMusicaGameOver();
         }
 
         ActivarPantalla();
@@ -76,7 +85,7 @@ public class GameOverManager : MonoBehaviour
 
         panelGameOver.SetActive(true);
 
-        // Desbloquear cursor para interactuar con la UI
+        // En pantalla de Game Over / Victoria: cursor visible y libre para hacer clic
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -95,6 +104,8 @@ public class GameOverManager : MonoBehaviour
         grupoGameOver.alpha = 0f;
         while (grupoGameOver.alpha < 1f)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             grupoGameOver.alpha += Time.unscaledDeltaTime * 2.5f;
             yield return null;
         }
@@ -106,7 +117,10 @@ public class GameOverManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        // Si existe el TransitionManager global, usa la cortina suave
+        // Volvemos al gameplay: ocultar el cursor y confinarlo a la ventana para la mirilla
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+
         if (TransitionManager.Instance != null)
         {
             TransitionManager.Instance.ReiniciarNivel();
@@ -121,13 +135,16 @@ public class GameOverManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
+        // En el menú principal el cursor debe permanecer libre y visible
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         if (string.IsNullOrEmpty(nombreEscenaMenu))
         {
             Debug.LogWarning("No se definió el nombre de la escena del menú principal.");
             return;
         }
 
-        // Si existe el TransitionManager global, viaja al menú con la cortina suave
         if (TransitionManager.Instance != null)
         {
             TransitionManager.Instance.CargarEscena(nombreEscenaMenu);

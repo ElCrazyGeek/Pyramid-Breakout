@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 75728568683671219}
   - component: {fileID: 3155655720511392594}
   - component: {fileID: 7436376383949971976}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LuzVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,6 +159,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16f6db7444125c40b13a71175b4589d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PuertaContacto
+  disparosParaAbrir: 1
+  tagJugador: Player
+  animatorPuerta: {fileID: 0}
+  triggerAbrirAnimator: Abrir
+  alAbrirse:
+    m_PersistentCalls:
+      m_Calls: []
   danioAbierta: 10
   cooldownContacto: 0.5
 --- !u!1 &5835976390699014015
@@ -173,9 +180,9 @@ GameObject:
   - component: {fileID: 7688792743924343749}
   - component: {fileID: 8823660415333441103}
   - component: {fileID: 4167576211396587587}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SensorPuerta
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -249,11 +256,11 @@ MonoBehaviour:
   healthText: {fileID: 0}
   colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
   duracionParpadeo: 0.08
-  grupoMixer: {fileID: 0}
-  sfxImpacto: {fileID: 0}
+  grupoMixer: {fileID: -1816582845240284932, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxImpacto: {fileID: 8300000, guid: 1309bd05aeaf43647908b1c4da53d154, type: 3}
   volumenImpacto: 0.5
-  prefabExplosion: {fileID: 0}
-  sfxExplosionMuerte: {fileID: 0}
+  prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
+  sfxExplosionMuerte: {fileID: 8300000, guid: 03d58cb96dc15f4468f32c0e0efa7a06, type: 3}
   volumenExplosion: 0.7
   feedbackJugador: {fileID: 0}
 --- !u!1001 &5535370247168490556

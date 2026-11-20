@@ -1,123 +1,92 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Audio;
+using UnityEngine.InputSystem;
 
 public class EnemigoSeguidor : MonoBehaviour
 {
     [Header("Referencias")]
     public Transform objetivo;
     public Transform boca;
-    public Transform visual; // si la malla está en un hijo
+    public Transform visual;
 
     [Header("Animación de Entrada")]
     public bool usarAnimacionEntrada = true;
-    [Tooltip("Distancia extra desde donde arranca la entrada en (X lateral, Y vertical, Z profundidad).")]
     public Vector3 magnitudEntrada = new Vector3(18f, 10f, 20f);
     public float duracionEntrada = 1.2f;
-    [Tooltip("Inclinación lateral (roll) que hace la nave al entrar en picada o curva.")]
     public float inclinacionEntrada = 45f;
 
-    [Header("Movimiento")]
-    [Tooltip("Distancia delante del jugador a la que se posiciona el enemigo.")]
+    [Header("Movimiento y Formación (Independiente de Rotación)")]
     public float distanciaSeguimiento = 20f;
-    [Tooltip("Si es true, usa la X y Y exacta con la que apareció en el .level como su puesto en formación.")]
     public bool usarPosicionSpawnComoFormacion = true;
-    [Tooltip("Puesto manual en pantalla (solo se usa si 'Usar Posicion Spawn Como Formacion' está desmarcado).")]
     public Vector2 offsetCombateXY = new Vector2(0f, 1.5f);
-    public float velocidadRespuesta = 5f;
+    [Tooltip("Qué tan rápido mantienen la distancia en Z frente al jugador.")]
+    public float velocidadSeguimientoZ = 20f;
+    [Tooltip("Qué tan suave se deslizan en X e Y (evita movimientos bruscos).")]
+    public float velocidadSuavizadoXY = 2.5f;
 
-    [Header("Apuntado")]
+    [Header("Evasión al Mouse (Controlada y Suave)")]
+    public bool activarEvasionMouse = true;
+    [Tooltip("Radio en píxeles alrededor de la nave para detectar que el mouse le apunta.")]
+    public float radioDeteccionMousePx = 90f;
+    [Tooltip("Tiempo de espera obligatorio entre una evasión y la siguiente.")]
+    public float cooldownEvasion = 3f;
+    [Tooltip("Distancia máxima que se desplaza en X o en Y al esquivar.")]
+    public float rangoEvasion = 4.0f;
+    [Tooltip("Cuánto tiempo mantiene la posición esquivada antes de volver a su puesto.")]
+    public float duracionEsquive = 1.5f;
+    public float inclinacionEvasion = 25f;
+
+    [Header("Apuntado y Combate")]
     public float velocidadRotacion = 6f;
     public float cadenciaDisparo = 1.5f;
     public GameObject prefabProyectil;
     public Vector3 proyectilRotationOffsetEuler = Vector3.zero;
 
-    [Header("Ciclo de vida")]
+    [Header("Ciclo de Vida y Retirada")]
     public float tiempoVida = 12f;
-    public float velocidadRetirada = 8f;
-    public float tiempoRetirada = 2f;
+    public float velocidadRetirada = 12f;
+    public float tiempoRetirada = 2.5f;
 
-    [Header("Audio y Mezcla (Audio Mixer)")]
-    [Tooltip("Arrastra aquí el grupo SFX o Enemigos de tu Audio Mixer")]
-    [SerializeField] private AudioMixerGroup grupoMixer;
-
-    [Header("Sonido de Motor")]
-    [SerializeField] private bool activarSonidoMotor = true;
-    [SerializeField] private AudioClip sfxMotorLoop;
-    [Range(0f, 1f)][SerializeField] private float volumenMotor = 0.45f;
-    [SerializeField] private float pitchMotorCrucero = 1.0f;
-    [SerializeField] private float pitchMotorManiobra = 1.3f;
-
-    [Header("Sonido Maniobra de Giro / Entrada")]
-    [Tooltip("Sonido de propulsor o silbido al hacer la entrada en curva o al retirarse")]
-    [SerializeField] private AudioClip sfxManiobraGiro;
-    [Range(0f, 1f)][SerializeField] private float volumenManiobra = 0.7f;
+    [Header("Audio")]
+    public bool activarSonidoMotor = true;
+    public AudioSource sourceMotor;
+    public float pitchMotorCrucero = 1.0f;
+    public float pitchMotorManiobra = 1.3f;
+    [Range(0f, 1f)] public float volumenMotor = 0.6f;
+    public AudioSource sourceSFX;
+    public AudioClip sfxManiobraGiro;
+    [Range(0f, 1f)] public float volumenManiobra = 0.8f;
 
     [Header("Debug")]
     public bool debugVisuals = false;
     public bool debugUseLineRenderer = true;
     public float debugLength = 100f;
 
-    // estado
-    Vector3 posicionInicial;
-    float timerVida;
-    float temporizadorDisparo;
-    bool estaEntrando;
-    bool estaRetirandose;
+    // Estado interno
+    private float timerVida;
+    private float temporizadorDisparo;
+    private bool estaEntrando;
+    private bool estaRetirandose;
 
-    // debug
-    LineRenderer lrDeseada, lrReal;
-    bool visualAutoAdjusted;
+    // Estado de formación y evasión (en ejes fijos del riel/mundo)
+    private Vector2 puestoFormacionBase;
+    private Vector2 offsetEvasionActual = Vector2.zero;
+    private Vector2 offsetEvasionSuavizado = Vector2.zero;
+    private float timerCooldownEvasion = 0f;
+    private float timerDuracionEsquive = 0f;
+    private float rollExtraEvasion = 0f;
 
-    private Vector2 puestoFormacionActual;
     private Vector3 direccionEntradaCalculada;
-
-    // Fuentes de audio
-    private AudioSource sourceMotor;
-    private AudioSource sourceSFX;
-
-    void Awake()
-    {
-        ConfigurarAudio();
-    }
-
-    private void ConfigurarAudio()
-    {
-        // 1. AudioSource para efectos puntuales (maniobra de giro / retirada)
-        sourceSFX = gameObject.AddComponent<AudioSource>();
-        sourceSFX.playOnAwake = false;
-        sourceSFX.spatialBlend = 0.85f; // Audio 3D espacial
-        sourceSFX.minDistance = 5f;
-        sourceSFX.maxDistance = 80f;
-        if (grupoMixer != null) sourceSFX.outputAudioMixerGroup = grupoMixer;
-
-        // 2. AudioSource en bucle para el motor continuo
-        if (activarSonidoMotor && sfxMotorLoop != null)
-        {
-            sourceMotor = gameObject.AddComponent<AudioSource>();
-            sourceMotor.clip = sfxMotorLoop;
-            sourceMotor.loop = true;
-            sourceMotor.playOnAwake = false;
-            sourceMotor.volume = volumenMotor;
-            sourceMotor.pitch = pitchMotorCrucero;
-            sourceMotor.spatialBlend = 0.85f;
-            sourceMotor.minDistance = 5f;
-            sourceMotor.maxDistance = 80f;
-            if (grupoMixer != null) sourceMotor.outputAudioMixerGroup = grupoMixer;
-        }
-    }
+    private LineRenderer lrDeseada, lrReal;
+    private bool visualAutoAdjusted;
+    private Camera camPrincipal;
 
     void Start()
     {
-        posicionInicial = transform.position;
         timerVida = tiempoVida;
+        camPrincipal = Camera.main;
 
-        if (activarSonidoMotor && sourceMotor != null && !sourceMotor.isPlaying)
-        {
-            sourceMotor.Play();
-        }
-
-        // 1. Asignar objetivo si no se definió en el Inspector
+        // 1. Buscar objetivo (Jugador)
         if (objetivo == null)
         {
             if (Pyramid.Levels.LevelSession.Active != null && Pyramid.Levels.LevelSession.Active.player != null)
@@ -138,24 +107,22 @@ public class EnemigoSeguidor : MonoBehaviour
             }
         }
 
-        // 2. Conservar la posición exacta con la que nació en el .level respecto al jugador
+        // 2. Guardar la posición inicial X/Y respecto al jugador usando ejes fijos (sin rotación)
         if (objetivo != null)
         {
             if (usarPosicionSpawnComoFormacion)
             {
-                Vector3 deltaSpawn = transform.position - objetivo.position;
-                float xRelativo = Vector3.Dot(deltaSpawn, objetivo.right);
-                float yRelativo = deltaSpawn.y;
-
-                puestoFormacionActual = new Vector2(xRelativo, yRelativo);
+                float xRelativo = transform.position.x - objetivo.position.x;
+                float yRelativo = transform.position.y - objetivo.position.y;
+                puestoFormacionBase = new Vector2(xRelativo, yRelativo);
             }
             else
             {
-                puestoFormacionActual = offsetCombateXY;
+                puestoFormacionBase = offsetCombateXY;
             }
 
-            float signoX = (puestoFormacionActual.x >= 0f) ? 1f : -1f;
-            float signoY = (puestoFormacionActual.y >= 0f) ? 1f : -1f;
+            float signoX = (puestoFormacionBase.x >= 0f) ? 1f : -1f;
+            float signoY = (puestoFormacionBase.y >= 0f) ? 1f : -1f;
             direccionEntradaCalculada = new Vector3(
                 magnitudEntrada.x * signoX,
                 magnitudEntrada.y * signoY,
@@ -163,7 +130,7 @@ public class EnemigoSeguidor : MonoBehaviour
             );
         }
 
-        // 3. Auto-ajuste si la boca apunta en dirección opuesta al objetivo
+        // 3. Auto-ajuste frontal
         if (!visualAutoAdjusted && objetivo != null)
         {
             Vector3 origen = (boca != null) ? boca.position : transform.position;
@@ -177,12 +144,11 @@ public class EnemigoSeguidor : MonoBehaviour
                     if (visual != null) visual.Rotate(0f, 180f, 0f, Space.Self);
                     else transform.Rotate(0f, 180f, 0f, Space.Self);
                     visualAutoAdjusted = true;
-                    if (debugVisuals) Debug.Log($"Auto-ajuste aplicado al {(visual != null ? "visual" : "root")}");
                 }
             }
         }
 
-        // 4. Ejecutar animación de entrada si está activada
+        // 4. Iniciar entrada
         if (usarAnimacionEntrada && objetivo != null)
         {
             StartCoroutine(EntradaCoroutine());
@@ -193,13 +159,67 @@ public class EnemigoSeguidor : MonoBehaviour
     {
         ActualizarAudioMotor();
 
-        // Si está entrando o retirándose, cedemos el control total a sus respectivas corrutinas
         if (estaEntrando || estaRetirandose || objetivo == null) return;
 
+        GestionarEvasionMouse();
         MovimientoFijo();
         GestionarCombate();
         UpdateDebugVisuals();
         GestionarTiempoVida();
+    }
+
+    private void GestionarEvasionMouse()
+    {
+        if (!activarEvasionMouse) return;
+
+        if (timerCooldownEvasion > 0f)
+            timerCooldownEvasion -= Time.deltaTime;
+
+        if (timerDuracionEsquive > 0f)
+        {
+            timerDuracionEsquive -= Time.deltaTime;
+            if (timerDuracionEsquive <= 0f)
+            {
+                offsetEvasionActual = Vector2.zero;
+                rollExtraEvasion = 0f;
+            }
+            return;
+        }
+
+        if (timerCooldownEvasion > 0f || timerVida <= 1.5f) return;
+
+        if (camPrincipal == null) camPrincipal = Camera.main;
+        if (camPrincipal == null) return;
+
+        Vector2 mousePos = Mouse.current != null
+            ? Mouse.current.position.ReadValue()
+            : (Vector2)Input.mousePosition;
+
+        Vector3 screenPos = camPrincipal.WorldToScreenPoint(transform.position);
+        if (screenPos.z <= 0f) return;
+
+        float distanciaMousePx = Vector2.Distance(new Vector2(screenPos.x, screenPos.y), mousePos);
+
+        if (distanciaMousePx <= radioDeteccionMousePx)
+        {
+            timerCooldownEvasion = cooldownEvasion;
+            timerDuracionEsquive = duracionEsquive;
+            ReproducirSonidoManiobra();
+
+            bool moverEnX = Random.value > 0.5f;
+            float direccion = (Random.value > 0.5f) ? 1f : -1f;
+
+            if (moverEnX)
+            {
+                offsetEvasionActual = new Vector2(rangoEvasion * direccion, 0f);
+                rollExtraEvasion = -direccion * inclinacionEvasion;
+            }
+            else
+            {
+                offsetEvasionActual = new Vector2(0f, rangoEvasion * direccion);
+                rollExtraEvasion = 0f;
+            }
+        }
     }
 
     private void ActualizarAudioMotor()
@@ -216,8 +236,8 @@ public class EnemigoSeguidor : MonoBehaviour
             sourceMotor.UnPause();
         }
 
-        // Sube el tono del motor cuando hace la curva de entrada o la maniobra de retirada
-        float pitchObjetivo = (estaEntrando || estaRetirandose) ? pitchMotorManiobra : pitchMotorCrucero;
+        bool enManiobra = estaEntrando || estaRetirandose || timerDuracionEsquive > 0f;
+        float pitchObjetivo = enManiobra ? pitchMotorManiobra : pitchMotorCrucero;
         sourceMotor.pitch = Mathf.Lerp(sourceMotor.pitch, pitchObjetivo, Time.deltaTime * 6f);
         sourceMotor.volume = volumenMotor;
     }
@@ -240,9 +260,10 @@ public class EnemigoSeguidor : MonoBehaviour
         Quaternion rotacionBaseVisual = modelo.localRotation;
         Transform ancla = objetivo;
 
-        Vector3 offsetMundial = ancla.right * direccionEntradaCalculada.x +
+        // Usa los ejes fijos del mundo (right, up, forward) para no girar con la nave del jugador
+        Vector3 offsetMundial = Vector3.right * direccionEntradaCalculada.x +
                                 Vector3.up * direccionEntradaCalculada.y +
-                                ancla.forward * direccionEntradaCalculada.z;
+                                Vector3.forward * direccionEntradaCalculada.z;
 
         transform.position = CalcularPosicionCombate(ancla) + offsetMundial;
 
@@ -276,25 +297,30 @@ public class EnemigoSeguidor : MonoBehaviour
 
     Vector3 CalcularPosicionCombate(Transform ancla)
     {
-        Vector3 forward = ancla.forward;
-        forward.y = 0f;
-        if (forward.sqrMagnitude < 0.0001f) forward = Vector3.forward;
-        forward.Normalize();
-
-        Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
+        // Ejes fijos del riel (ignorando la rotación de la nave del jugador)
+        Vector2 puestoFinal = puestoFormacionBase + offsetEvasionSuavizado;
 
         return ancla.position
-               + (forward * distanciaSeguimiento)
-               + (right * puestoFormacionActual.x)
-               + (Vector3.up * puestoFormacionActual.y);
+               + (Vector3.forward * distanciaSeguimiento)
+               + (Vector3.right * puestoFinal.x)
+               + (Vector3.up * puestoFinal.y);
     }
 
     void MovimientoFijo()
     {
         if (objetivo == null) return;
 
+        // Suavizamos el desplazamiento de evasión en X/Y para que no sea brusco
+        offsetEvasionSuavizado = Vector2.Lerp(offsetEvasionSuavizado, offsetEvasionActual, Time.deltaTime * velocidadSuavizadoXY);
+
         Vector3 destino = CalcularPosicionCombate(objetivo);
-        transform.position = Vector3.Lerp(transform.position, destino, Time.deltaTime * velocidadRespuesta);
+
+        // Separamos el suavizado de X/Y (suave) del seguimiento en Z (firme)
+        float nuevoX = Mathf.Lerp(transform.position.x, destino.x, Time.deltaTime * (velocidadSuavizadoXY * 2f));
+        float nuevoY = Mathf.Lerp(transform.position.y, destino.y, Time.deltaTime * (velocidadSuavizadoXY * 2f));
+        float nuevoZ = Mathf.Lerp(transform.position.z, destino.z, Time.deltaTime * velocidadSeguimientoZ);
+
+        transform.position = new Vector3(nuevoX, nuevoY, nuevoZ);
     }
 
     void GestionarCombate()
@@ -314,7 +340,7 @@ public class EnemigoSeguidor : MonoBehaviour
         Vector3 dirRaw = (objetivo.position - origen);
         if (dirRaw.sqrMagnitude < 0.0001f) return;
         Vector3 dir = dirRaw.normalized;
-        Quaternion objetivoRot = Quaternion.LookRotation(dir);
+        Quaternion objetivoRot = Quaternion.LookRotation(dir) * Quaternion.Euler(0f, 0f, rollExtraEvasion);
 
         Quaternion nueva = Quaternion.RotateTowards((visual != null) ? visual.rotation : transform.rotation, objetivoRot, velocidadRotacion * Time.deltaTime);
         if (visual != null) visual.rotation = nueva; else transform.rotation = nueva;
@@ -324,13 +350,15 @@ public class EnemigoSeguidor : MonoBehaviour
     {
         if (prefabProyectil == null) return;
         Vector3 origen = (boca != null) ? boca.position : transform.position;
-        Quaternion rot = boca != null ? boca.rotation * Quaternion.Euler(proyectilRotationOffsetEuler) : Quaternion.LookRotation((objetivo != null ? (objetivo.position - origen).normalized : transform.forward)) * Quaternion.Euler(proyectilRotationOffsetEuler);
+        Vector3 dirHaciaObjetivo = (objetivo != null) ? (objetivo.position - origen).normalized : transform.forward;
+        Quaternion rot = Quaternion.LookRotation(dirHaciaObjetivo) * Quaternion.Euler(proyectilRotationOffsetEuler);
+
         var instancia = Instantiate(prefabProyectil, origen, rot);
-        var proj = instancia.GetComponent<Proyectil>(); if (proj != null) { proj.tagOrigen = "Enemy"; proj.origen = this.gameObject; }
+        var proj = instancia.GetComponent<Proyectil>();
+        if (proj != null) { proj.tagOrigen = "Enemy"; proj.origen = this.gameObject; }
         var rb = instancia.GetComponent<Rigidbody>();
         float vel = (proj != null) ? proj.velocidad : 60f;
         if (rb != null) rb.linearVelocity = instancia.transform.forward * vel;
-        if (debugVisuals) Debug.Log($"Disparar: origen={origen}, instancia.forward={instancia.transform.forward}, vel={vel}");
     }
 
     void UpdateDebugVisuals()
@@ -380,40 +408,41 @@ public class EnemigoSeguidor : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected()
-    {
-        if (boca != null)
-        {
-            Gizmos.color = Color.yellow; Gizmos.DrawSphere(boca.position, 0.12f);
-            Gizmos.color = Color.magenta; Gizmos.DrawLine(boca.position, boca.position + boca.forward * 2f);
-        }
-        else
-        {
-            Gizmos.color = Color.yellow; Gizmos.DrawSphere(transform.position, 0.12f);
-            Gizmos.color = Color.magenta; Gizmos.DrawLine(transform.position, transform.position + transform.forward * 2f);
-        }
-        if (objetivo != null)
-        {
-            Gizmos.color = Color.cyan; var o = (boca != null) ? boca.position : transform.position; Gizmos.DrawLine(o, objetivo.position);
-        }
-    }
-
     public Vector3 ObtenerDireccionDisparo() { if (boca != null) return boca.forward.normalized; return (transform.rotation * Vector3.forward).normalized; }
 
-    void GestionarTiempoVida() { timerVida -= Time.deltaTime; if (timerVida <= 0f) StartCoroutine(RetirarCoroutine()); }
+    void GestionarTiempoVida()
+    {
+        timerVida -= Time.deltaTime;
+        if (timerVida <= 0f) StartCoroutine(RetirarCoroutine());
+    }
 
     IEnumerator RetirarCoroutine()
     {
         estaRetirandose = true;
         ReproducirSonidoManiobra();
 
-        Vector3 dir = transform.right;
-        if (objetivo != null)
+        // Elegir lado de salida en ejes fijos (izquierda o derecha del túnel)
+        float signoSalida = (transform.position.x >= (objetivo != null ? objetivo.position.x : 0f)) ? 1f : -1f;
+        Vector3 dirSalida = Vector3.right * signoSalida;
+
+        float t = 0f;
+        while (t < tiempoRetirada)
         {
-            float dot = Vector3.Dot((objetivo.position - transform.position).normalized, transform.right);
-            dir = (dot > 0f) ? -transform.right : transform.right;
+            float dt = Time.deltaTime;
+            t += dt;
+
+            // Sigue avanzando en Z mientras se desplaza suavemente hacia afuera para que puedas dispararle
+            Vector3 avanceZ = Vector3.forward * 15f;
+            transform.position += (dirSalida * velocidadRetirada + avanceZ) * dt;
+
+            if (visual != null)
+            {
+                visual.Rotate(0f, 0f, -150f * signoSalida * dt, Space.Self);
+            }
+
+            yield return null;
         }
-        float t = 0f; while (t < tiempoRetirada) { transform.position += dir.normalized * velocidadRetirada * Time.deltaTime; t += Time.deltaTime; yield return null; }
+
         Destroy(gameObject);
     }
 }

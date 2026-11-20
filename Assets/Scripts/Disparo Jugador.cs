@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio; // <-- Necesario para AudioMixerGroup
 using Pyramid.Levels;
 using UnityEngine.InputSystem;
 
@@ -17,11 +18,17 @@ public class DisparoJugador : MonoBehaviour
     [SerializeField] private Transform puntoSalidaCargado;
     [SerializeField] private ParticleSystem efectoCarga;
     [SerializeField] private float tiempoNecesarioCarga = 0.9f;
+    [Tooltip("Porcentaje del tiempo de carga (0.1 a 0.9) en el que empieza el análisis visual y sonoro")]
+    [Range(0.1f, 0.9f)][SerializeField] private float umbralInicioAnalisis = 0.45f;
 
-    [Header("Audio Lock-on")]
+    [Header("Audio Lock-on y Mixer")]
+    [Tooltip("Arrastra aquí el grupo de tu Audio Mixer (ej. UI, SFX o Jugador)")]
+    [SerializeField] private AudioMixerGroup grupoMixerLockOn;
+    [Tooltip("Sonido de escaneo/análisis que suena justo antes de fijar objetivo")]
+    [SerializeField] private AudioClip sfxAnalisis;
+    [Tooltip("Sonido de confirmación cuando el cuadro rojo engancha al enemigo")]
     [SerializeField] private AudioClip sfxLockOn;
-    [SerializeField] private AudioClip sfxCargaLista;
-    [Range(0f, 1f)][SerializeField] private float volumenSfx = 0.8f;
+    [Range(0f, 1f)][SerializeField] private float volumenSfx = 1f;
 
     [Header("Estado")]
     public bool puedeDisparar = true;
@@ -29,17 +36,32 @@ public class DisparoJugador : MonoBehaviour
     [Header("UI Lock-On")]
     [SerializeField] private LockOnTargetUI recuadroLockOn;
 
+    // Fuente de audio conectada al Mixer
+    private AudioSource sourceLockOn;
+
     // Control interno de carga
     private float tiempoSiguienteDisparo = 0f;
     private float tiempoPresionado = 0f;
     private bool estaPresionando = false;
+    private bool analisisIniciado = false;
     private bool cargaCompleta = false;
-    private bool audioCargaReproducido = false;
 
     private GameObject proyectilCargadoActivo;
     private Transform blancoFijado = null;
 
-    // Mensaje automático del Input System (desde Player Input)
+    private void Awake()
+    {
+        // Configurar AudioSource en 2D para que no pierda volumen por distancia y respete el Mixer
+        sourceLockOn = gameObject.AddComponent<AudioSource>();
+        sourceLockOn.playOnAwake = false;
+        sourceLockOn.spatialBlend = 0f;
+
+        if (grupoMixerLockOn != null)
+        {
+            sourceLockOn.outputAudioMixerGroup = grupoMixerLockOn;
+        }
+    }
+
     public void OnDisparo(InputValue value)
     {
         if (!enabled || !puedeDisparar || Time.timeScale <= 0) return;
@@ -59,54 +81,56 @@ public class DisparoJugador : MonoBehaviour
 
     void Update()
     {
-        // 1. Respaldo directo de hardware: Espacio, Clic Izquierdo del Mouse, ZR (Gatillo) o Botón Sur (A/Cruz)
         bool teclaEspacioSostenida = Keyboard.current != null && Keyboard.current.spaceKey.isPressed;
         bool mouseClicSostenido = Mouse.current != null && Mouse.current.leftButton.isPressed;
-
-        bool gamepadTriggerSostenido = Gamepad.current != null && Gamepad.current.rightTrigger.isPressed; // ZR / RT / R2
-        bool gamepadBotonSostenido = Gamepad.current != null && Gamepad.current.buttonSouth.isPressed;   // A / Cruz
+        bool gamepadTriggerSostenido = Gamepad.current != null && Gamepad.current.rightTrigger.isPressed;
+        bool gamepadBotonSostenido = Gamepad.current != null && Gamepad.current.buttonSouth.isPressed;
 
         bool algunInputDisparoActivo = teclaEspacioSostenida || mouseClicSostenido || gamepadTriggerSostenido || gamepadBotonSostenido;
 
         if (algunInputDisparoActivo)
         {
-            if (!estaPresionando)
-            {
-                IniciarPulsacion();
-            }
+            if (!estaPresionando) IniciarPulsacion();
         }
         else if (estaPresionando)
         {
             LiberarPulsacion();
         }
 
-        // 2. Proceso de carga continua
         if (estaPresionando)
         {
             tiempoPresionado += Time.deltaTime;
 
+            // FASE 1: Pre-carga / Análisis (suena el escáner y aparece el cuadro previo en la mira)
+            if (!analisisIniciado && tiempoPresionado >= (tiempoNecesarioCarga * umbralInicioAnalisis))
+            {
+                analisisIniciado = true;
+
+                if (sfxAnalisis != null && sourceLockOn != null)
+                {
+                    sourceLockOn.PlayOneShot(sfxAnalisis, volumenSfx);
+                }
+
+                if (proyectilCargadoActivo == null && recuadroLockOn != null && blancoFijado == null)
+                {
+                    recuadroLockOn.IniciarEscaneo(mirillaLejanaUI);
+                }
+            }
+
+            // FASE 2: Carga completa -> Escaneo activo para enganchar objetivo
             if (tiempoPresionado >= tiempoNecesarioCarga)
             {
                 if (!cargaCompleta)
                 {
                     cargaCompleta = true;
 
-                    // Encender partículas de carga
                     if (efectoCarga != null)
                     {
                         efectoCarga.gameObject.SetActive(true);
                         if (!efectoCarga.isPlaying) efectoCarga.Play();
                     }
-
-                    // Sonido de carga lista
-                    if (sfxCargaLista != null && !audioCargaReproducido)
-                    {
-                        AudioSource.PlayClipAtPoint(sfxCargaLista, transform.position, volumenSfx);
-                        audioCargaReproducido = true;
-                    }
                 }
 
-                // Buscar y fijar objetivo en pantalla
                 EscanearLockOn();
             }
         }
@@ -116,8 +140,8 @@ public class DisparoJugador : MonoBehaviour
     {
         estaPresionando = true;
         tiempoPresionado = 0f;
+        analisisIniciado = false;
         cargaCompleta = false;
-        audioCargaReproducido = false;
 
         if (proyectilCargadoActivo == null)
         {
@@ -125,7 +149,6 @@ public class DisparoJugador : MonoBehaviour
             if (recuadroLockOn != null) recuadroLockOn.Ocultar();
         }
 
-        // Disparo normal de toque rápido
         if (Time.time >= tiempoSiguienteDisparo)
         {
             DispararNormal();
@@ -151,6 +174,7 @@ public class DisparoJugador : MonoBehaviour
             }
         }
 
+        analisisIniciado = false;
         cargaCompleta = false;
 
         if (efectoCarga != null)
@@ -184,9 +208,9 @@ public class DisparoJugador : MonoBehaviour
                         recuadroLockOn.FijarObjetivo(blancoFijado);
                     }
 
-                    if (sfxLockOn != null)
+                    if (sfxLockOn != null && sourceLockOn != null)
                     {
-                        AudioSource.PlayClipAtPoint(sfxLockOn, transform.position, volumenSfx);
+                        sourceLockOn.PlayOneShot(sfxLockOn, volumenSfx);
                     }
                 }
             }

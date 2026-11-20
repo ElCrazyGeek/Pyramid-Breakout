@@ -562,8 +562,8 @@ Transform:
   m_GameObject: {fileID: 5041208053769108167}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9, y: 1.38, z: 414.8}
-  m_LocalScale: {x: 0.28571427, y: 0.28571427, z: 0.3}
+  m_LocalPosition: {x: -9, y: 1.38, z: 413}
+  m_LocalScale: {x: 0.28571427, y: 0.28571427, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3047512248275889240}
@@ -1039,7 +1039,7 @@ Transform:
   m_GameObject: {fileID: 6336691418451190424}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.5, y: 30.2, z: 18.9}
+  m_LocalPosition: {x: 9.5, y: 30.2, z: 12.7}
   m_LocalScale: {x: 1, y: 1, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1075,7 +1075,7 @@ Transform:
   m_GameObject: {fileID: 7564659180470036881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -8.8, y: 6.7, z: 265.1}
+  m_LocalPosition: {x: -19.4, y: 6.7, z: 265.1}
   m_LocalScale: {x: -1074.3418, y: -89.68636, z: 600}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1683,6 +1683,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 829960699816484355}
     m_Modifications:
+    - target: {fileID: 4167576211396587587, guid: 4f09d294c383ca8418be1a1fd16d7382, type: 3}
+      propertyPath: maximum
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5463317776673540663, guid: 4f09d294c383ca8418be1a1fd16d7382, type: 3}
       propertyPath: m_Name
       value: Puerta_Mecanica
@@ -1701,7 +1705,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7329780625286616170, guid: 4f09d294c383ca8418be1a1fd16d7382, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.63
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7329780625286616170, guid: 4f09d294c383ca8418be1a1fd16d7382, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1741,6 +1745,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7329780625286616170, guid: 4f09d294c383ca8418be1a1fd16d7382, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8823660415333441103, guid: 4f09d294c383ca8418be1a1fd16d7382, type: 3}
+      propertyPath: impactosNecesarios
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
