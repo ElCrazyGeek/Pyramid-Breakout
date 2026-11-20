@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 2917233411520741013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.02, y: 4.07, z: 0.6}
+  m_LocalScale: {x: 7.376672, y: 6.5103774, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1239297045741292126}
@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2917233411520741013}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &7436376383949971976
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b31ab0138f63984aacd1265c3ed14c1, type: 2}
+  - {fileID: 2100000, guid: 108ba380e01dda943be6db051ccf84d3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,7 +123,6 @@ Transform:
   m_Children:
   - {fileID: 9073104485845890757}
   - {fileID: 5429982794120109015}
-  - {fileID: 1239297045741292126}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1512577828348331167
@@ -173,6 +172,7 @@ GameObject:
   - component: {fileID: 1239297045741292126}
   - component: {fileID: 7688792743924343749}
   - component: {fileID: 8823660415333441103}
+  - component: {fileID: 4167576211396587587}
   m_Layer: 0
   m_Name: SensorPuerta
   m_TagString: Untagged
@@ -188,13 +188,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5835976390699014015}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -51, y: -3.9, z: 114.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: -0.010541671, y: 0.23556575, z: -0.0011597137}
+  m_LocalScale: {x: 0.0003816874, y: 0.0002917466, z: 0.010659083}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 75728568683671219}
-  m_Father: {fileID: 7329780625286616170}
+  m_Father: {fileID: 5429982794120109015}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7688792743924343749
 BoxCollider:
@@ -232,6 +232,30 @@ MonoBehaviour:
   animatorPuerta: {fileID: 1512577828348331167}
   triggerAbrir: Abrir
   impactosNecesarios: 3
+--- !u!114 &4167576211396587587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5835976390699014015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae722136abd24b38917e5a955111eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid.Levels.Health
+  maximum: 3
+  barraVidaImagen: {fileID: 0}
+  healthText: {fileID: 0}
+  colorParpadeo: {r: 1, g: 0, b: 0, a: 1}
+  duracionParpadeo: 0.08
+  grupoMixer: {fileID: 0}
+  sfxImpacto: {fileID: 0}
+  volumenImpacto: 0.5
+  prefabExplosion: {fileID: 0}
+  sfxExplosionMuerte: {fileID: 0}
+  volumenExplosion: 0.7
+  feedbackJugador: {fileID: 0}
 --- !u!1001 &5535370247168490556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,7 +310,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 23e21b6954f5dfa4d833712400f512f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1239297045741292126}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 23e21b6954f5dfa4d833712400f512f9, type: 3}
       insertIndex: -1

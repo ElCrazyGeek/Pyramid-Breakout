@@ -5097,11 +5097,12 @@ MonoBehaviour:
   VelocidadActual: 0
   Frenado: 0
   AcelerandoBoost: 0
+  inclinacionMaximaManiobra: 85
+  velocidadInclinacionManiobra: 350
+  multiplicadorVelocidadManiobra: 1.8
   InclinacionX: 15
   InclinacionZ: 15
   VelocidadInclinacion: 25
-  inclinacionMaximaManiobra: 85
-  velocidadInclinacionManiobra: 350
   VelocidadBoost: 60
   VelocidadMaxima: 60
   VelocidadMinima: 5
@@ -5126,7 +5127,6 @@ MonoBehaviour:
   suavizadoAudioMotor: 6
   sfxManiobraGiro: {fileID: 8300000, guid: bad2d0117a705cf4f85fa59e645b35f3, type: 3}
   volumenManiobra: 0.75
-  umbralInputGiro: 0.85
   PlayerInput: {x: 0, y: 0}
   controller: {fileID: 1236008783105916877}
   mirillaUI: {fileID: 0}
@@ -5472,6 +5472,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5615541725602509603, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e48067856b2a2147acc955c82abebf8, type: 2}
+    - target: {fileID: -1461304994638716399, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e48067856b2a2147acc955c82abebf8, type: 2}
     - target: {fileID: 919132149155446097, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
       propertyPath: m_Name
       value: Nave jugador con aceleador cerrado 1
@@ -5480,6 +5488,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 2379192126686704861, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e48067856b2a2147acc955c82abebf8, type: 2}
+    - target: {fileID: 2761013889327874199, guid: 2aec9f1e5a1aa6144940ba714c5f6578, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e48067856b2a2147acc955c82abebf8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

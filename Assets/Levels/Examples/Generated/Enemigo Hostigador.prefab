@@ -59,18 +59,18 @@ MonoBehaviour:
   inclinacionEntrada: 45
   distanciaSeguimiento: 100
   usarPosicionSpawnComoFormacion: 1
-  offsetCombateXY: {x: 15, y: 10}
-  velocidadRespuesta: 200
-  velocidadRotacion: 25
+  offsetCombateXY: {x: 10, y: 10}
+  velocidadRespuesta: 150
+  velocidadRotacion: 45
   cadenciaDisparo: 1.5
   prefabProyectil: {fileID: 2759515552060237589, guid: a3548c54ed4426445a29377864d38c17, type: 3}
   proyectilRotationOffsetEuler: {x: 0, y: 0, z: 0}
   tiempoVida: 4
-  velocidadRetirada: 30
+  velocidadRetirada: 200
   tiempoRetirada: 5
-  grupoMixer: {fileID: 0}
+  grupoMixer: {fileID: 1106678311816840925, guid: 9271b31c91392384490e12f831303d56, type: 2}
   activarSonidoMotor: 1
-  sfxMotorLoop: {fileID: 0}
+  sfxMotorLoop: {fileID: 8300000, guid: 1e6e3b7e7ebf6b146836e3f1fd266ffa, type: 3}
   volumenMotor: 0.45
   pitchMotorCrucero: 1
   pitchMotorManiobra: 1.3

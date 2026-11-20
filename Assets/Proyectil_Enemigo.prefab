@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1167300854681648009}
   m_Layer: 0
   m_Name: Proyectil_Enemigo
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,11 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Proyectil
   velocidad: 450
   tiempoVida: 3
-  danio: 1
+  danio: 6
   grupoMixer: {fileID: -1816582845240284932, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxDisparo: {fileID: 8300000, guid: 0170019ab706ff443b0e1a680766e3c2, type: 3}
   volumenSfx: 0.485
-  tagOrigen: Player
+  tagOrigen: Enemy
   origen: {fileID: 0}
   debugImpact: 0
 --- !u!54 &1407018698180631400
@@ -117,18 +117,6 @@ PrefabInstance:
       value: Disparo_laser_jugador (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5638246368283904050, guid: a197e6d7326b47a48b58195a0d35ebb6, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 5638246368283904050, guid: a197e6d7326b47a48b58195a0d35ebb6, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 5638246368283904050, guid: a197e6d7326b47a48b58195a0d35ebb6, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 5638246368283904050, guid: a197e6d7326b47a48b58195a0d35ebb6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.13
       objectReference: {fileID: 0}
@@ -168,10 +156,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6806135235507204957, guid: a197e6d7326b47a48b58195a0d35ebb6, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: -6478536213147159724, guid: 8697afbeb026aae4a9d6e261f406a1cb, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

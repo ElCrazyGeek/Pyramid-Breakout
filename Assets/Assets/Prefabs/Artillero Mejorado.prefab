@@ -61,7 +61,7 @@ MonoBehaviour:
   invertirDireccion: 0
   direccionAvanceJugador: {x: 0, y: 0, z: 1}
   alcance: 250
-  cadenciaDisparo: 2
+  cadenciaDisparo: 1.6
   apuntarDisparoAlObjetivo: 1
   mascaraObjetivo:
     serializedVersion: 2
