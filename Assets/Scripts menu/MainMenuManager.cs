@@ -18,6 +18,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject panelOpciones;
     [SerializeField] private GameObject panelCreditos;
 
+    [SerializeField] private GameObject panelControles;
+
     [Header("Audio Mixer y Música del Menú")]
     [Tooltip("Arrastra aquí el grupo 'Musica' de tu MasterAudio Mixer")]
     [SerializeField] private AudioMixerGroup grupoMixerMusica;
@@ -47,6 +49,7 @@ public class MainMenuManager : MonoBehaviour
 
         if (panelOpciones != null) panelOpciones.SetActive(false);
         if (panelCreditos != null) panelCreditos.SetActive(false);
+        if (panelControles != null) panelControles.SetActive(false);
 
         // 2. Configurar reproductor de música en 2D enlazado al Audio Mixer
         sourceMusica = gameObject.AddComponent<AudioSource>();
@@ -113,6 +116,16 @@ public class MainMenuManager : MonoBehaviour
     public void CerrarOpciones()
     {
         CerrarPanel(panelOpciones);
+    }
+
+    public void AbrirControles()
+    {
+        MostrarPanelConFondo(panelControles);
+    }
+
+    public void CerrarControles()
+    {
+        CerrarPanel(panelControles);
     }
 
     // 3. Botón CRÉDITOS
