@@ -157,6 +157,13 @@ eventos:
     posicion: { s: 2650, x: 10, y: 0 }
     parametros: { vida: 2 }
 
+  - id: objeto_curacion0
+    en: 2200
+    accion: crear
+    recurso: objeto.reparacion
+    tramo: exterior
+    posicion: { s: 2907, x: 0, y: 18 }
+
   # Oleada de enemigos seguidores en zona vacía
   - id: perseguidora_1
     en: 3150
@@ -424,6 +431,13 @@ eventos:
     posicion: { s: 6520, x: -25, y: 15 }
     parametros: { vida: 2 }
 
+  - id: objeto_curacion2
+    en: 6100
+    accion: crear
+    recurso: objeto.reparacion
+    tramo: interior
+    posicion: { s: 6650, x: 0, y: 12 }
+
   # --- GRUPO 2: ENEMIGOS DE LA FORTALEZA ---
   - id: torreta_Rebelde7.2
     en: 6802
@@ -505,6 +519,22 @@ eventos:
     tramo: interior
     posicion: { s: 7652, x: -5, y: 5.5 }
     parametros: { vida: 5 }
+
+  - id: torreta_final0.9
+    en: 7500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 7826, x: 72, y: 40 }
+    parametros: { vida: 3 }
+
+  - id: torreta_final0.10
+    en: 7500
+    accion: crear
+    recurso: enemigo.torreta
+    tramo: interior
+    posicion: { s: 7826, x: -12.3, y: 40 }
+    parametros: { vida: 3 }
 
   # Puerta 3
   - id: torreta_final

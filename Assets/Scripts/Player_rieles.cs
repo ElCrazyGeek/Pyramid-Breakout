@@ -3,6 +3,8 @@ using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Unity.Cinemachine;
+
 
 [RequireComponent(typeof(CharacterController))]
 public class Player_rieles : MonoBehaviour
@@ -37,10 +39,17 @@ public class Player_rieles : MonoBehaviour
     [Min(0.1f)] public float duracionMaxFrenoSeg = 4.0f;
     [Min(0.1f)] public float duracionMaxBoostSeg = 2.5f;
     [Min(0.1f)] public float tiempoRecargaCompletaSeg = 5.0f;
-    [SerializeField] private bool exigirBarraLlenaTrasUso = true;
+    [Tooltip("Segundos de espera antes de empezar a recargar tras soltar o vaciar la barra")]
+    [Min(0f)] public float retardoInicioRecargaSeg = 0.4f;
+    [Tooltip("Si está activo, tras vaciar por completo la barra exige llegar al 100% para volver a usarla")]
+    [SerializeField] private bool exigirBarraLlenaTrasAgotar = true;
 
-    [Header("UI Barra de Propulsión (Opcional)")]
+    [Header("UI Barra de Propulsión (Visibilidad Dinámica)")]
     [SerializeField] private Image barraPropulsionUI;
+    [Tooltip("CanvasGroup del contenedor padre de la barra (fondo + relleno) para hacer fade al aparecer/desaparecer")]
+    [SerializeField] private CanvasGroup contenedorBarraUI;
+    [SerializeField] private float velocidadFadeBarra = 6f;
+    [SerializeField] private float retardoOcultarBarraLlena = 0.6f;
     [SerializeField] private Color colorListo = new Color(0.2f, 0.9f, 1f);
     [SerializeField] private Color colorRecargando = new Color(1f, 0.35f, 0.2f);
 
@@ -71,10 +80,15 @@ public class Player_rieles : MonoBehaviour
     private bool inicializado;
     private bool usandoFreno = false;
     private bool usandoBoost = false;
+    private float temporizadorRetardoRecarga = 0f;
+    private float temporizadorOcultarUI = 0f;
 
-    // Acciones y estado de maniobra de giro (L / R)
+    // Acciones directas del Input System
     private InputAction accionGiroDerecha;
     private InputAction accionGiroIzquierda;
+    private InputAction accionFreno;
+    private InputAction accionAcelerar;
+
     private bool girandoDerecha = false;
     private bool girandoIzquierda = false;
     private bool maniobraActivaAnterior = false;
@@ -89,6 +103,29 @@ public class Player_rieles : MonoBehaviour
     // Fuentes de audio
     private AudioSource sourceMotor;
     private AudioSource sourceSFX;
+
+    [Header("Feedback de Cámara (Boost / Freno)")]
+    [SerializeField] private CinemachineCamera camaraRielCine;
+    [SerializeField] private CinemachineFollow followRielCine;
+    [Tooltip("Cuánto se aleja hacia atrás en Z la cámara al hacer Boost")]
+    [SerializeField] private float retrocesoZBoost = 8f;
+    [Tooltip("Cuánto se acerca hacia adelante en Z la cámara al frenar")]
+    [SerializeField] private float acercamientoZFreno = 6f;
+    [SerializeField] private float fovNormal = 60f;
+    [SerializeField] private float fovBoost = 74f;
+    [SerializeField] private float fovFreno = 53f;
+    [SerializeField] private float suavizadoCamaraVelocidad = 6f;
+
+    [Header("Feedback Partículas de Motores")]
+    [Tooltip("Arrastra aquí los Particle Systems de las turbinas (Motor_Glow / estelas)")]
+    [SerializeField] private ParticleSystem[] particulasMotores;
+    [SerializeField] private float escalaParticulaNormal = 1f;
+    [SerializeField] private float escalaParticulaBoost = 1.85f;
+    [SerializeField] private float escalaParticulaFreno = 0.25f;
+    [SerializeField] private float suavizadoParticulas = 8f;
+
+    private float offsetZBase;
+    private float factorParticulaActual = 1f;
 
     public void OnMovimiento(InputValue value)
     {
@@ -110,18 +147,32 @@ public class Player_rieles : MonoBehaviour
         controller = GetComponent<CharacterController>();
         ConfigurarAudio();
 
-        // Recuperar tus acciones exactas del Input System para el giro lateral (L / R)
         var playerInputComp = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         if (playerInputComp != null && playerInputComp.actions != null)
         {
             accionGiroDerecha = playerInputComp.actions.FindAction("GiroLateralDer", false);
             accionGiroIzquierda = playerInputComp.actions.FindAction("GiroLateralIzq", false);
+            accionFreno = playerInputComp.actions.FindAction("Freno", false);
+            accionAcelerar = playerInputComp.actions.FindAction("Acelerar", false);
+            if (accionAcelerar == null)
+            {
+                accionAcelerar = playerInputComp.actions.FindAction("Boost", false);
+            }
+        }
+
+        if (camaraRielCine != null && followRielCine == null)
+        {
+            followRielCine = camaraRielCine.GetComponent<CinemachineFollow>();
+        }
+
+        if (followRielCine != null)
+        {
+            offsetZBase = followRielCine.FollowOffset.z;
         }
     }
 
     private void ConfigurarAudio()
     {
-        // 1. Fuente para efectos puntuales (Maniobra L/R y Boost)
         sourceSFX = gameObject.AddComponent<AudioSource>();
         sourceSFX.playOnAwake = false;
         sourceSFX.spatialBlend = 0f;
@@ -130,7 +181,6 @@ public class Player_rieles : MonoBehaviour
             sourceSFX.outputAudioMixerGroup = grupoMixerJugador;
         }
 
-        // 2. Fuente continua en bucle para el motor
         if (activarSonidoMotor && sfxMotorLoop != null)
         {
             sourceMotor = gameObject.AddComponent<AudioSource>();
@@ -171,6 +221,16 @@ public class Player_rieles : MonoBehaviour
         girandoIzquierda = false;
         maniobraActivaAnterior = false;
 
+        if (contenedorBarraUI != null)
+        {
+            contenedorBarraUI.alpha = 0f;
+            contenedorBarraUI.gameObject.SetActive(false);
+        }
+        else if (barraPropulsionUI != null)
+        {
+            barraPropulsionUI.gameObject.SetActive(false);
+        }
+
         if (sourceMotor != null && sourceMotor.isPlaying)
         {
             sourceMotor.Stop();
@@ -188,10 +248,22 @@ public class Player_rieles : MonoBehaviour
         PropulsorBloqueado = false;
         Frenado = AcelerandoBoost = false;
         usandoFreno = usandoBoost = false;
+        temporizadorRetardoRecarga = 0f;
+        temporizadorOcultarUI = 0f;
         girandoDerecha = girandoIzquierda = false;
         maniobraActivaAnterior = false;
         rotacionManiobra = 0f;
         inicializado = true;
+
+        if (contenedorBarraUI != null)
+        {
+            contenedorBarraUI.alpha = 0f;
+            contenedorBarraUI.gameObject.SetActive(false);
+        }
+        else if (barraPropulsionUI != null)
+        {
+            barraPropulsionUI.gameObject.SetActive(false);
+        }
 
         ActualizarUIPropulsion();
 
@@ -220,9 +292,15 @@ public class Player_rieles : MonoBehaviour
 
     void Update()
     {
-        // Leer directamente las acciones L / R del PlayerInput
+        // Lectura directa en tiempo real para evitar que botones se queden pegados
         girandoDerecha = accionGiroDerecha != null && accionGiroDerecha.enabled && accionGiroDerecha.IsPressed();
         girandoIzquierda = accionGiroIzquierda != null && accionGiroIzquierda.enabled && accionGiroIzquierda.IsPressed();
+
+        if (accionFreno != null && accionFreno.enabled)
+            Frenado = accionFreno.IsPressed();
+
+        if (accionAcelerar != null && accionAcelerar.enabled)
+            AcelerandoBoost = accionAcelerar.IsPressed();
 
         ActualizarManiobra();
         mover();
@@ -230,6 +308,7 @@ public class Player_rieles : MonoBehaviour
         InclinacionJugador();
         ActualizarSonidoMotor();
         ActualizarUIPropulsion();
+        ActualizarEfectosVelocidad();
     }
 
     private void ActualizarManiobra()
@@ -237,7 +316,6 @@ public class Player_rieles : MonoBehaviour
         int direccionManiobra = ObtenerDireccionManiobra();
         bool maniobraActiva = (direccionManiobra != 0);
 
-        // Suena únicamente en el instante en que presionas L o R, no al moverte normal
         if (maniobraActiva && !maniobraActivaAnterior)
         {
             if (sfxManiobraGiro != null && sourceSFX != null)
@@ -266,23 +344,29 @@ public class Player_rieles : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
+        // 1. Si la barra se agotó por completo y está en recarga obligatoria
         if (PropulsorBloqueado)
         {
             usandoFreno = false;
             usandoBoost = false;
 
-            EnergiaPropulsion += (1f / tiempoRecargaCompletaSeg) * dt;
+            if (temporizadorRetardoRecarga > 0f)
+            {
+                temporizadorRetardoRecarga -= dt;
+                return;
+            }
+
+            EnergiaPropulsion = Mathf.MoveTowards(EnergiaPropulsion, 1f, (1f / tiempoRecargaCompletaSeg) * dt);
             if (EnergiaPropulsion >= 1f)
             {
                 EnergiaPropulsion = 1f;
-                if (!Frenado && !AcelerandoBoost)
-                {
-                    PropulsorBloqueado = false;
-                }
+                // Se desbloquea en cuanto llega al 100%
+                PropulsorBloqueado = false;
             }
             return;
         }
 
+        // 2. Uso activo de Boost (vaciando)
         if (AcelerandoBoost && EnergiaPropulsion > 0f)
         {
             if (!usandoBoost && sourceSFX != null && sfxBoostActivado != null)
@@ -293,42 +377,47 @@ public class Player_rieles : MonoBehaviour
 
             usandoBoost = true;
             usandoFreno = false;
+            temporizadorRetardoRecarga = retardoInicioRecargaSeg;
             EnergiaPropulsion -= (1f / duracionMaxBoostSeg) * dt;
 
             if (EnergiaPropulsion <= 0f)
             {
                 EnergiaPropulsion = 0f;
                 usandoBoost = false;
-                PropulsorBloqueado = true;
+                if (exigirBarraLlenaTrasAgotar) PropulsorBloqueado = true;
             }
             return;
         }
 
+        // 3. Uso activo de Freno (vaciando)
         if (Frenado && EnergiaPropulsion > 0f)
         {
             usandoFreno = true;
             usandoBoost = false;
+            temporizadorRetardoRecarga = retardoInicioRecargaSeg;
             EnergiaPropulsion -= (1f / duracionMaxFrenoSeg) * dt;
 
             if (EnergiaPropulsion <= 0f)
             {
                 EnergiaPropulsion = 0f;
                 usandoFreno = false;
-                PropulsorBloqueado = true;
+                if (exigirBarraLlenaTrasAgotar) PropulsorBloqueado = true;
             }
             return;
         }
 
-        if ((usandoBoost || usandoFreno) && exigirBarraLlenaTrasUso && EnergiaPropulsion < 1f)
-        {
-            PropulsorBloqueado = true;
-        }
-
+        // 4. Ningún botón presionado: recuperar energía tras un breve retardo
         usandoBoost = false;
         usandoFreno = false;
 
         if (EnergiaPropulsion < 1f)
         {
+            if (temporizadorRetardoRecarga > 0f)
+            {
+                temporizadorRetardoRecarga -= dt;
+                return;
+            }
+
             EnergiaPropulsion = Mathf.MoveTowards(EnergiaPropulsion, 1f, (1f / tiempoRecargaCompletaSeg) * dt);
         }
     }
@@ -354,6 +443,50 @@ public class Player_rieles : MonoBehaviour
 
         barraPropulsionUI.fillAmount = EnergiaPropulsion;
         barraPropulsionUI.color = PropulsorBloqueado ? colorRecargando : colorListo;
+
+        // Determinar si debe estar visible: se está usando (vaciando) O no está llena (llenando)
+        bool enUsoOIncompleta = usandoBoost || usandoFreno || EnergiaPropulsion < 0.999f;
+
+        if (enUsoOIncompleta)
+        {
+            temporizadorOcultarUI = retardoOcultarBarraLlena;
+        }
+        else if (temporizadorOcultarUI > 0f)
+        {
+            temporizadorOcultarUI -= Time.deltaTime;
+        }
+
+        bool debeMostrarse = enUsoOIncompleta || temporizadorOcultarUI > 0f;
+
+        // Si asignaste un CanvasGroup en el padre de la barra, hacemos fade suave
+        if (contenedorBarraUI != null)
+        {
+            if (debeMostrarse && !contenedorBarraUI.gameObject.activeSelf)
+            {
+                contenedorBarraUI.gameObject.SetActive(true);
+            }
+
+            float alphaObjetivo = debeMostrarse ? 1f : 0f;
+            contenedorBarraUI.alpha = Mathf.MoveTowards(
+                contenedorBarraUI.alpha,
+                alphaObjetivo,
+                velocidadFadeBarra * Time.deltaTime
+            );
+
+            if (!debeMostrarse && contenedorBarraUI.alpha <= 0.01f && contenedorBarraUI.gameObject.activeSelf)
+            {
+                contenedorBarraUI.alpha = 0f;
+                contenedorBarraUI.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            // Fallback directo si no se usó CanvasGroup
+            if (barraPropulsionUI.gameObject.activeSelf != debeMostrarse)
+            {
+                barraPropulsionUI.gameObject.SetActive(debeMostrarse);
+            }
+        }
     }
 
     private void ActualizarSonidoMotor()
@@ -395,7 +528,6 @@ public class Player_rieles : MonoBehaviour
 
     void mover()
     {
-        // Restaurado: la maniobra L / R acelera el desplazamiento hacia ese lado y en vertical
         Vector2 movimiento = PlayerInput;
         int direccionManiobra = ObtenerDireccionManiobra();
         if (direccionManiobra != 0)
@@ -464,4 +596,69 @@ public class Player_rieles : MonoBehaviour
 
         return Mathf.MoveTowards(VelocidadActual, velocidadObjetivo, velocidadDeCambio * Time.deltaTime);
     }
+
+    private void ActualizarEfectosVelocidad()
+    {
+        float dt = Time.deltaTime;
+
+        // 1. Calcular factor de velocidad normalizado: -1 (Freno), 0 (Crucero), +1 (Boost)
+        float factorVelocidad = 0f;
+        if (VelocidadActual > VelocidadMaxima)
+        {
+            factorVelocidad = Mathf.InverseLerp(VelocidadMaxima, VelocidadBoost, VelocidadActual);
+        }
+        else if (VelocidadActual < VelocidadMaxima)
+        {
+            factorVelocidad = -Mathf.InverseLerp(VelocidadMaxima, VelocidadMinima, VelocidadActual);
+        }
+
+        // 2. Ajustar distancia Z y FOV de la cámara Cinemachine
+        if (followRielCine != null)
+        {
+            float desplazamientoZ = factorVelocidad >= 0f
+                ? -retrocesoZBoost * factorVelocidad       // Más negativo = cámara más atrás
+                : acercamientoZFreno * (-factorVelocidad); // Menos negativo = cámara más cerca ("encogida")
+
+            Vector3 offsetActual = followRielCine.FollowOffset;
+            float targetZ = offsetZBase + desplazamientoZ;
+            offsetActual.z = Mathf.Lerp(offsetActual.z, targetZ, suavizadoCamaraVelocidad * dt);
+            followRielCine.FollowOffset = offsetActual;
+        }
+
+        if (camaraRielCine != null)
+        {
+            float targetFov = fovNormal;
+            if (factorVelocidad > 0f)
+                targetFov = Mathf.Lerp(fovNormal, fovBoost, factorVelocidad);
+            else if (factorVelocidad < 0f)
+                targetFov = Mathf.Lerp(fovNormal, fovFreno, -factorVelocidad);
+
+            camaraRielCine.Lens.FieldOfView = Mathf.Lerp(
+                camaraRielCine.Lens.FieldOfView,
+                targetFov,
+                suavizadoCamaraVelocidad * dt
+            );
+        }
+
+        // 3. Escalar y modular las partículas de los propulsores
+        if (particulasMotores != null && particulasMotores.Length > 0)
+        {
+            float targetEscala = escalaParticulaNormal;
+            if (factorVelocidad > 0f)
+                targetEscala = Mathf.Lerp(escalaParticulaNormal, escalaParticulaBoost, factorVelocidad);
+            else if (factorVelocidad < 0f)
+                targetEscala = Mathf.Lerp(escalaParticulaNormal, escalaParticulaFreno, -factorVelocidad);
+
+            factorParticulaActual = Mathf.Lerp(factorParticulaActual, targetEscala, suavizadoParticulas * dt);
+
+            foreach (var ps in particulasMotores)
+            {
+                if (ps == null) continue;
+                var main = ps.main;
+                main.startSizeMultiplier = factorParticulaActual;
+                main.startSpeedMultiplier = factorParticulaActual;
+            }
+        }
+    }
 }
+

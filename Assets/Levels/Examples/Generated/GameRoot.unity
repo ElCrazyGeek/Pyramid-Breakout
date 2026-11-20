@@ -810,8 +810,8 @@ MonoBehaviour:
   playerTarget: {fileID: 1635421773}
   offsetBase: {x: 0, y: 0, z: -30}
   margenX: 25
-  margenY: 12
-  seguimientoSuavidad: 4
+  margenY: 4
+  seguimientoSuavidad: 3
   pitchFijoX: 0.38
   velocidadRotacionY: 4
   activarGuiaEscenario: 1
@@ -1306,7 +1306,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 696248142}
   m_SourcePrefab: {fileID: 100100000, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
 --- !u!224 &554961843 stripped
 RectTransform:
@@ -1318,12 +1321,44 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 209447538423914293, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
   m_PrefabInstance: {fileID: 554961842}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 696248138}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!1 &585012979 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+  m_PrefabInstance: {fileID: 1030862142}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &605286653 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+  m_PrefabInstance: {fileID: 1615693171}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &696248138 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+  m_PrefabInstance: {fileID: 554961842}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &696248142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696248138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7864cf68e6a731499062789d7fe3eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonidoBotonUI
+  grupoMixerUI: {fileID: -3965845245017611677, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxHover: {fileID: 8300000, guid: 872f2da0ead5e85489f833bf7378c954, type: 3}
+  volumenHover: 0.5
+  sfxClick: {fileID: 8300000, guid: 33d42cc90409f3748b55698d427d3f5c, type: 3}
+  volumenClick: 0.85
 --- !u!1 &825433224
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,18 +1444,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: sfxLockOn
-      value: 
-      objectReference: {fileID: 8300000, guid: dce6d7833038c284dabdaa01c5bf92d5, type: 3}
-    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: volumenSfx
-      value: 0.449
-      objectReference: {fileID: 0}
-    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: sfxAnalisis
-      value: 
-      objectReference: {fileID: 8300000, guid: cb9fd6c74fadd3d45ad7aee1fe12e9be, type: 3}
-    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: recuadroLockOn
       value: 
       objectReference: {fileID: 971830318}
@@ -1428,54 +1451,66 @@ PrefabInstance:
       propertyPath: mirillaLejanaUI
       value: 
       objectReference: {fileID: 1339351033}
-    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: grupoMixerLockOn
-      value: 
-      objectReference: {fileID: 5970679681329828052, guid: 9271b31c91392384490e12f831303d56, type: 2}
-    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: tiempoNecesarioCarga
-      value: 0.6
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: fovBoost
+      value: 75
       objectReference: {fileID: 0}
-    - target: {fileID: 2098110543038151410, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: umbralInicioAnalisis
-      value: 0.523
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: fovFreno
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: fovNormal
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: mirillaUI
       value: 
       objectReference: {fileID: 2123715489}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: volumenMotor
-      value: 0.396
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: sfxManiobraGiro
+      propertyPath: camaraRielCine
       value: 
-      objectReference: {fileID: 8300000, guid: 34846529466a78147acb7ffce4184d4d, type: 3}
+      objectReference: {fileID: 396840277}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: umbralInputGiro
-      value: 0.106
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: volumenManiobra
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: sfxBoostActivado
+      propertyPath: followRielCine
       value: 
+      objectReference: {fileID: 396840283}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: retrocesoZBoost
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: barraPropulsionUI
       value: 
       objectReference: {fileID: 1602440559}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: contenedorBarraUI
+      value: 
+      objectReference: {fileID: 1462109132}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: acercamientoZFreno
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: suavizadoParticulas
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: escalaParticulaBoost
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: escalaParticulaNormal
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6715396062829698623, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
+      propertyPath: suavizadoCamaraVelocidad
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6802675490704385792, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: barraVidaImagen
       value: 
       objectReference: {fileID: 1745038599}
-    - target: {fileID: 6802675490704385792, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
-      propertyPath: prefabExplosion
-      value: 
-      objectReference: {fileID: 939589831308259305, guid: 92b7940e39f5e7440b5183906c485e6d, type: 3}
     - target: {fileID: 7620725322362057693, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
       propertyPath: m_Name
       value: Jugador
@@ -1762,20 +1797,20 @@ MonoBehaviour:
   musicaTranquila: {fileID: 8300000, guid: e2f5b0b4241729c4e85723598f4cc224, type: 3}
   musicaCombate: {fileID: 8300000, guid: 0bff61c8fe66fa944a1c427a8e60f37e, type: 3}
   volumenMaximoNivel: 0.6
-  duracionFadeACombate: 1.5
-  duracionFadeACalma: 3
+  duracionFadeACombate: 2
+  duracionFadeACalma: 5
   jugador: {fileID: 1635421773}
   capaEnemigos:
     serializedVersion: 2
     m_Bits: 128
   radioDeteccionCombate: 280
-  retardoCalmaSeg: 2
+  retardoCalmaSeg: 7
   intervaloEscaneo: 0.25
   musicaPausa: {fileID: 8300000, guid: 953687a888d282246847a3c5d0646c06, type: 3}
   musicaGameOver: {fileID: 8300000, guid: 80b29370057c96747ad6b7cefe4deaf5, type: 3}
   volumenMenu: 0.6
   duracionFadeMenu: 0.6
-  loopMusicaGameOver: 0
+  loopMusicaGameOver: 1
 --- !u!4 &1016003627
 Transform:
   m_ObjectHideFlags: 0
@@ -1892,7 +1927,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1030862148}
   m_SourcePrefab: {fileID: 100100000, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
 --- !u!224 &1030862143 stripped
 RectTransform:
@@ -1904,12 +1942,34 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 209447538423914293, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
   m_PrefabInstance: {fileID: 1030862142}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 585012979}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1030862148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585012979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7864cf68e6a731499062789d7fe3eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonidoBotonUI
+  grupoMixerUI: {fileID: -3965845245017611677, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxHover: {fileID: 8300000, guid: d7b5529bcb536c64a9358882bbf80645, type: 3}
+  volumenHover: 0.5
+  sfxClick: {fileID: 8300000, guid: 5cc838c5db98a8f4f9868833527812e3, type: 3}
+  volumenClick: 0.85
+--- !u!1 &1148835579 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+  m_PrefabInstance: {fileID: 2144899171}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1151190697
 GameObject:
   m_ObjectHideFlags: 0
@@ -2526,7 +2586,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1542720958}
   m_SourcePrefab: {fileID: 100100000, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
 --- !u!224 &1418017071 stripped
 RectTransform:
@@ -2538,7 +2601,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 209447538423914293, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
   m_PrefabInstance: {fileID: 1418017070}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1542720954}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -2835,7 +2898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SonidoBotonUI
   grupoMixerUI: {fileID: -3965845245017611677, guid: 9271b31c91392384490e12f831303d56, type: 2}
-  sfxHover: {fileID: 8300000, guid: 1a002f194a718a341a2002236cf9b2e8, type: 3}
+  sfxHover: {fileID: 8300000, guid: 872f2da0ead5e85489f833bf7378c954, type: 3}
   volumenHover: 0.5
   sfxClick: {fileID: 8300000, guid: 33d42cc90409f3748b55698d427d3f5c, type: 3}
   volumenClick: 0.85
@@ -2850,6 +2913,7 @@ GameObject:
   - component: {fileID: 1462109129}
   - component: {fileID: 1462109131}
   - component: {fileID: 1462109130}
+  - component: {fileID: 1462109132}
   m_Layer: 5
   m_Name: Contenedor
   m_TagString: Untagged
@@ -2915,6 +2979,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1462109128}
   m_CullTransparentMesh: 1
+--- !u!225 &1462109132
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462109128}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1531601116 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
@@ -3013,6 +3089,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532108295}
   m_CullTransparentMesh: 1
+--- !u!1 &1542720954 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+  m_PrefabInstance: {fileID: 1418017070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1542720958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542720954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7864cf68e6a731499062789d7fe3eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonidoBotonUI
+  grupoMixerUI: {fileID: -3965845245017611677, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxHover: {fileID: 8300000, guid: 872f2da0ead5e85489f833bf7378c954, type: 3}
+  volumenHover: 0.5
+  sfxClick: {fileID: 8300000, guid: 4477fa3ddd824904eba5a713cf963af2, type: 3}
+  volumenClick: 0.85
 --- !u!1 &1602440557
 GameObject:
   m_ObjectHideFlags: 0
@@ -3070,7 +3168,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3189,7 +3287,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1615693177}
   m_SourcePrefab: {fileID: 100100000, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
 --- !u!224 &1615693172 stripped
 RectTransform:
@@ -3201,12 +3302,29 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 209447538423914293, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
   m_PrefabInstance: {fileID: 1615693171}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 605286653}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1615693177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605286653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7864cf68e6a731499062789d7fe3eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonidoBotonUI
+  grupoMixerUI: {fileID: -3965845245017611677, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxHover: {fileID: 8300000, guid: 872f2da0ead5e85489f833bf7378c954, type: 3}
+  volumenHover: 0.5
+  sfxClick: {fileID: 8300000, guid: 5cc838c5db98a8f4f9868833527812e3, type: 3}
+  volumenClick: 0.85
 --- !u!114 &1635421767 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1819048550107000825, guid: 56ebdacc04011c341a8c5d5532d396d0, type: 3}
@@ -4102,13 +4220,33 @@ PrefabInstance:
     - {fileID: 7974730630609658605, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4227960416855959875, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2144899176}
   m_SourcePrefab: {fileID: 100100000, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
 --- !u!224 &2144899172 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 861463413351199038, guid: 737565ae6e5717141a6395cbaabe21d9, type: 3}
   m_PrefabInstance: {fileID: 2144899171}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2144899176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148835579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7864cf68e6a731499062789d7fe3eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonidoBotonUI
+  grupoMixerUI: {fileID: -3965845245017611677, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxHover: {fileID: 8300000, guid: 872f2da0ead5e85489f833bf7378c954, type: 3}
+  volumenHover: 0.5
+  sfxClick: {fileID: 8300000, guid: 5cc838c5db98a8f4f9868833527812e3, type: 3}
+  volumenClick: 0.85
 --- !u!222 &1040880097890128340
 CanvasRenderer:
   m_ObjectHideFlags: 0

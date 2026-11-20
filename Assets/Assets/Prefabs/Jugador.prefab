@@ -5112,26 +5112,44 @@ MonoBehaviour:
   duracionMaxFrenoSeg: 4
   duracionMaxBoostSeg: 2.5
   tiempoRecargaCompletaSeg: 5
-  exigirBarraLlenaTrasUso: 1
+  retardoInicioRecargaSeg: 0.4
+  exigirBarraLlenaTrasAgotar: 1
   barraPropulsionUI: {fileID: 0}
+  contenedorBarraUI: {fileID: 0}
+  velocidadFadeBarra: 6
+  retardoOcultarBarraLlena: 0.6
   colorListo: {r: 0.2, g: 0.9, b: 1, a: 1}
   colorRecargando: {r: 1, g: 0.35, b: 0.2, a: 1}
   activarSonidoMotor: 1
   grupoMixerJugador: {fileID: 4213617729934077432, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxMotorLoop: {fileID: 8300000, guid: 6cfc9ae4cb458a548a42ec68cbd8394d, type: 3}
-  sfxBoostActivado: {fileID: 8300000, guid: 0fbc2b3bb722f594cb8372675e6aace5, type: 3}
-  volumenMotor: 0.627
+  sfxBoostActivado: {fileID: 0}
+  volumenMotor: 0.396
   pitchMinimoFreno: 0.75
   pitchNormalCrucero: 1
   pitchMaximoBoost: 1.45
   suavizadoAudioMotor: 6
-  sfxManiobraGiro: {fileID: 8300000, guid: bad2d0117a705cf4f85fa59e645b35f3, type: 3}
-  volumenManiobra: 0.75
+  sfxManiobraGiro: {fileID: 8300000, guid: 34846529466a78147acb7ffce4184d4d, type: 3}
+  volumenManiobra: 0.6
   PlayerInput: {x: 0, y: 0}
   controller: {fileID: 1236008783105916877}
   mirillaUI: {fileID: 0}
   velocidadOrientacion: 3
   fuerzaArrastreMirilla: {x: 0, y: 0}
+  camaraRielCine: {fileID: 0}
+  followRielCine: {fileID: 0}
+  retrocesoZBoost: 8
+  acercamientoZFreno: 6
+  fovNormal: 60
+  fovBoost: 74
+  fovFreno: 53
+  suavizadoCamaraVelocidad: 6
+  particulasMotores:
+  - {fileID: 1034040182822129431}
+  escalaParticulaNormal: 2
+  escalaParticulaBoost: 1.85
+  escalaParticulaFreno: 0.25
+  suavizadoParticulas: 8
 --- !u!114 &4126864029510395587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5210,10 +5228,12 @@ MonoBehaviour:
   prefabProyectilCargado: {fileID: 2593995980092043329, guid: b5c6c7225128da146b8442242adf7fda, type: 3}
   puntoSalidaCargado: {fileID: 5967539718787088846}
   efectoCarga: {fileID: 1134240941027137837}
-  tiempoNecesarioCarga: 0.9
-  sfxLockOn: {fileID: 8300000, guid: cb9fd6c74fadd3d45ad7aee1fe12e9be, type: 3}
-  sfxCargaLista: {fileID: 8300000, guid: dce6d7833038c284dabdaa01c5bf92d5, type: 3}
-  volumenSfx: 0.8
+  tiempoNecesarioCarga: 0.6
+  umbralInicioAnalisis: 0.523
+  grupoMixerLockOn: {fileID: 5970679681329828052, guid: 9271b31c91392384490e12f831303d56, type: 2}
+  sfxAnalisis: {fileID: 8300000, guid: cb9fd6c74fadd3d45ad7aee1fe12e9be, type: 3}
+  sfxLockOn: {fileID: 8300000, guid: dce6d7833038c284dabdaa01c5bf92d5, type: 3}
+  volumenSfx: 0.449
   puedeDisparar: 1
   recuadroLockOn: {fileID: 0}
 --- !u!114 &1819048550107000825
@@ -5333,7 +5353,7 @@ MonoBehaviour:
   grupoMixer: {fileID: 4213617729934077432, guid: 9271b31c91392384490e12f831303d56, type: 2}
   sfxImpacto: {fileID: 8300000, guid: 30ae09c85a609e94a86264fa4d8c7b65, type: 3}
   volumenImpacto: 0.949
-  prefabExplosion: {fileID: 447072760501113926, guid: 58b63ffcd7e17a7449d156e99d7bdf3a, type: 3}
+  prefabExplosion: {fileID: 939589831308259305, guid: 92b7940e39f5e7440b5183906c485e6d, type: 3}
   sfxExplosionMuerte: {fileID: 8300000, guid: 0cd0d16f10acca6419a790589bbc88ab, type: 3}
   volumenExplosion: 0.962
   feedbackJugador: {fileID: 5523271482537995349}
@@ -5607,6 +5627,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d67bf51cd972674cb4575d60446e3bb, type: 3}
+--- !u!198 &1034040182822129431 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8820086654628958429, guid: 1d67bf51cd972674cb4575d60446e3bb, type: 3}
+  m_PrefabInstance: {fileID: 8376299507247570890}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6703145477597420160 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2970338675641058634, guid: 1d67bf51cd972674cb4575d60446e3bb, type: 3}
