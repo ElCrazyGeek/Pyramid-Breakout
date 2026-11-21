@@ -165,6 +165,150 @@ Transform:
   - {fileID: 1332496743}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &929585237
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1332496743}
+    m_Modifications:
+    - target: {fileID: 1103034741391364000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Name
+      value: Trigger tutorial (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4078743783296109086, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].tituloPaso
+      value: Turbo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].tituloPaso
+      value: Freno
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[2].tituloPaso
+      value: Barra de acelaracion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[3].tituloPaso
+      value: Freno
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 7bac4ecc22a34cd45aff9f7288a0934a, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: fed6425875dbcf14eb678bd79d66a118, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[2].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 131e0d91e22fc604a9449f923d7dc407, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[3].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 9ada0ff7fd26daa4f9be1d6cca6cc516, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].textoInstruccion
+      value: Presiona V para tener un turbo en el movimiento de la nave temporalmente
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].textoInstruccion
+      value: Presiona Shift izquierdo para frenar temporalmente la nave
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[2].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[2].textoInstruccion
+      value: Ten en cuenta que el freno y el turbo son temporales y necesitan que
+        la barra de aceleracion (que aparecea debajo de la vida una vez se use) no
+        se podran usar hasta que se llene.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[3].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[3].textoInstruccion
+      value: Presiona Shift izquierdo para frenar temporalmente la nave
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+--- !u!4 &929585238 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+  m_PrefabInstance: {fileID: 929585237}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1332496742
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,8 +339,101 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1887235112}
+  - {fileID: 1627528721}
+  - {fileID: 929585238}
   m_Father: {fileID: 825296760}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1627528720
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1332496743}
+    m_Modifications:
+    - target: {fileID: 1103034741391364000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Name
+      value: Trigger tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 4078743783296109086, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 50.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1800
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].tituloPaso
+      value: Abrir las puertas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 9ada0ff7fd26daa4f9be1d6cca6cc516, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].textoInstruccion
+      value: Dispara al los cuadros rojos al centro de las puertas para poder abrirlas,
+        de contrario, si impactas con ellas moriras instantaneamente.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+--- !u!4 &1627528721 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+  m_PrefabInstance: {fileID: 1627528720}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1887235111
 GameObject:
   m_ObjectHideFlags: 0

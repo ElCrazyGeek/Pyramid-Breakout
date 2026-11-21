@@ -6,16 +6,20 @@ using Pyramid.Levels;
 public sealed class PuertaContacto : MonoBehaviour, IDamageable
 {
     [Header("Apertura por Disparos del Jugador")]
-    [Tooltip("Cantidad de impactos de disparo necesarios para abrir la puerta")]
     [Min(1)][SerializeField] private int disparosParaAbrir = 1;
     [SerializeField] private string tagJugador = "Player";
-    [Tooltip("Opcional: animator de la puerta para disparar el trigger al abrirse")]
     [SerializeField] private Animator animatorPuerta;
     [SerializeField] private string triggerAbrirAnimator = "Abrir";
-    [Tooltip("Evento opcional en Inspector (sonido, desactivar collider bloqueador, partículas, etc.)")]
     [SerializeField] private UnityEvent alAbrirse;
 
-    [Header("Daño por Contacto con la Nave")]
+    [Header("Colliders de la Puerta")]
+    [Tooltip("Opcional: arrastra colliders específicos. Si se deja vacío, tomará todos los de este objeto y sus hijos.")]
+    [SerializeField] private Collider[] collidersPuerta;
+    [Tooltip("Si está marcado, al abrirse los colliders pasan a ser Is Trigger para no detener la nave.")]
+    [SerializeField] private bool convertirATriggerAlAbrir = true;
+
+    [Header("Daño por Contacto")]
+    [Tooltip("Daño que recibe el jugador si roza la puerta cuando ya está abierta (sin detener su avance)")]
     [Min(0f)][SerializeField] private float danioAbierta = 10f;
     [Min(0f)][SerializeField] private float cooldownContacto = 0.5f;
 
@@ -25,21 +29,44 @@ public sealed class PuertaContacto : MonoBehaviour, IDamageable
 
     public bool EstaAbierta => abierta;
 
-    // Implementación de IDamageable para compatibilidad con tus proyectiles
-    public void TakeDamage(float amount)
+    private void Awake()
     {
-        // Nota: Si un script externo llama a TakeDamage directamente sin pasar por el filtro de proyectil,
-        // no abrimos aquí para garantizar que SOLO se abra con disparos del jugador.
+        if (collidersPuerta == null || collidersPuerta.Length == 0)
+        {
+            collidersPuerta = GetComponentsInChildren<Collider>(true);
+        }
     }
+
+    public void TakeDamage(float amount) { }
 
     private void OnTriggerEnter(Collider other)
     {
-        EvaluarDisparoJugador(other.gameObject);
+        EvaluarImpactoTrigger(other.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         EvaluarDisparoJugador(collision.gameObject);
+    }
+
+    private void EvaluarImpactoTrigger(GameObject objetoImpacto)
+    {
+        if (objetoImpacto == null)
+            return;
+
+        // 1. Si está cerrada, evaluar si es un disparo del jugador para abrirla
+        if (!abierta)
+        {
+            EvaluarDisparoJugador(objetoImpacto);
+            return;
+        }
+
+        // 2. Si ya está abierta (y sus colliders son Trigger), dañar al jugador sin frenarlo si la roza
+        var saludJugador = objetoImpacto.GetComponentInParent<Health>() ?? objetoImpacto.transform.root.GetComponentInChildren<Health>();
+        if (saludJugador != null && (objetoImpacto.CompareTag(tagJugador) || objetoImpacto.transform.root.CompareTag(tagJugador)))
+        {
+            ProcesarContacto(saludJugador);
+        }
     }
 
     private void EvaluarDisparoJugador(GameObject objetoImpacto)
@@ -59,17 +86,14 @@ public sealed class PuertaContacto : MonoBehaviour, IDamageable
 
     private bool EsDisparoDelJugador(GameObject obj)
     {
-        // 1. Proyectil normal
         var proyectilNormal = obj.GetComponentInParent<Proyectil>();
         if (proyectilNormal != null)
             return EsOrigenJugador(proyectilNormal.tagOrigen, proyectilNormal.origen);
 
-        // 2. Proyectil rayo
         var proyectilRayo = obj.GetComponentInParent<ProyectilRayo>();
         if (proyectilRayo != null)
             return EsOrigenJugador(proyectilRayo.tagOrigen, proyectilRayo.origen);
 
-        // 3. Proyectil cargado (si existe en el proyecto)
         var proyectilCargado = obj.GetComponentInParent<ProyectilCargado>();
         if (proyectilCargado != null)
             return EsOrigenJugador(proyectilCargado.tagOrigen, proyectilCargado.origen);
@@ -95,6 +119,17 @@ public sealed class PuertaContacto : MonoBehaviour, IDamageable
 
         abierta = true;
 
+        if (convertirATriggerAlAbrir && collidersPuerta != null)
+        {
+            foreach (var col in collidersPuerta)
+            {
+                if (col != null)
+                {
+                    col.isTrigger = true;
+                }
+            }
+        }
+
         if (animatorPuerta != null && !string.IsNullOrEmpty(triggerAbrirAnimator))
         {
             animatorPuerta.SetTrigger(triggerAbrirAnimator);
@@ -112,6 +147,8 @@ public sealed class PuertaContacto : MonoBehaviour, IDamageable
             return;
 
         proximoGolpePorJugador[saludJugador] = Time.time + Mathf.Max(0f, cooldownContacto);
+
+        // Si está abierta aplica danioAbierta; si está cerrada aplica daño letal completo
         saludJugador.TakeDamage(abierta ? danioAbierta : saludJugador.Current);
     }
 }

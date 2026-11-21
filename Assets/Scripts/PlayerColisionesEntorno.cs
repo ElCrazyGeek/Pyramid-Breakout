@@ -21,7 +21,7 @@ public class PlayerColisionesEntorno : MonoBehaviour
         col.isTrigger = true; // Actúa como sensor continuo
 
         if (saludJugador == null)
-            saludJugador = GetComponentInParent<Health>();
+            saludJugador = GetComponentInParent<Health>() ?? transform.root.GetComponentInChildren<Health>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,12 +29,12 @@ public class PlayerColisionesEntorno : MonoBehaviour
         if (other.CompareTag("Punto Camara") ||
             other.GetComponentInParent<PuntoTrayectoriaCamara>() != null ||
             other.GetComponentInParent<ZonaSeguraOInstakill>() != null ||
-            (other.isTrigger && other.GetComponentInParent<ContactDamage>() == null))
+            other.GetComponentInParent<TriggerTutorial>() != null ||
+            (other.isTrigger && other.GetComponentInParent<ContactDamage>() == null && other.GetComponentInParent<PuertaContacto>() == null))
         {
             return;
         }
 
-        Debug.Log($"[Choque Detectado] La nave tocó: {other.gameObject.name} (Tag: {other.tag})");
         ProcesarContacto(other.gameObject);
     }
 
@@ -45,15 +45,19 @@ public class PlayerColisionesEntorno : MonoBehaviour
 
     private void ProcesarContacto(GameObject obstaculo)
     {
-        // 1. Ignorar disparos propios, puntos de cámara y zonas especiales
-        if (obstaculo.CompareTag("Player") || obstaculo.GetComponent<Proyectil>() != null) return;
+        // 1. Ignorar disparos propios, piezas de la nave, puntos de cámara y zonas especiales
+        if (obstaculo.transform.IsChildOf(transform.root) || obstaculo.CompareTag("Player")) return;
+        if (obstaculo.GetComponent<Proyectil>() != null || obstaculo.GetComponentInParent<Proyectil>() != null) return;
+
         if (obstaculo.CompareTag("Punto Camara") ||
             obstaculo.GetComponentInParent<PuntoTrayectoriaCamara>() != null ||
-            obstaculo.GetComponentInParent<ZonaSeguraOInstakill>() != null)
+            obstaculo.GetComponentInParent<ZonaSeguraOInstakill>() != null ||
+            obstaculo.GetComponentInParent<TriggerTutorial>() != null)
         {
             return;
         }
 
+        // 2. Si es una puerta, delegamos en ella (daña sin frenar si está abierta; mata si está cerrada)
         var puerta = obstaculo.GetComponentInParent<PuertaContacto>();
         if (puerta != null)
         {
@@ -63,7 +67,7 @@ public class PlayerColisionesEntorno : MonoBehaviour
 
         if (Time.time < proximoChoquePermitido) return;
 
-        // 2. Si el obstáculo tiene ContactDamage, delegamos en él
+        // 3. Si el obstáculo tiene ContactDamage, delegamos en él
         var cd = obstaculo.GetComponentInParent<ContactDamage>();
         if (cd != null)
         {
@@ -72,22 +76,18 @@ public class PlayerColisionesEntorno : MonoBehaviour
             return;
         }
 
-        // 3. Si chocó contra un muro, suelo o asteroide genérico del escenario
+        // 4. Si chocó contra un muro, suelo o asteroide genérico del escenario
         if (obstaculo.CompareTag("Escenario") || obstaculo.layer == LayerMask.NameToLayer("Default"))
         {
             proximoChoquePermitido = Time.time + cooldownEntreImpactos;
 
-            // Aplicar daño
             if (saludJugador != null)
             {
                 saludJugador.TakeDamage(danioDefecto);
             }
 
-            // Empuje de rebote al centro del riel
             RebotarAlCentro();
         }
-
-
     }
 
     private void RebotarAlCentro()
@@ -99,7 +99,7 @@ public class PlayerColisionesEntorno : MonoBehaviour
         Vector3 direccionAlCentro = new Vector3(-posLocal.x, -posLocal.y, 0f).normalized;
         if (direccionAlCentro.sqrMagnitude < 0.001f) direccionAlCentro = Vector3.up;
 
-        // Desplazamiento inmediato o impulso
+        // Desplazamiento inmediato
         naveRoot.localPosition += direccionAlCentro * (fuerzaRebote * 0.1f);
     }
 }

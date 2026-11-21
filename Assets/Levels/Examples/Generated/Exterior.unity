@@ -2785,6 +2785,107 @@ MonoBehaviour:
   puntoSeguroDestino: {fileID: 121585266}
   duracionRescate: 0.25
   cooldownRescate: 0.8
+--- !u!1001 &1250266888
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1519852265}
+    m_Modifications:
+    - target: {fileID: 1103034741391364000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Name
+      value: Trigger tutorial (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2952
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].tituloPaso
+      value: Disparo cargado
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].tituloPaso
+      value: Disparo cargado
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 8ae86d781832b4c4a8fa0c62020dea22, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 8d651ec0c15785048aa8ddc280905103, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].textoInstruccion
+      value: Deja el click izquierdo presionado para cargar el rayo, cuando pases
+        la mira por encima de un enemigo, se seleccionara un enemigo.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].duracionSegundos
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[1].textoInstruccion
+      value: Al soltar el click, recibira un disparo teledirigido que tedra mas potencia
+        que un disparo normal asi como mayor alcaze, puedes destruir grupos de enemigos
+        cercanos al acertar a 1 enemigo.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+--- !u!4 &1250266889 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+  m_PrefabInstance: {fileID: 1250266888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1290026070
 GameObject:
   m_ObjectHideFlags: 0
@@ -3278,6 +3379,11 @@ Transform:
   - {fileID: 147546371}
   - {fileID: 306485730}
   - {fileID: 198342686}
+  - {fileID: 2133355744}
+  - {fileID: 1982659411}
+  - {fileID: 1906993140}
+  - {fileID: 1826256236}
+  - {fileID: 1250266889}
   m_Father: {fileID: 1290026072}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1519852266
@@ -3589,6 +3695,172 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709610627}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1826256235
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1519852265}
+    m_Modifications:
+    - target: {fileID: 1103034741391364000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Name
+      value: Trigger tutorial (2.5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2632
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].tituloPaso
+      value: Recupera vida
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: b6e8f274c6e6d4348b0bc1b82a7c35f5, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].textoInstruccion
+      value: Pasa por los botiquines para poder recuperar salud al chocar con ellos.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+--- !u!4 &1826256236 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+  m_PrefabInstance: {fileID: 1826256235}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1906993139
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1519852265}
+    m_Modifications:
+    - target: {fileID: 1103034741391364000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Name
+      value: Trigger tutorial (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 866
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].tituloPaso
+      value: Giro Lateral
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: d77c03d997b66f045aaac54a45a2d6fc, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].textoInstruccion
+      value: Usa las teclas Q para girar la nave hacia la izquierda, y E para derecha,
+        cuando lo hagas notaras un aumento  la velocidad de movimiento hacia donde
+        giro la nave.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+--- !u!4 &1906993140 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+  m_PrefabInstance: {fileID: 1906993139}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1911070134
 GameObject:
   m_ObjectHideFlags: 0
@@ -3751,6 +4023,87 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977423582}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1982659410
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1519852265}
+    m_Modifications:
+    - target: {fileID: 1103034741391364000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Name
+      value: Trigger tutorial (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 452
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].tituloPaso
+      value: Control de la mira
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 6c1ce5df9b73ce840bab72163ee7deff, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].textoInstruccion
+      value: 'Usa el mouse para poder controlar la mira y apuntar a un objetivo.
+
+        Para
+        disparar, usa Click izquierdo.'
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+--- !u!4 &1982659411 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+  m_PrefabInstance: {fileID: 1982659410}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2077814390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3882,6 +4235,85 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077814390}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &2133355743
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1519852265}
+    m_Modifications:
+    - target: {fileID: 1103034741391364000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_Name
+      value: Trigger tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].tituloPaso
+      value: Movimiento de la nave
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].imagenPrincipal
+      value: 
+      objectReference: {fileID: 21300000, guid: 66a817de880afb24ea0169f52dbc3f3a, type: 3}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].duracionSegundos
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600119043002079563, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+      propertyPath: diapositivas.Array.data[0].textoInstruccion
+      value: Controla la nave hacia arriba con W, Abajo S, y muevete hacia la Izquierda
+        con A y hacia la derecha con D.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+--- !u!4 &2133355744 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785684874947042202, guid: 00b83eacc77c5244eadd6e1e40089011, type: 3}
+  m_PrefabInstance: {fileID: 2133355743}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
